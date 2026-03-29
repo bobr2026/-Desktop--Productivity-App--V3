@@ -1,0 +1,120 @@
+.main_conteiner
+    grid-column: 3/13
+    display: flex
+    justify-content: center
+    align-content: center
+    align-items: center
+    flex-direction: column
+    overflow: hidden
+    max-width: 100%
+    max-height: 100%
+// .category_form
+//     display: flex
+//     flex-direction: column
+
+// .category_form__item
+//     text-align: center
+//     &_lebel
+//         font-size: 19px
+
+
+.category_form 
+    width: 430px
+    margin: 40px auto
+    padding: 25px 30px
+
+    background: $bg_button_and_forms /* почти как у тебя */
+    border-radius: 14px
+    border: 1px solid #37383b
+    box-shadow: 0 8px 25px rgba(76, 75, 75, 0.5)
+
+    display: flex
+    flex-direction: column
+    gap: 18px
+
+
+
+/* блок */
+.category_form__item 
+    display: flex
+    flex-direction: column
+    gap: 6px
+    max-height: 200px
+    min-height: 0
+    overflow: hidden
+
+/* label */
+.category_form__item_lebel 
+    font-size: 13px
+    color: $text_color_white
+
+
+/* input + select */
+.category_form input[type="text"],
+.category_form select 
+    padding: 9px 12px
+    border-radius: 8px
+
+    border: 1px solid #2f3036
+    background:#2c2c2c
+    color: #ffffff
+
+    font-size: 14px
+    outline: none
+    transition: 0.15s ease
+
+
+/* focus */
+.category_form input[type="text"]:focus,
+.category_form select:focus 
+    border-color: #4a4c55
+    background: #2c2c2c
+
+
+/* hover */
+.category_form input[type="text"]:hover,
+.category_form select:hover 
+    border-color: #4c4d52
+
+
+/* color input */
+.category_form input[type="color"] 
+    width: 50px
+    height: 32px
+    border-radius: 6px
+    border: 1px solid #2f3036
+    background: #343435
+    cursor: pointer
+
+
+/* checkbox */
+.checkbox_row 
+    display: flex
+    align-items: center
+    gap: 10px
+
+
+.category_form input[type="checkbox"] 
+    width: 16px
+    height: 16px
+    accent-color: #acacac /* вместо фиолетового */
+    cursor: pointer
+
+
+/* кнопка */
+.category_form button 
+    margin-top: 10px
+    padding: 10px
+
+    border-radius: 10px
+    border: 1px solid #2f3036
+
+    background: $main_bg_root_layout
+    color: $text_color_white
+
+    cursor: pointer
+    transition: 0.15s
+
+
+.category_form button:hover 
+    background:  #2c2c2c

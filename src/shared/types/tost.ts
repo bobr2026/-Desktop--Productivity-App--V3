@@ -1,0 +1,1 @@
+export type TostStateType = 'Success' | 'Error' | 'Warning';

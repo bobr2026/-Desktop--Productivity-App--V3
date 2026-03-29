@@ -11,6 +11,8 @@ import create_folder_style from './styles/create_folder.module.sass'
 import { ShortcutRecorder } from '../../shared/ui/ShortcutRecorder/ShortcutRecorder';
 import { global_store_type, SelectType } from '../../App/store/global_store.types';
 import { useSelector } from 'react-redux';
+import { add_folder } from './model/folder.model';
+import useGet_active_worspase_from_localStore from '../../shared/hooks/useGet_active_worspase_from_localStore';
 interface Ifolder_icons{
     id:number,
     icon_path:string
@@ -30,14 +32,14 @@ interface form_data{
     icon_id:number,
     title:string,
     path:string,
-    hotkey:string,
+    hotkey:string|null,
     folder_category_id:number|null,
     globol_category_id:number|null,
        type_category:SelectType
 
 }
 export default function Create_folder(){
-    
+        const active_workspase_local_store = useGet_active_worspase_from_localStore()
     const [selet_icon, set_select_icon] = useState<Iselect_folder>({ id: -3, selet: false })
     const [fprm_data, setForm_data]=useState<form_data>({
         icon_id:-3, 
@@ -82,7 +84,7 @@ export default function Create_folder(){
     // console.log(path_name_arr[path_name_arr.length-1]); 
     let selected_category_folder = useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.folder)
 let selected_category_global =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.global)
-
+const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedHotkey)
 
 
     const hendelChenge=(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>)=>{
@@ -92,14 +94,26 @@ let selected_category_global =useSelector((state:global_store_type)=>state.hotke
              [name]:value
         }))
     }
+    const [click_submit, set_click_submit]= useState(0)
      const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            console.log(fprm_data)
-             setForm_data((prev)=>({
+            set_click_submit(prev=>prev+1)
+            setForm_data((prev)=>({
                 ...prev,
-                 folder_category_id:selected_category_folder,
-                 globol_category_id:selected_category_global
-             }))
+                folder_category_id:selected_category_folder,
+                globol_category_id:selected_category_global,
+                hotkey:selected_hotkey,
+                icon_id:selet_icon.id
+            }))
+            if(click_submit>0){
+                console.log(fprm_data)
+                
+                // add_folder(fprm_data.icon_id, fprm_data.title, fprm_data.path, fprm_data.hotkey,
+                //     fprm_data.folder_category_id, fprm_data.globol_category_id,
+                //      active_workspase_local_store.workspace_id
+                // )
+
+            }
         
             
         }

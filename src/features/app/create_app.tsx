@@ -110,11 +110,11 @@ export default function Create_app(){
 let selected_category_app = useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.app)
 let selected_category_global =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.global)
 const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_category.selectedHotkey)
+const [click_submit, set_click_submit]= useState(0)
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        set_click_submit(prev =>prev+1)
         dispatch(read_selected_category())
-        
-        console.log(form_data)
         setForm_data((prev)=>({
             ...prev,
             hotkey:selected_hotkey,
@@ -123,11 +123,15 @@ const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_c
             global_category_id:selected_category_global
         
         }))
-        console.log(active_wokspase)
-        // await add_app(form_data.app_name as string, form_data.path as string, form_data.icon_path as string, form_data.hotkey,
-        //     form_data.app_category_id, form_data.global_category_id , active_workspase_local_store.workspace_id
-        // )
+     if(click_submit>0){
         console.log(form_data)
+        await add_app(form_data.app_name as string, form_data.path as string, form_data.icon_path as string, form_data.hotkey,
+            form_data.app_category_id, form_data.global_category_id , active_workspase_local_store.workspace_id
+        )
+     }
+           
+        
+        console.log(active_wokspase)
        
         
     }
@@ -163,7 +167,7 @@ const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_c
 
 
         <Under_category_list type_category={form_data.type_category} />
-        <button type="submit">Создать категорию</button>
+        <button type="submit">Создать Приложение</button>
 
     </form>
 </div >}

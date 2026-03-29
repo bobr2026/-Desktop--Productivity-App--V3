@@ -7,7 +7,7 @@ pub fn add_folder(
     icon_id: i64,
     title: String,
     path: String,
-    hotkey: String,
+    hotkey: Option<String>,
     folder_category_id: Option<i64>,
     globol_category_id: Option<i64>,
     workspace_id: i64,

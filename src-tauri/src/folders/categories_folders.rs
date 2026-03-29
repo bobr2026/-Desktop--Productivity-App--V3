@@ -1,5 +1,5 @@
 use super::entrys::categories_folders;
-use crate::servises::get_db_path;
+use crate::servises::{get_db_path, AppCategory};
 use rusqlite::{params, Connection, Result};
 
 #[tauri::command]
@@ -157,4 +157,23 @@ pub fn get_folder_Category_name_ById(categoryId: i64) -> Result<String, String> 
         .map_err(|e| e.to_string())?;
 
     Ok(res)
+}
+#[tauri::command]
+pub fn get_folder_Category_name_and_color_ById(categoryId: i32) -> Result<AppCategory, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    let category: AppCategory = conn
+    .query_row(
+        "SELECT name, color FROM categories_folders WHERE id = ?",
+        params![categoryId],
+        |row| {
+            Ok(AppCategory {
+                name: row.get(0)?,
+                color: row.get(1)?,
+            })
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+Ok(category)
 }

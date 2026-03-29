@@ -54,10 +54,10 @@ use apps::categories_apps::{
 };
 use folders::categories_folders::{
     create_folder_category, delete_folder_category, get_all_categories_folders,
-    update_folder_category,get_folder_categories_by_id, get_folder_categories_by_workspace
+    update_folder_category,get_folder_categories_by_id, get_folder_categories_by_workspace,get_folder_Category_name_and_color_ById,
 };
 use folders::folder::{
-    get_all_folders, get_all_foldersByGrub_id, get_foldersByID, update__icon__by_folder_id,
+ add_folder,   get_all_folders, get_all_foldersByGrub_id, get_foldersByID, update__icon__by_folder_id,
     update__workspace__by_folder_id, update_folder, update_global_category___by_folder_id,
     update_grub_folder___by_folder_id,
 };
@@ -382,7 +382,14 @@ pub fn run() {
             get_folder_categories_by_workspace,
             get_all_appsBy_workspace_id,
             get_global_Category_name_and_color_ById,
-            get_app_Category_name_and_color_ById
+            get_app_Category_name_and_color_ById,
+            add_folder,
+            get_all_folders,
+            update_folder,
+            get_foldersByID,
+            get_all_foldersBy_workspaceId,
+            get_all_notesByWorkspace_id,
+            get_folder_Category_name_and_color_ById,
             
 
             

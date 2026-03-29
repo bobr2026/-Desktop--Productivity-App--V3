@@ -3,8 +3,13 @@ use std::path::PathBuf;
 
 use std::fs;
 use std::path::Path;
+use serde::{Deserialize, Serialize};
 use tauri::{AppHandle, Manager};
-
+#[derive(Serialize)]            // ← обязательно для Tauri
+pub struct AppCategory {
+    pub name: String,
+    pub color: Option<String>,          // если цвет хранится как hex-строка
+}
 pub fn get_db_path() -> Option<PathBuf> {
     // Получаем домашний каталог
     let home = home_dir()?;

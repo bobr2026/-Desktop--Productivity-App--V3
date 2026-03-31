@@ -24,17 +24,24 @@ export  function App_item({icon_path , app_path, hotkey, title, globol_category_
   
    useEffect(()=>{
     async function get_data() {
-      const data:categories_data =  await invoke("get_app_Category_name_and_color_ById", {categoryId:app_category_id})
-        console.log(data)
-        setApp_category(data)
-        const data1:categories_data =  await invoke("get_global_Category_name_and_color_ById", {categoryId:globol_category_id})
-        console.log(data1)
-        setGlobal_category(data1)
-        if(swoh_color_grub==="app_category"){
-            data.color!=null? set_category_color(data.color ):null
+        if(app_category_id!=null){
+            const data:categories_data =  await invoke("get_app_Category_name_and_color_ById", {categoryId:app_category_id})
+              console.log(data)
+              setApp_category(data)
+              if(swoh_color_grub==="app_category"){
+                data.color!=null? set_category_color(data.color ):null
+    
+            }
 
-        }else{
-            data1.color!=null? set_category_color(data1.color ):null
+        }
+        if(globol_category_id!=null){
+
+            const data1:categories_data =  await invoke("get_global_Category_name_and_color_ById", {categoryId:globol_category_id})
+            console.log(data1)
+            setGlobal_category(data1)
+            if(swoh_color_grub==="globol_category"){
+                data1.color!=null? set_category_color(data1.color ):null
+            }
         }
         
     }

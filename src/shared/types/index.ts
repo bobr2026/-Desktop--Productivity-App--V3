@@ -3,3 +3,4 @@ export * from './apps'
 export * from "./ShortcutRecorder"
 export * from './categorys'
 export * from './tost'
+export * from './folder'

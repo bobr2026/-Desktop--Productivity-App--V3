@@ -1,4 +1,4 @@
-import { I_workspace_types , Iapp} from "../../shared/types"
+import { I_folder, I_workspace_types , Iapp} from "../../shared/types"
 
 export interface I_apps_store_type{
     apps:Iapp[]
@@ -19,8 +19,11 @@ export interface global_store_type{
     header:I_header_store_types
     global_category:I_categorys_store
     hotkey_and_category:I_hotkey_and_category_slise_type
+    folder_list:folder_list_ctore_type
 }
-
+export interface folder_list_ctore_type{
+    folders:I_folder[]
+ }
  export  enum type_page_enum{
     "create_item"="create_item",
     "notes_list"="notes_list",

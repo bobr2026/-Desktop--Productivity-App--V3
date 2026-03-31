@@ -4,13 +4,14 @@ import { active_page_type, global_store_type, type_page_enum } from "../../App/s
 import { add_active_page } from "../../layouts/root_layout/ui/header/store/Header.store";
 import { AppDispatch } from "../../App/store/store";
 import { active_page_hendler } from "../../shared/utils/active_page_hendler.utils";
+import Folder_list from "../../features/folder/folder_list";
 
 export function Folder_list_page(){
  
     
     active_page_hendler(type_page_enum.folder_list, "/folder_list", "folder_list")
    return(
-    <><p>Folder_list_page</p></>
+ <Folder_list/>
    )
 }
 

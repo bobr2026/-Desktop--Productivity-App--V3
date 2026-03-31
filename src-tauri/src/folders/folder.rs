@@ -17,7 +17,7 @@ pub fn add_folder(
     conn.execute(
         "INSERT INTO folders ( icon_id,path, title,  hotkey, folder_category_id, globol_category_id, workspace_id) VALUES 
             (?, ?, ?, ?, ?, ?, ?)",
-        params![icon_id, title, path, hotkey, folder_category_id, globol_category_id, workspace_id],
+        params![icon_id,path, title, hotkey, folder_category_id, globol_category_id, workspace_id],
     )
     .map_err(|e| e.to_string())?;
     println!("Note added");

@@ -390,6 +390,7 @@ pub fn run() {
             get_all_foldersBy_workspaceId,
             get_all_notesByWorkspace_id,
             get_folder_Category_name_and_color_ById,
+            open_folder,
             
 
             

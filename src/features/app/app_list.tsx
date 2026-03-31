@@ -7,6 +7,7 @@ import { App_item } from "./app_item"
 import useGet_active_worspase_from_localStore from "../../shared/hooks/useGet_active_worspase_from_localStore"
 import { get_all_appsBy_workspace_id } from "./store/app_slise_store"
 import styles from './styles/app_list.module.sass'
+import { Link } from "react-router-dom"
 // import SelectEnvironmentMessage from "../../shared/ui/SelectEnvironmentMessage/SelectEnvironmentMessage"
 
 
@@ -54,7 +55,7 @@ function App_list() {
             </div>
         </div>
         <div className={styles.app_list}>
-        {app_list}
+        {app_list.length==0?<h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/create_app"}>  Добавите приложение   </Link> </h2>:app_list}
         </div>
        </div>
 }

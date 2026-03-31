@@ -1,8 +1,9 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import { app_item_props } from "./app.types";
 import { openApp, registerHotkey } from "../../tauri-services/services";
-import styles from './styles/app_item.module.sass'
+// import styles from './styles/app_item.module.sass'
 import { useEffect, useState } from "react";
+import styles from '../../shared/styles/litem_element_list.module.sass'
 // get_global_Category_name_and_color_ById,
 // get_app_Category_name_and_color_ById
 
@@ -56,14 +57,14 @@ get_data()
 
    }, [globol_category_id, app_category_id, swoh_color_grub])
 
-    return <div  className={styles.app__item_block} onClick={()=>openApp(app_path)} >
-    <img className={styles.app__item_block__img} src={convertFileSrc(icon_path)} alt="" />
+    return <div  className={styles.list__item_block} onClick={()=>openApp(app_path)} >
+    <img className={styles.list__item_block__img} src={convertFileSrc(icon_path)} alt="" />
     <h3>{hotkey}</h3>
     <h3>{title}</h3>
-    <h3>{app_category.name}</h3>
-    <h3>{global_category.name}</h3>
+    <h3>{app_category.name!=null?app_category.name:"Пусто"}</h3>
+    <h3>{global_category.name!=null? global_category.name:"Пусто"}</h3>
     <div style={{
         background:category_color
-    }} className={styles.app__item_block__category_color}></div>
+    }} className={styles.list__item_block__category_color}></div>
 </div>
 }

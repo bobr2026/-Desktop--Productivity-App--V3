@@ -1,7 +1,7 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
 import {folder_item_props} from './folder.types';
 import { openApp, openFolder, registerHotkey } from "../../tauri-services/services";
-import styles from '../app/styles/app_item.module.sass'
+import styles from '../../shared/styles/litem_element_list.module.sass'
 import { useEffect, useState } from "react";
 import folder_dark1_icon from './folder_icons/ficon-folder-dark1.png'
 import folder_blue_icon from './folder_icons/icon-folder-blue.png'
@@ -20,8 +20,9 @@ import icon_folder_black from './folder_icons/icon-folder-black.png'
 //     {id:-3,icon_path:icon_folder_black}
     
 // ]
+type folder_item_delect_color_category_types = "folder_category"|"globol_category"
 export  function Folder_item({icon_id , path, hotkey, title, globol_category_id, folder_category_id , swoh_color_grub}:folder_item_props){
-    let icon= <img className={styles.app__item_block__img} src={folder_dark1_icon} alt="" />
+    let icon= <img className={styles.list__item_block__img} src={folder_dark1_icon} alt="" />
     const [app_category , setApp_category]= useState<categories_data>({
         color:null,
         name:null
@@ -30,26 +31,33 @@ export  function Folder_item({icon_id , path, hotkey, title, globol_category_id,
         color:null,
         name:null
     })
-    const [category_color, set_category_color] = useState<string>("")
+    const [category_color, set_category_color] = useState<folder_item_delect_color_category_types>("folder_category")
 
   
    useEffect(()=>{
     async function get_data() {
-      const data:categories_data =  await invoke("get_folder_Category_name_and_color_ById", {categoryId:folder_category_id})
-        console.log(data)
-        setApp_category(data)
-        const data1:categories_data =  await invoke("get_global_Category_name_and_color_ById", {categoryId:globol_category_id})
-        console.log(data1)
-        setGlobal_category(data1)
-        if(swoh_color_grub==="folder_category"){
-            data.color!=null? set_category_color(data.color ):null
+        if(folder_category_id!=null){
+            const data:categories_data =  await invoke("get_folder_Category_name_and_color_ById", {categoryId:folder_category_id})
+              console.log(data)
+              setApp_category(data)
+              if(swoh_color_grub==="folder_category"){
+                data.color!=null? set_category_color(data.color as folder_item_delect_color_category_types  ):null
+    
+            }
 
-        }else{
-            data1.color!=null? set_category_color(data1.color ):null
+        }if(globol_category_id!=null){
+            const data1:categories_data =  await invoke("get_global_Category_name_and_color_ById", {categoryId:globol_category_id})
+            console.log(data1)
+            setGlobal_category(data1)
+
+        if(swoh_color_grub==="globol_category"){
+            data1.color!=null? set_category_color(data1.color as folder_item_delect_color_category_types ):null
+
         }
+    
         
     }
-
+    }
 get_data()
        if(hotkey==undefined){
    null
@@ -62,18 +70,18 @@ get_data()
    useEffect(()=>{
     switch (icon_id) {
       case -1:
-        icon= <img   className={styles.app__item_block__img} src={folder_dark1_icon} alt="" />
+        icon= <img   className={styles.list__item_block__img} src={folder_dark1_icon} alt="" />
         break;
         case -2:
-          icon=  <img   className={styles.app__item_block__img} src={folder_blue_icon} alt="" />
+          icon=  <img   className={styles.list__item_block__img} src={folder_blue_icon} alt="" />
           break;
         case -3:
-          icon= <img  className={styles.app__item_block__img} src={icon_folder_black} alt="" />
+          icon= <img  className={styles.list__item_block__img} src={icon_folder_black} alt="" />
                break;
     }
    }, [icon_id])
  console.log(category_color)
-    return <div  className={styles.app__item_block} onClick={()=>openFolder(path)} >
+    return <div  className={styles.list__item_block} onClick={()=>openFolder(path)} >
     {icon}
     <h3>{hotkey}</h3>
     <h3>{title}</h3>
@@ -81,6 +89,6 @@ get_data()
     <h3>{global_category.name!=null?global_category.name:"Пусто"}</h3>
     <div style={{
         background:category_color
-    }} className={styles.app__item_block__category_color}></div>
+    }} className={styles.list__item_block__category_color}></div>
 </div>
 }

@@ -108,10 +108,10 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
             if(click_submit>0){
                 console.log(fprm_data)
                 
-                // add_folder(fprm_data.icon_id, fprm_data.title, fprm_data.path, fprm_data.hotkey,
-                //     fprm_data.folder_category_id, fprm_data.globol_category_id,
-                //      active_workspase_local_store.workspace_id
-                // )
+                add_folder(fprm_data.icon_id, fprm_data.title, fprm_data.path, fprm_data.hotkey,
+                    fprm_data.folder_category_id, fprm_data.globol_category_id,
+                     active_workspase_local_store.workspace_id
+                )
 
             }
         

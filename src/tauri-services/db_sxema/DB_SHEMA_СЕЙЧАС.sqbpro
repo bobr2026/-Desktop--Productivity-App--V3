@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="noteBook.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="524"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title=".Просматриваемые" custom_title="0" dock_id="1" table="0,30:Просматриваемые"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000012e00ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1"></sql><current_tab id="0"/></tab_sql></sqlb_project>
+
+
+ CREATE TABLE IF NOT EXISTS notes (
+      note_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	  title TEXT NOT NULL,
+      note_category_id INTEGER NULL,
+       status TEXT NOT NULL,
+       marks TEXT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+       globol_category_id INTEGER NULL, 
+       workspace_id INTEGER NOT NULL
+         FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+      FOREIGN KEY (note_category_id) REFERENCES categories_notes(id) ON DELETE CASCADE
+          FOREIGN KEY (globol_category_id) REFERENCES globol_categorys(id)  ON DELETE CASCADE
+
+  );
+
+
+     CREATE TABLE IF NOT EXISTS posts(
+      post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      note_id INTEGER NOT NULL,
+	  title TEXT NOT NULL,
+	 position_in_the_note INTEGER, 
+	  FOREIGN KEY (note_id) REFERENCES notes(note_id) ON DELETE CASCADE
+
+    
+  );
+
+   CREATE TABLE IF NOT EXISTS Paragraph(
+      paragraph_id INTEGER PRIMARY KEY AUTOINCREMENT,
+       post_id INTEGER NOT NULL,
+     content TEXT NOT NULL,
+	 culomm INTEGER NOT NULL,
+     row INTEGER NOT NULL,
+    style_id INTEGER NULL,
+      UNIQUE(post_id, row, culomm),
+      FOREIGN KEY(post_id) REFERENCES posts(post_id), ON DELETE CASCADE
+    FOREIGN KEY(style_id) REFERENCES Paragraph_styles(Paragraph_styles_id) ON DELETE SET NULL
+    
+  );
+ CREATE TABLE IF NOT EXISTS  Paragraph_styles(
+      Paragraph_styles_id INTEGER PRIMARY KEY AUTOINCREMENT,
+	  font_size TEXT NULL,
+      color TEXT NULL ,
+     background TEXT NULL,
+     font_weight TEXT NULL,
+     text_decoration TEXT NULL,
+     text_align TEXT NULL, 
+     extra_styles TEXT NULL, 
+
+    
+  );
+
+CREATE TABLE categories_notes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    color TEXT NULL,
+    parent_id INTEGER NULL,
+    workspace_id INTEGER NOT NULL
+      FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories_notes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE categories_apps (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+       color TEXT NULL,
+    parent_id INTEGER NULL,
+    workspace_id INTEGER NOT NULL
+      FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories_apps(id)  ON DELETE CASCADE
+);
+CREATE TABLE  IF NOT EXISTS categories_folders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+       color TEXT NULL,
+    parent_id INTEGER NULL,
+    workspace_id INTEGER NOT NULL
+      FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories_folders(id) ON DELETE CASCADE
+);
+
+CREATE TABLE  IF NOT EXISTS globol_categorys (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+       color TEXT NULL,
+    parent_id INTEGER NULL,
+    workspace_id INTEGER NOT NULL
+      FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories_folders(id) ON DELETE CASCADE
+);
+
+
+
+ CREATE TABLE IF NOT EXISTS apps (
+       id INTEGER PRIMARY KEY AUTOINCREMENT,
+       title TEXT NOT NULL,
+       path TEXT NOT NULL,
+    icon_path TEXT NOT NULL,
+       hotkey TEXT NULL,
+       app_category_id INTEGER NULL,
+        globol_category_id INTEGER NULL, 
+          workspace_id INTEGER NOT NULL
+         FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+       FOREIGN KEY (app_category_id) REFERENCES  categories_apps(id)  ON DELETE CASCADE
+           FOREIGN KEY (globol_category_id) REFERENCES globol_categorys(id)  ON DELETE CASCADE
+
+);
+CREATE TABLE IF NOT EXISTS workspace (
+ workspace_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    color TEXT NULL,
+
+	);
+
+
+CREATE TABLE Links (
+    link_id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    source_type TEXT NOT NULL,   -- 'Note' | 'Post' | 'Paragraph'|'Task'
+    source_id   INTEGER NOT NULL,
+
+    target_type TEXT NOT NULL,   -- 'Note' | 'Post' | 'Paragraph' |'Task'
+    target_id   INTEGER NOT NULL,
+
+    link_type   TEXT NOT NULL,   -- 'quote' | 'reference' | 'mention'
+    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_links_source ON Links(source_type, source_id);
+CREATE INDEX idx_links_target ON Links(target_type, target_id);
+
+CREATE TABLE IF NOT EXISTS post_files (
+    file_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    file_type TEXT NOT NULL,        -- image / audio / video / file
+    file_path TEXT NOT NULL,        -- путь к файлу или URL
+     row   INTEGER,
+      col INTEGER,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
+);
+
+
+
+
+
+  CREATE TRIGGER IF NOT EXISTS update_notes_updated_at
+  AFTER UPDATE ON notes
+  BEGIN
+      UPDATE notes SET updated_at = DATETIME('now') WHERE id = NEW.id;
+  END;
+CREATE TABLE IF NOT EXISTS dock_panels(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+color TEXT,
+name TEXT NOT NULL,
+posstion TEXT , 
+workspace_id INTEGER NOT NULL,
+swoh_element_grubs TEXT --JSON DATA
+  FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+)
+        CREATE TABLE IF NOT EXISTS folders (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        icon_id INTEGER NOT NULL,
+        path TEXT NOT NULL,
+        title TEXT NOT NULL,
+        hotkey TEXT NULL,
+        folder_category_id INTEGER NULL,
+          globol_category_id INTEGER NULL, 
+            workspace_id INTEGER NOT NULL
+         FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+        FOREIGN KEY (folder_category_id) REFERENCES categories_folders(id)  ON DELETE CASCADE
+         FOREIGN KEY (globol_category_id) REFERENCES globol_categorys(id)  ON DELETE CASCADE
+    )
+    
+
+CREATE TABLE IF NOT EXISTS external_post_elements (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    app_id INTEGER NULL,
+    folder_id INTEGER NULL,
+     row   INTEGER,
+      col INTEGER,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (app_id) REFERENCES apps(id) ON DELETE CASCADE,
+    FOREIGN KEY (folder_id) REFERENCES folders(id) ON DELETE CASCADE,
+
+
+CHECK (
+    (app_id IS NOT NULL AND folder_id IS NULL) OR
+    (app_id IS NULL AND folder_id IS NOT NULL)
+)
+);
+
+
+CREATE TABLE IF NOT EXISTS folder_icons(
+   icon_id INTEGER PRIMARY KEY AUTOINCREMENT,
+   folder_id INTEGER,
+    icon_path TEXT NOT NULL
+      FOREIGN KEY (folder_id) REFERENCES folders(id)
+);
+CREATE TABLE blocks_notes(
+block_id INTEGER PRIMARY KEY AUTOINCREMENT,
+note_id 
+type --файл картинка 
+title 
+content
+style_id --ссылка на таблицу стилей 
+row -- позиция внутри note  
+--сыллка на folder/ app
+
+)
+CREATE TABLE IF NOT EXISTS task(
+task_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ marks TEXT NULL,
+  status TEXT NOT NULL,
+  parent_id INTEGER NULL,
+  title TEXT  NOT NULL
+    task_category_id INTEGER NULL,
+            workspace_id INTEGER NOT NULL
+         FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+   FOREIGN KEY(task_category_id) REFERENCES categories_tasks(id) ON DELETE CASCADE
+  FOREIGN KEY (parent_id) REFERENCES task(task_id) ON DELETE CASCADE
+
+
+);
+
+CREATE TABLE  IF NOT EXISTS categories_tasks (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+       color TEXT NULL,
+    parent_id INTEGER NULL,
+    workspace_id INTEGER NOT NULL
+      FOREIGN KEY (workspace_id) REFERENCES workspace(workspace_id)  ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES categories_task(id) ON DELETE CASCADE
+);

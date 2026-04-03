@@ -16,7 +16,7 @@
             extra_styles TEXT
         );,
 
-        // --- 2. Таблицы категорий (зависят от workspace) ---
+       --- 2. Таблицы категорий (зависят от workspace) ---
         CREATE TABLE IF NOT EXISTS categories_folders (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
@@ -67,7 +67,7 @@
             FOREIGN KEY (parent_id) REFERENCES categories_tasks(id) ON DELETE CASCADE
         );,
 
-        // --- 3. Основной контент (Notes, Apps, Folders, Tasks) ---
+       --- 3. Основной контент (Notes, Apps, Folders, Tasks) ---
         CREATE TABLE IF NOT EXISTS notes (
             note_id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -124,7 +124,7 @@
             FOREIGN KEY (parent_id) REFERENCES task(task_id) ON DELETE CASCADE
         );,
 
-        // --- 4. Структура внутри заметок (Posts, Paragraphs, Files) ---
+       --- 4. Структура внутри заметок (Posts, Paragraphs, Files) ---
         CREATE TABLE IF NOT EXISTS posts (
             post_id INTEGER PRIMARY KEY AUTOINCREMENT,
             note_id INTEGER NOT NULL,
@@ -155,7 +155,7 @@
             FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
         );,
 
-        // --- 5. Вспомогательные элементы и связи ---
+       --- 5. Вспомогательные элементы и связи ---
         CREATE TABLE IF NOT EXISTS external_post_elements (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             post_id INTEGER NOT NULL,
@@ -188,16 +188,34 @@
         );,
 
         CREATE TABLE IF NOT EXISTS Links (
-            link_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            source_type TEXT NOT NULL,
-            source_id INTEGER NOT NULL,
-            target_type TEXT NOT NULL,
-            target_id INTEGER NOT NULL,
-            link_type TEXT NOT NULL,
+            link_id INTEGER PRIMARY KEY AUTOINCREMENT,   
+            source_type TEXT NOT NULL,  ---  ---
+            source_id INTEGER NOT NULL,---  ---
+            target_type TEXT NOT NULL,---  ---
+            target_id INTEGER NOT NULL,---  ---
+            link_type TEXT NOT NULL,---  ---
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );,
+       
+       CREATE TABLE IF NOT EXISTS notes_task_links(
+        link_id INTEGER PRIMARY KEY AUTOINCREMENT,   
+         task_id  INTEGER NOT NULL
+         note_id  INTEGER NOT NULL
+         swoh_type TEXT NOT NULL
+         FOREIGN KEY (parent_id) REFERENCES task(task_id) ON DELETE CASCADE
+         FOREIGN KEY (nb) REFERENCES posts(note_id) ON DELETE CASCADE
+       );
+         CREATE TABLE IF NOT EXISTS posts_task_links(
+         link_id INTEGER PRIMARY KEY AUTOINCREMENT,   
+         task_id  INTEGER NOT NULL
+         post_id  INTEGER NOT NULL
+         swoh_type TEXT NOT NULL
+         FOREIGN KEY (parent_id) REFERENCES task(task_id) ON DELETE CASCADE
+         FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
+         
 
-        // --- 6. Индексы и триггеры ---
+         );
+    --- 6. Индексы и триггеры ---
         CREATE INDEX IF NOT EXISTS idx_links_source ON Links(source_type, source_id);,
         CREATE INDEX IF NOT EXISTS idx_links_target ON Links(target_type, target_id);,
         

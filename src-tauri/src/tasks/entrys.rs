@@ -16,6 +16,5 @@ pub struct task {
     pub parent_id: Option<i64>,
     pub title: String,
     pub task_category_id: Option<i64>,
-    pub globol_category_id: Option<i64>,
     pub workspace_id: i64,
 }

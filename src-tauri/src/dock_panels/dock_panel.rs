@@ -240,29 +240,28 @@ pub fn get_all_notesByGlobol_category_id(globol_category_id: i64) -> Result<Vec<
     Ok(notes)
 }
 
-#[tauri::command]
-pub fn get_all_tasks_by_global_category_id(globol_category_id: i64) -> Result<Vec<task>, String> {
-    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
-    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE globol_category_id = ?").map_err(|e| e.to_string())?;
-    let iter = stmt
-        .query_map([globol_category_id], |row| {
-            Ok(task {
-                task_id: row.get(0)?,
-                marks: row.get(1)?,
-                status: row.get(2)?,
-                parent_id: row.get(3)?,
-                title: row.get(4)?,
-                task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
-            })
-        })
-        .map_err(|e| e.to_string())?;
+// #[tauri::command]
+// pub fn get_all_tasks_by_global_category_id(globol_category_id: i64) -> Result<Vec<task>, String> {
+//     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+//     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+//     let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE globol_category_id = ?").map_err(|e| e.to_string())?;
+//     let iter = stmt
+//         .query_map([globol_category_id], |row| {
+//             Ok(task {
+//                 task_id: row.get(0)?,
+//                 marks: row.get(1)?,
+//                 status: row.get(2)?,
+//                 parent_id: row.get(3)?,
+//                 title: row.get(4)?,
+//                 task_category_id: row.get(5)?,
+//                 workspace_id: row.get(6)?,
+//             })
+//         })
+//         .map_err(|e| e.to_string())?;
 
-    let mut tasks = Vec::new();
-    for t in iter {
-        tasks.push(t.map_err(|e| e.to_string())?);
-    }
-    Ok(tasks)
-}
+//     let mut tasks = Vec::new();
+//     for t in iter {
+//         tasks.push(t.map_err(|e| e.to_string())?);
+//     }
+//     Ok(tasks)
+// }

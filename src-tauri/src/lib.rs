@@ -191,6 +191,10 @@ pub fn run() {
             get_all_notesByWorkspace_id,
             get_folder_Category_name_and_color_ById,
             open_folder,
+            create_task, delete_task, get_all_tasks_by_task_category_id, get_subtasks,
+            get_tasks_by_markType, get_tasks_by_status, update_task_content, update_task_marks,
+            update_task_status,
+            get_all_tasks_by_workspaceID, 
             
 
             

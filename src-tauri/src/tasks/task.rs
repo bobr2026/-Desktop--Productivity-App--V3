@@ -9,14 +9,13 @@ pub fn create_task(
     marks: Option<String>,
     parent_id: Option<i64>,
     task_category_id: Option<i64>,
-    globol_category_id: Option<i64>,
     workspace_id: i64,
 ) -> Result<i64, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
-        "INSERT INTO task (title, status, marks, parent_id, task_category_id, globol_category_id, workspace_id) VALUES (?, ?, ?, ?, ? , ?, ?)",
-        params![title, status, marks, parent_id, task_category_id, globol_category_id,workspace_id],
+        "INSERT INTO task (title, status, marks, parent_id, task_category_id, workspace_id) VALUES (?, ?, ?, ?, ? , ?)",
+        params![title, status, marks, parent_id, task_category_id ,workspace_id],
     ).map_err(|e| e.to_string())?;
     Ok(conn.last_insert_rowid())
 }
@@ -25,7 +24,7 @@ pub fn create_task(
 pub fn get_subtasks(parent_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id,globol_category_id, workspace_id  FROM task WHERE parent_id = ?").map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT * FROM task WHERE parent_id = ?").map_err(|e| e.to_string())?;
     let iter = stmt
         .query_map([parent_id], |row| {
             Ok(task {
@@ -35,8 +34,7 @@ pub fn get_subtasks(parent_id: i64) -> Result<Vec<task>, String> {
                 parent_id: row.get(3)?,
                 title: row.get(4)?,
                 task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
+                workspace_id: row.get(6)?,
             })
         })
         .map_err(|e| e.to_string())?;
@@ -51,7 +49,7 @@ pub fn get_subtasks(parent_id: i64) -> Result<Vec<task>, String> {
 pub fn get_tasks_by_markType(marks: String) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE marks = ?").map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT * FROM task WHERE marks = ?").map_err(|e| e.to_string())?;
     let iter = stmt
         .query_map([marks], |row| {
             Ok(task {
@@ -61,8 +59,7 @@ pub fn get_tasks_by_markType(marks: String) -> Result<Vec<task>, String> {
                 parent_id: row.get(3)?,
                 title: row.get(4)?,
                 task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
+                workspace_id: row.get(6)?,
             })
         })
         .map_err(|e| e.to_string())?;
@@ -78,7 +75,7 @@ pub fn get_tasks_by_markType(marks: String) -> Result<Vec<task>, String> {
 pub fn get_all_tasks_by_task_category_id(task_category_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE task_category_id = ?").map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT * FROM task WHERE task_category_id = ?").map_err(|e| e.to_string())?;
     let iter = stmt
         .query_map([task_category_id], |row| {
             Ok(task {
@@ -88,8 +85,7 @@ pub fn get_all_tasks_by_task_category_id(task_category_id: i64) -> Result<Vec<ta
                 parent_id: row.get(3)?,
                 title: row.get(4)?,
                 task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
+                workspace_id: row.get(6)?,
             })
         })
         .map_err(|e| e.to_string())?;
@@ -105,7 +101,7 @@ pub fn get_all_tasks_by_task_category_id(task_category_id: i64) -> Result<Vec<ta
 pub fn get_tasks_by_status(status: String) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE status = ?").map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT * FROM task WHERE status = ?").map_err(|e| e.to_string())?;
     let iter = stmt
         .query_map([status], |row| {
             Ok(task {
@@ -115,8 +111,7 @@ pub fn get_tasks_by_status(status: String) -> Result<Vec<task>, String> {
                 parent_id: row.get(3)?,
                 title: row.get(4)?,
                 task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
+                workspace_id: row.get(6)?,
             })
         })
         .map_err(|e| e.to_string())?;

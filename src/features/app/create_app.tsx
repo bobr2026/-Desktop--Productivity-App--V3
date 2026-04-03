@@ -170,5 +170,6 @@ const [click_submit, set_click_submit]= useState(0)
         <button type="submit">Создать Приложение</button>
 
     </form>
-</div >}
+</div >
+}
 

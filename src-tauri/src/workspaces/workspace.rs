@@ -73,7 +73,7 @@ pub fn delete_workspace(workspace_id: i64) -> Result<usize, String> {
 pub fn get_all_tasks_by_workspaceID(workspace_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
-    let mut stmt = conn.prepare("SELECT task_id, marks, status, parent_id, title, task_category_id, globol_category_id, workspace_id FROM task WHERE workspace_id = ?").map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT *  FROM task WHERE workspace_id = ?").map_err(|e| e.to_string())?;
     let iter = stmt
         .query_map([workspace_id], |row| {
             Ok(task {
@@ -83,8 +83,7 @@ pub fn get_all_tasks_by_workspaceID(workspace_id: i64) -> Result<Vec<task>, Stri
                 parent_id: row.get(3)?,
                 title: row.get(4)?,
                 task_category_id: row.get(5)?,
-                globol_category_id: row.get(6)?,
-                workspace_id: row.get(7)?,
+                workspace_id: row.get(6)?,
             })
         })
         .map_err(|e| e.to_string())?;

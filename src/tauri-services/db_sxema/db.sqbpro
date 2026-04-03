@@ -203,7 +203,7 @@
          note_id  INTEGER NOT NULL
          swoh_type TEXT NOT NULL
          FOREIGN KEY (parent_id) REFERENCES task(task_id) ON DELETE CASCADE
-         FOREIGN KEY (nb) REFERENCES posts(note_id) ON DELETE CASCADE
+         FOREIGN KEY (note_id) REFERENCES notes(note_id) ON DELETE CASCADE
        );
          CREATE TABLE IF NOT EXISTS posts_task_links(
          link_id INTEGER PRIMARY KEY AUTOINCREMENT,   

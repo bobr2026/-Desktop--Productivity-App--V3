@@ -4,3 +4,4 @@ export * from "./ShortcutRecorder"
 export * from './categorys'
 export * from './tost'
 export * from './folder'
+export * from './marks'

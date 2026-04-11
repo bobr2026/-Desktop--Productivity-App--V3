@@ -67,7 +67,7 @@ get_data()
        }
 
    }, [globol_category_id, folder_category_id, swoh_color_grub])
-   useEffect(()=>{
+
     switch (icon_id) {
       case -1:
         icon= <img   className={styles.list__item_block__img} src={folder_dark1_icon} alt="" />
@@ -79,7 +79,6 @@ get_data()
           icon= <img  className={styles.list__item_block__img} src={icon_folder_black} alt="" />
                break;
     }
-   }, [icon_id])
  console.log(category_color)
     return <div  className={styles.list__item_block} onClick={()=>openFolder(path)} >
     {icon}

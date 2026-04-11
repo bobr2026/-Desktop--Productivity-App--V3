@@ -98,7 +98,7 @@ use notes::Paragraph_styles_notes::{
 use tasks::task::{
     create_task, delete_task, get_all_tasks_by_task_category_id, get_subtasks,
     get_tasks_by_markType, get_tasks_by_status, update_task_content, update_task_marks,
-    update_task_status,
+    update_task_status,get_notes_for_task, get_tasks_for_note
 };
 use  tasks::categories_tasks::{
      create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace
@@ -195,6 +195,8 @@ pub fn run() {
             get_tasks_by_markType, get_tasks_by_status, update_task_content, update_task_marks,
             update_task_status,
             get_all_tasks_by_workspaceID, 
+            get_notes_for_task,
+             get_tasks_for_note
             
 
             

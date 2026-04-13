@@ -1,1 +1,0 @@
-export type marksTask = "Important"|"Urgently"|"Attention" //Важно /Срочно/Внимание

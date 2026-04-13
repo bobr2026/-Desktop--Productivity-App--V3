@@ -14,13 +14,13 @@ import { CategoryNode } from './ui/CategoryNode.tsx'
 import { I_ginerik_category } from '../../types/categorys.ts'
 
 interface Under_category_list {
-    type_category: SelectType,
+    type_category: SelectType|"not_selected",
 }
 export default function Under_category_list({  type_category,  }: Under_category_list) {
     const selected_category = useSelector((state:global_store_type)=>state.hotkey_and_category.selectedHotkey)
     const dispatch = useDispatch<AppDispatch>()
     useEffect(()=>{
-        dispatch(removeSelectedCategory(type_category))
+        type_category!="not_selected"?dispatch(removeSelectedCategory(type_category)):null
     }, [])
     const [show_under_category, seTshow_under_category] = useState<boolean>(false)
     const [openCategories, setOpenCategories] = useState<Record<number, boolean>>({})
@@ -34,7 +34,7 @@ export default function Under_category_list({  type_category,  }: Under_category
         }))
         seTshow_under_category(show_under_category==true?false:true)
       }
-    const category_arr = useGet_categorys_data_by_workspase(type_category)
+    const category_arr = useGet_categorys_data_by_workspase(type_category=="not_selected"?null:type_category)
     const underlist_styles = {
         display: show_under_category  == true ? "block" : "none",
         opacity: show_under_category == true ? 1 : 0
@@ -49,7 +49,7 @@ export default function Under_category_list({  type_category,  }: Under_category
         if(cildren.length==0){
           return  <div className={styles.under_category_list_item}>
             <div className={styles.under_category_list_item__title}>
-                <h3 className={styles.under_category_list_item__title_h3} onClick={() => dispatch( dispatch(setSelectedCategory({id:category.id, type:type_category})))}>{category.name}</h3>
+                <h3 className={styles.under_category_list_item__title_h3} onClick={() =>  dispatch(setSelectedCategory({id:category.id,type:type_category!="not_selected"?type_category:"folder"}))} >{category.name}</h3>
             </div>
             </div>
         }else{
@@ -57,14 +57,14 @@ export default function Under_category_list({  type_category,  }: Under_category
             <div className={styles.under_category_list_item__title}>
                 <img className={styles.under_category_list_item__title_ing}
                     src={isOpen == true ? strelka1 : strelka2} alt="" onClick={() => toggleCategory(category.id)} />
-                <h3 className={styles.under_category_list_item__title_h3} onClick={() =>  dispatch(setSelectedCategory({id:category.id, type:type_category}))} >{category.name}</h3>
+                <h3 className={styles.under_category_list_item__title_h3} onClick={() =>  dispatch(setSelectedCategory({id:category.id,type:type_category!="not_selected"?type_category:"folder"}))} >{category.name}</h3>
             </div>
             <div  className={`${styles.under_category_list_item__under_list} ${
     isOpen ? styles.open : ""
   }`}>
                 {cildren.map((category)=>{
              return    <h3 className={styles.under_category_list_item__under_list_h3} 
-             onClick={() =>  dispatch(setSelectedCategory({id:category.id, type:type_category}))}  >{category.name}</h3>
+             onClick={() =>  dispatch(setSelectedCategory({id:category.id,type:type_category!="not_selected"?type_category:"folder"}))}  >{category.name}</h3>
                 })}
                 
             </div>
@@ -80,7 +80,7 @@ export default function Under_category_list({  type_category,  }: Under_category
         key={category.id}
         category={category}
         allCategories={category_arr}
-        category_type={type_category}
+        category_type={type_category!="not_selected"?type_category:"task"}
       />
     ))}
   </ul>

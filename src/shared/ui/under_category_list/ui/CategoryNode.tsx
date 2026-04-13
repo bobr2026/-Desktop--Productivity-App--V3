@@ -33,6 +33,7 @@ export const CategoryNode = ({ category, allCategories, category_type }: Categor
             selected_category = useSelector((state: global_store_type) => state.hotkey_and_category.selectedCategories.task)
             break;
         default:
+            selected_category = useSelector((state: global_store_type) => state.hotkey_and_category.selectedCategories.task)
             break;
     }
     const [isOpen, setIsOpen] = useState(false)

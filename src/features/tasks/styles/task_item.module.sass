@@ -1,0 +1,45 @@
+.task_item__block
+    display: flex
+    width: 100%
+    height: 50px 
+    border: 2px solid #434343
+    border-radius: 20px
+    justify-content: space-between
+    flex-direction: row
+    align-items: center
+    transition: 0.5s all
+    margin-bottom: 10px
+    &__img
+     width: 50px
+     height: 50px
+    &__category_color 
+        width: 20px
+        height: 100%
+        border-radius: 0 20px  20px 0 
+.task_item_togel_subtask
+      width: 30px
+      height: 50px
+.task_item__block:hover
+     width: 102%
+     box-shadow: 6px 6px 10px #2c2c2c,inset 4px 5px 10px #141414
+.task_item__main_conteiner
+    display: flex
+    justify-content: space-between
+    flex-direction: row
+    align-items: center
+    max-height: 400px
+    overflow-y: auto
+    overflow-x: hidden
+    min-height: 0
+    flex: 1
+.task_item__subtasks_container
+
+  &::-webkit-scrollbar
+    width: 6px
+
+  &::-webkit-scrollbar-thumb
+    background: #888
+    border-radius: 10px
+
+  &::-webkit-scrollbar-thumb:hover
+    background: #555

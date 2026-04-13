@@ -6,7 +6,7 @@ import { global_store_type } from "../../App/store/global_store.types"
 import { App_item } from "./app_item"
 import useGet_active_worspase_from_localStore from "../../shared/hooks/useGet_active_worspase_from_localStore"
 import { get_all_appsBy_workspace_id } from "./store/app_slise_store"
-import styles from './styles/app_list.module.sass'
+import styles from '../../shared/styles/list-base.module.sass'
 import { Link } from "react-router-dom"
 // import SelectEnvironmentMessage from "../../shared/ui/SelectEnvironmentMessage/SelectEnvironmentMessage"
 
@@ -39,8 +39,8 @@ function App_list() {
  set_color_category_type(value as "app_category"| "globol_category")
     }
 
-    return <div className={styles.app_list_block}>
-        <div className={styles.app_list_header}>
+    return <div className={styles.list_base_block }>
+        <div className={styles.list_base_header}>
            <h3>app_icon</h3>
             <h3>app_hotkey</h3>
             <h3>app_title</h3>
@@ -54,7 +54,7 @@ function App_list() {
             </select>
             </div>
         </div>
-        <div className={styles.app_list}>
+        <div className={styles.list_base}>
         {app_list.length==0?<h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/create_app"}>  Добавите приложение   </Link> </h2>:app_list}
         </div>
        </div>

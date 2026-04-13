@@ -196,9 +196,7 @@ pub fn run() {
             update_task_status,
             get_all_tasks_by_workspaceID, 
             get_notes_for_task,
-             get_tasks_for_note
-            
-
+             get_tasks_for_note,
             
         ])
         .run(tauri::generate_context!())

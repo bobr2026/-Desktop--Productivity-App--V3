@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { global_store_type } from "../../App/store/global_store.types"
 import { AppDispatch } from "../../App/store/store"
 import { get_all_foldersBy_workspace_id } from "./store/folder_slise_store"
-import styles from '../../shared/styles/items_list.module.sass'
+import styles from '../../shared/styles/list-base.module.sass'
 import { Link } from "react-router-dom"
 
 function Folder_list() {
@@ -30,8 +30,8 @@ function Folder_list() {
  set_color_category_type(value as "folder_category"| "globol_category")
     }
 
-    return <div className={styles.items_list_block}>
-        <div className={styles.items_list_header}>
+    return <div className={styles.list_base_block}>
+        <div className={styles.list_base_header}>
            <h3>folder_icon</h3>
             <h3>folder_hotkey</h3>
             <h3>folder_title</h3>
@@ -45,7 +45,7 @@ function Folder_list() {
             </select>
             </div>
         </div>
-        <div className={styles.items_list}>
+        <div className={styles.list_base}>
         {app_list.length==0?<h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/creare_folder_page"}>  Добавите папку  </Link> </h2>:app_list}
         </div>
        </div>

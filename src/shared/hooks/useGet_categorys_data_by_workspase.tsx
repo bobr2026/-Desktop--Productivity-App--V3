@@ -5,12 +5,12 @@ import { I_ginerik_category } from "../types";
 import useGet_active_worspase_from_localStore from "./useGet_active_worspase_from_localStore";
 import { SelectType } from "../../App/store/global_store.types";
 
-export default function useGet_categorys_data_by_workspase(type_category: SelectType) {
+export default function useGet_categorys_data_by_workspase(type_category: SelectType|null) {
     const [category_arr, seTcategory_arr] = useState<I_ginerik_category[]>([])
     const active_workspase_local_store = useGet_active_worspase_from_localStore()
     useEffect(() => {
-
-        async function get_data(item: SelectType) {
+let test= false
+        async function get_data(item: SelectType|null) {
             const workspaceId = active_workspase_local_store?.workspace_id;
             if (item == "app") {
                 const data: I_ginerik_category[] = await invoke("get_app_categories_by_workspace", { workspaceId:active_workspase_local_store.workspace_id })
@@ -33,7 +33,7 @@ export default function useGet_categorys_data_by_workspase(type_category: Select
                 seTcategory_arr(data)
             }
         }
-        get_data(type_category)
+     get_data(type_category)
     }, [type_category ])
     return category_arr
 }

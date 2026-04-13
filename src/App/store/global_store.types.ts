@@ -1,4 +1,4 @@
-import { I_folder, I_workspace_types , Iapp} from "../../shared/types"
+import { I_folder, i_task, I_workspace_types , Iapp} from "../../shared/types"
 
 export interface I_apps_store_type{
     apps:Iapp[]
@@ -15,11 +15,16 @@ export interface I_hotkey_and_category_slise_type {
 }
 
 export interface global_store_type{
+    map: any
     apps_list:I_apps_store_type
     header:I_header_store_types
     global_category:I_categorys_store
     hotkey_and_category:I_hotkey_and_category_slise_type
     folder_list:folder_list_ctore_type
+    task_list:task_list_store_type
+}
+export interface task_list_store_type{
+    tasks:i_task[]
 }
 export interface folder_list_ctore_type{
     folders:I_folder[]

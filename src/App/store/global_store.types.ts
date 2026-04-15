@@ -22,6 +22,12 @@ export interface global_store_type{
     hotkey_and_category:I_hotkey_and_category_slise_type
     folder_list:folder_list_ctore_type
     task_list:task_list_store_type
+    ui_task_list:ui_task_list_ctore_type
+}
+export interface ui_task_list_ctore_type{
+    show_context_munu:boolean
+    select_element_id:number
+    parent_element_id:number
 }
 export interface task_list_store_type{
     tasks:i_task[]

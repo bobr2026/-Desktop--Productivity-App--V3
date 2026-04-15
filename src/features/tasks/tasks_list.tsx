@@ -30,7 +30,7 @@ function Task_list() {
     }, [active_wokspase])
     console.log(apps)
     const app_list = apps.map(app => {
-        return <Task_item  title={app.title} status={app.status} mark_type={app.marks} />
+        return <Task_item  id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} />
     })
     return <div className={styles.list_base_block}>
         <div className={styles.list_base_header}>

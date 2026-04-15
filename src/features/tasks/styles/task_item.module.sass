@@ -27,11 +27,29 @@
     justify-content: space-between
     flex-direction: row
     align-items: center
-    max-height: 400px
-    overflow-y: auto
-    overflow-x: hidden
+    // max-height: 400px
+    // overflow-y: auto
+    // overflow-x: hidden
     min-height: 0
     flex: 1
+.select_status_conteiner
+  position: relative
+.select_status_elements
+  flex: 5
+  position: absolute
+  display: flex
+  flex-direction: column
+  margin-bottom: 5px
+  .select_status_element
+    margin-bottom: 5px
+    display: flex
+    flex-direction: row
+    place-items: center
+    background:  #3a3939
+    border-radius: 10px
+    &>h2
+      margin-left: 5px
+      padding-right: 5px
 .task_item__subtasks_container
 
   &::-webkit-scrollbar

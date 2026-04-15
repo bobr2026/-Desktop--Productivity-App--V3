@@ -30,8 +30,16 @@ state.show_context_munu=true
         remove_perent_element_id(state){
             state.parent_element_id= -1
             },
+        remove_all_task_ui_state(state){
+            state.parent_element_id= -1
+            state.select_element_id= -1
+            state.show_context_munu=false
+        }
     }
 })
-export const {remove_show_context_munu, set_show_context_munu} = ui_task_list_slise.actions
+export const {remove_show_context_munu, set_show_context_munu,
+     set_perent_element_id, set_select_element_id, remove_perent_element_id, remove_select_element_id,
+     remove_all_task_ui_state
+    } = ui_task_list_slise.actions
 
 export default ui_task_list_slise.reducer

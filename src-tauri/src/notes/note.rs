@@ -6,7 +6,7 @@ use crate::servises::get_db_path;
 #[tauri::command]
 pub fn add_note(
     title: String,
-    note_category_id: i64,
+    note_category_id: Option<i64>,
     status: String,
     marks: Option<String>,
     globol_category_id: Option<i64>,

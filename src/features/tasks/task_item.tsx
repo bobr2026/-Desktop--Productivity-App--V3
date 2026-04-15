@@ -11,6 +11,9 @@ import pase from './task_icon/pase.png'
 import postponed from './task_icon/Group 152.png'
 import { update_app } from "../app/store/app_slise_store";
 import { invoke } from "@tauri-apps/api/core";
+import { global_store_type } from "../../App/store/global_store.types";
+import { AppDispatch } from "../../App/store/store";
+import { useDispatch, useSelector } from "react-redux";
 interface task_item_props{
     id:number
     status:statusTask
@@ -23,8 +26,12 @@ export default function Task_item({ id, status, title, mark_type, children}:task
     const [show_subtask, set_show_subtask]=useState<boolean>(false)
     const [task_status, set_task_status ]= useState<statusTask>(status)
     const [swow_select_status_munu,set_swow_select_status_munu ]=useState<boolean>(false)
-const[swoh_context_munu, set_swoh_context_munu]= useState<boolean>(false)
   
+    // const dispatch = useDispatch<AppDispatch>()
+  
+    useEffect(()=>{
+
+    }, [])
     useEffect(()=>{
 async function update_status(){
 
@@ -69,7 +76,7 @@ update_status()
    }
    return <div className={styles.task_item__main_conteiner} onContextMenu={(e)=>{
     e.preventDefault()
-     set_swoh_context_munu(!swoh_context_munu) 
+    
    }}>
     <img className={styles.task_item_togel_subtask} src={show_subtask==false?strelka1:strelka2} onClick={()=>set_show_subtask(!show_subtask)}  alt="" />
     <div className={styles.task_item__block}>

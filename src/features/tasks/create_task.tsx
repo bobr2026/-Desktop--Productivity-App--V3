@@ -50,23 +50,16 @@ export default function Create_task(){
     const workspace_id =useGet_active_worspase_from_localStore()
       const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-               set_form_data((prev)=>({
-                ...prev,
-                task_category_id:selected_category_task,
-                workspace_id:workspace_id.workspace_id
-
-               }))
-           console.log(form_data)
            const task_data:i_ceate_task_data={
             title:form_data.title, 
             status:form_data.status,
             marks:form_data.marks,
             parentId:form_data.parent_id, 
-            taskCategoryId:form_data.task_category_id, 
-            workspaceId:form_data.workspace_id
+            taskCategoryId:selected_category_task, 
+            workspaceId:workspace_id.workspace_id
            }
-           ceate_task_fn(task_data)
-            
+           console.log(form_data)
+           ceate_task_fn(task_data);
             }
             const select_marks=(mark_type:marksTask)=>{
                 set_form_data((prev)=>({

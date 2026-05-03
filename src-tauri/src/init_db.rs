@@ -457,14 +457,12 @@ pub fn init_db_logic(state_arc: Arc<Mutex<Option<Connection>>>) -> std::result::
          BEGIN
             UPDATE notes SET updated_at = DATETIME('now') WHERE note_id = NEW.note_id;
          END;",
-         "CREATE TABLE IF NOT EXISTS notes_task_links(
-    link_id INTEGER PRIMARY KEY AUTOINCREMENT,   
-    task_id INTEGER NOT NULL,
-    note_id INTEGER NOT NULL,
-    swoh_type TEXT NOT NULL,
-    FOREIGN KEY (task_id) REFERENCES task(task_id) ON DELETE CASCADE,
-    FOREIGN KEY (note_id) REFERENCES notes(note_id) ON DELETE CASCADE
-);"
+         "  CREATE TABLE IF NOT EXISTS notes_task_links(
+        link_id INTEGER PRIMARY KEY AUTOINCREMENT,   
+         perent_element_id  INTEGER NOT NULL,
+         sub_element_id  INTEGER NOT NULL,
+         swoh_type TEXT NOT NULL
+       );"
     ];
 
     for query in &queries {

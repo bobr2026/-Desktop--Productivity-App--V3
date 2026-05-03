@@ -1,7 +1,7 @@
 use crate::servises::get_db_path;
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
-#[derive(Serialize, Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Note {
     pub note_id: i64,
     pub title: String,
@@ -13,6 +13,7 @@ pub struct Note {
     pub globol_category_id: Option<i64>,
     pub workspace_id: i64,
 }
+
 #[derive(Serialize, Debug)]
 pub struct post {
     pub post_id: i64,

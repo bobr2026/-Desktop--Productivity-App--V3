@@ -1,4 +1,4 @@
-import { I_folder, i_task, I_workspace_types , Iapp} from "../../shared/types"
+import { I_folder, i_note, i_task, I_workspace_types , Iapp} from "../../shared/types"
 
 export interface I_apps_store_type{
     apps:Iapp[]
@@ -22,15 +22,23 @@ export interface global_store_type{
     hotkey_and_category:I_hotkey_and_category_slise_type
     folder_list:folder_list_ctore_type
     task_list:task_list_store_type
+    sub_task_list:sub_task_list_store_type
     ui_task_list:ui_task_list_ctore_type
+    note_list:note_list_store_type
 }
+export type task_ui_madal_type="create_link_task_to_note"|"create_link_task_to_task"
 export interface ui_task_list_ctore_type{
-    show_context_munu:boolean
+   madal_type:task_ui_madal_type
     select_element_id:number
     parent_element_id:number
+    show_elelemts_madal:boolean
+    rerender_sub_elements:boolean
 }
 export interface task_list_store_type{
     tasks:i_task[]
+}
+export interface sub_task_list_store_type{
+    sub_tasks:i_task[]
 }
 export interface folder_list_ctore_type{
     folders:I_folder[]
@@ -62,6 +70,9 @@ export interface active_page_type{
 }
 export interface I_header_store_types{
     active_page: active_page_type[]
+}
+export interface note_list_store_type{
+    notes:i_note[]
 }
 export interface I_categorys_store{
     worspases:I_workspace_types[]

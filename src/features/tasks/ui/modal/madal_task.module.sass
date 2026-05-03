@@ -18,12 +18,15 @@
   box-shadow: 2px 4px 5px 4px #00000052
   width: 70%
   height: 500px
+  overflow-x: hidden
+
   &__header
     display: flex
     justify-content: space-between
     align-items: center
     position: relative
     padding-top: 20px
+    margin-bottom: 20px
    
 .modal__header_h2
     position: absolute
@@ -31,4 +34,31 @@
     transform: translateX(-50%)
 .modal__header_clozed_img
     position: absolute
-    left: 98%
+    left: 95%
+
+.modal__elements_list
+    display: flex 
+    flex-direction: column
+    justify-content: center
+    align-items: center
+.modal__btn_ok
+    margin-top: 10px
+    padding: 10px
+
+    border-radius: 10px
+    border: 1px solid #2f3036
+
+    background: $main_bg_root_layout
+    color: $text_color_white
+
+    cursor: pointer
+    transition: 0.15s
+    position: absolute
+    top: 87%
+    left: 87%
+    z-index: 33
+    font-size: 20px
+
+
+.modal__btn_ok:hover 
+    background:  #2c2c2c

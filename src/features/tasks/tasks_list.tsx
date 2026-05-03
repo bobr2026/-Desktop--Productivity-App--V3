@@ -20,13 +20,14 @@ import Madal_task from "./ui/modal/madal_task"
 //     })
 // }
 function Task_list() {
-    const show_context_munu = useSelector((stete: global_store_type) => stete.ui_task_list.show_context_munu)
+    const show_elelemts_madal = useSelector((stete: global_store_type) => stete.ui_task_list.show_elelemts_madal)
+    const madal_type = useSelector((stete: global_store_type) => stete.ui_task_list.madal_type)
     const parent_element_id = useSelector((stete: global_store_type) => stete.ui_task_list.parent_element_id)
     const select_element_id = useSelector((stete: global_store_type) => stete.ui_task_list.select_element_id)
+    const dispatch = useDispatch<AppDispatch>()
     const apps = useSelector((stete: global_store_type) => stete.task_list.tasks)
     const active_wokspase = useSelector((state: global_store_type) => state.global_category.active_worspase)
     const [color_category_type, set_color_category_type] = useState<"app_category" | "globol_category">("app_category")
-    const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         console.log(active_wokspase)
         dispatch(get_all_tasksBy_workspace_id(active_wokspase != null ? active_wokspase?.workspace_id : 1))
@@ -51,9 +52,10 @@ function Task_list() {
 
         </div>
         <div className={styles.list_base}>
-            {app_list.length == 0 ? <h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/create_task"}>  Добавите задачу   </Link> </h2> : app_list}
+            {app_list.length == 0 ? <h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/creare_task_page"}>  Добавите задачу   </Link> </h2> : app_list}
         </div>
-        <Madal_task/>
+        {show_elelemts_madal!=false? <Madal_task type_madal={madal_type}/>:null}
+    
     </div>
 }
 export default Task_list

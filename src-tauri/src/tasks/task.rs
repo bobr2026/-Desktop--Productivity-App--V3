@@ -18,6 +18,7 @@ pub fn create_task(
         "INSERT INTO task (title, status, marks, parent_id, task_category_id, workspace_id) VALUES (?, ?, ?, ?, ? , ?)",
         params![title, status, marks, parent_id, task_category_id ,workspace_id],
     ).map_err(|e| e.to_string())?;
+    println!("create_task");
     Ok(conn.last_insert_rowid())
 }
 
@@ -186,29 +187,109 @@ pub fn update_workspace__task___by_workspace_id(
     Ok(changes)
 }
 
+// #[tauri::command]
+// pub fn get_notes_for_task(task_id: i64) -> Result<Vec<Note>, String> {
+//     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+//     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    
+//     // Достаем все поля для Note
+//     let query = "
+//         SELECT 
+//             n.note_id, n.title, n.note_category_id, n.status, 
+//             n.marks, n.created_at, n.updated_at, n.globol_category_id, n.workspace_id
+//         FROM notes n
+//         INNER JOIN notes_task_links ntl ON n.note_id = ntl.note_id
+//         WHERE ntl.task_id = ?
+//     ";
+    
+//     let mut stmt = conn.prepare(query).map_err(|e| e.to_string())?;
+    
+//     let iter = stmt
+//         .query_map([task_id], |row| {
+//             Ok(Note {
+//                 note_id: row.get(0)?,
+//                 title: row.get(1)?,
+//                 note_category_id: row.get(2)?, // rusqlite сам поймет, что это Option
+//                 status: row.get(3)?,
+//                 marks: row.get(4)?,
+//                 created_at: row.get(5)?,
+//                 updated_at: row.get(6)?,
+//                 globol_category_id: row.get(7)?,
+//                 workspace_id: row.get(8)?,
+//             })
+//         })
+//         .map_err(|e| e.to_string())?;
+
+//     let mut notes = Vec::new();
+//     for n in iter {
+//         notes.push(n.map_err(|e| e.to_string())?);
+//     }
+    
+//     Ok(notes)
+// }
+
+// #[tauri::command]
+// pub fn get_tasks_for_note(note_id: i64) -> Result<Vec<task>, String> {
+//     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+//     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    
+//     // Достаем все поля для task
+//     let query = "
+//         SELECT 
+//             t.task_id, t.marks, t.status, t.parent_id, 
+//             t.title, t.task_category_id, t.workspace_id 
+//         FROM task t
+//         INNER JOIN notes_task_links ntl ON t.task_id = ntl.task_id
+//         WHERE ntl.note_id = ?
+//     ";
+    
+//     let mut stmt = conn.prepare(query).map_err(|e| e.to_string())?;
+    
+//     let iter = stmt
+//         .query_map([note_id], |row| {
+//             Ok(task {
+//                 task_id: row.get(0)?,
+//                 marks: row.get(1)?,
+//                 status: row.get(2)?,
+//                 parent_id: row.get(3)?,
+//                 title: row.get(4)?,
+//                 task_category_id: row.get(5)?,
+//                 workspace_id: row.get(6)?,
+//             })
+//         })
+//         .map_err(|e| e.to_string())?;
+
+//     let mut tasks = Vec::new();
+//     for t in iter {
+//         tasks.push(t.map_err(|e| e.to_string())?);
+//     }
+    
+//     Ok(tasks)
+// }
+
 #[tauri::command]
-pub fn get_notes_for_task(task_id: i64) -> Result<Vec<Note>, String> {
+pub fn get_notes_for_task(element_id: i64) -> Result<Vec<Note>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     
-    // Достаем все поля для Note
+    // SQL ОБНОВЛЕН: n.note_id теперь связан с sub_element_id, а фильтр идет по perent_element_id
     let query = "
         SELECT 
             n.note_id, n.title, n.note_category_id, n.status, 
             n.marks, n.created_at, n.updated_at, n.globol_category_id, n.workspace_id
         FROM notes n
-        INNER JOIN notes_task_links ntl ON n.note_id = ntl.note_id
-        WHERE ntl.task_id = ?
+        INNER JOIN notes_task_links ntl ON n.note_id = ntl.sub_element_id
+        WHERE ntl.perent_element_id = ?
     ";
     
     let mut stmt = conn.prepare(query).map_err(|e| e.to_string())?;
     
     let iter = stmt
-        .query_map([task_id], |row| {
+        .query_map([element_id], |row| {
             Ok(Note {
                 note_id: row.get(0)?,
                 title: row.get(1)?,
-                note_category_id: row.get(2)?, // rusqlite сам поймет, что это Option
+                note_category_id: row.get(2)?,
                 status: row.get(3)?,
                 marks: row.get(4)?,
                 created_at: row.get(5)?,
@@ -228,24 +309,24 @@ pub fn get_notes_for_task(task_id: i64) -> Result<Vec<Note>, String> {
 }
 
 #[tauri::command]
-pub fn get_tasks_for_note(note_id: i64) -> Result<Vec<task>, String> {
+pub fn get_tasks_for_note(element_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     
-    // Достаем все поля для task
+    // SQL ОБНОВЛЕН: t.task_id теперь связан с perent_element_id, а фильтр идет по sub_element_id
     let query = "
         SELECT 
             t.task_id, t.marks, t.status, t.parent_id, 
             t.title, t.task_category_id, t.workspace_id 
         FROM task t
-        INNER JOIN notes_task_links ntl ON t.task_id = ntl.task_id
-        WHERE ntl.note_id = ?
+        INNER JOIN notes_task_links ntl ON t.task_id = ntl.perent_element_id
+        WHERE ntl.sub_element_id = ?
     ";
     
     let mut stmt = conn.prepare(query).map_err(|e| e.to_string())?;
     
     let iter = stmt
-        .query_map([note_id], |row| {
+        .query_map([element_id], |row| {
             Ok(task {
                 task_id: row.get(0)?,
                 marks: row.get(1)?,

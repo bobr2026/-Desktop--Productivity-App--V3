@@ -38,8 +38,9 @@ export default function Marks_button({ click, mark_type, active }: mrks_button_p
 
   return (
     <button 
+    type='button'
       className={fullClassName} 
-      onClick={() => click(mark_type)} // Исправлено: теперь функция вызывается
+      onClick={() => click(mark_type)} 
     >
       {titles[mark_type]}
     </button>

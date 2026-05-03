@@ -136,11 +136,15 @@ pub fn get_all_appsByWorkspace_id(workspace_id: i64) -> Result<Vec<App>, String>
 #[tauri::command]
 pub fn get_all_notesByWorkspace_id(workspace_id: i64) -> Result<Vec<Note>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    // ДОБАВИТЬ ЭТИ ДВЕ СТРОКИ:
+    println!("--- DEBUG RUST ---");
+    println!("1. Открываем базу данных по пути: {:?}", db_path);
+    println!("2. Ищем заметки для workspace_id: {}", workspace_id);
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     // Исправленный запрос: WHERE id = ?1 (или просто ?)
     let mut stmt = conn
-        .prepare(" SELECT  note_id, title, note_category_id,status,marks, created_at, updated_at, globol_category_id,workspace_id  FROM notes WHERE workspace_id = ?")   // Добавлено FROM notes
+        .prepare(" SELECT * FROM notes WHERE workspace_id = ?")   // Добавлено FROM notes
         .map_err(|e| e.to_string())?;
 
     // Исправлено:  params![note_id] теперь передается в execute
@@ -168,6 +172,7 @@ pub fn get_all_notesByWorkspace_id(workspace_id: i64) -> Result<Vec<Note>, Strin
             Ok(note) => notes.push(note),
             Err(e) => return Err(e.to_string()), // Важно! Обработка ошибок при итерации
         }
+
     }
     Ok(notes)
 }

@@ -28,6 +28,7 @@ mod tasks {
     pub mod categories_tasks;
     pub mod entrys;
     pub mod task;
+    pub  mod note_task_Link;
 }
 
 mod workspaces {
@@ -102,6 +103,11 @@ use tasks::task::{
 };
 use  tasks::categories_tasks::{
      create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace
+};
+use tasks::note_task_Link::{
+    add_element_link, get_perent_elements, get_sub_elements, update_element_link, 
+    delete_element_link, 
+    unlink_elements,
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
@@ -197,6 +203,10 @@ pub fn run() {
             get_all_tasks_by_workspaceID, 
             get_notes_for_task,
              get_tasks_for_note,
+             get_note_Category_name_ById, 
+             add_element_link, get_perent_elements, get_sub_elements,
+              update_element_link, delete_element_link,
+              unlink_elements
             
         ])
         .run(tauri::generate_context!())

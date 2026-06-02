@@ -21,6 +21,7 @@ import { delete_Sub_task } from "./store/sub_task_list_store";
 import { delete_task_from_db, unlink_elements } from "./model/task.module";
 import Context_menu from "../../shared/ui/context_munu/context_munu";
 import { setOpenedContextMenu, setOpenedStatusMenu } from "./store/task_list_ui_store";
+import { useNavigate, useNavigation } from "react-router-dom";
 
 interface task_item_props {
     perent_id?:number
@@ -50,7 +51,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
     const openedContextMenuId = useSelector(
         (state: global_store_type) => state.task_list_ui.openedContextMenuId
     )
-    
+    const navigate = useNavigate()
     const openedStatusMenuId = useSelector(
         (state: global_store_type) => state.task_list_ui.openedStatusMenuId
     )
@@ -68,6 +69,12 @@ export default function Task_item({ id, status, title, mark_type, children, pere
             onClick: () => {
                 dispatch(set_madal_type("create_link_task_to_task"))
                 dispatch(set_show_elelemts_madal())
+            }
+        },
+        {
+            label: "Изминить",
+            onClick: () => {
+            navigate("/edit_task_page")
             }
         },
         {

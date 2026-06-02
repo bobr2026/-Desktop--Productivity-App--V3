@@ -12,6 +12,7 @@ import { Grub_and_category_list_page } from "../pages/grub_and_category_list_pag
 import Creare_category_page from "../pages/creare_category_page/creare_category_page";
 import Create_folder_page from "../pages/create_folder_page/create_folder_page";
 import Create_task_page from "../pages/create_task_page/create_task_page";
+import Edit_task_page from "../pages/edit_task_page/edit_task_page";
 
 const routes:RouteObject[] =[
     {path:"/",  element:<RootLayot/>, children:[
@@ -25,7 +26,8 @@ const routes:RouteObject[] =[
         { path:"/create_app", element:<Create_app_page/>},
         {path:"/creare_category_page", element:<Creare_category_page/>},
         {path:"/creare_folder_page", element:<Create_folder_page/>},
-        {path:"/creare_task_page", element:<Create_task_page/>}
+        {path:"/creare_task_page", element:<Create_task_page/>},
+        {path:"/edit_task_page", element:<Edit_task_page/>}
     ]
 
     }

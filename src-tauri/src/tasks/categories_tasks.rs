@@ -76,7 +76,7 @@ pub fn get_task_categories_by_id(
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     let mut stmt = conn
-        .prepare("SELECT * ROM categories_tasks WHERE id  = ?")
+        .prepare("SELECT * FROM categories_tasks WHERE id  = ?")
         .map_err(|e| e.to_string())?;
 
     let cat_iter = stmt

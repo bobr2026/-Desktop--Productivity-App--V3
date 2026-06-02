@@ -99,7 +99,7 @@ use notes::Paragraph_styles_notes::{
 use tasks::task::{
     create_task, delete_task, get_all_tasks_by_task_category_id, get_subtasks,
     get_tasks_by_markType, get_tasks_by_status, update_task_content, update_task_marks,
-    update_task_status,get_notes_for_task, get_tasks_for_note
+    update_task_status,get_notes_for_task, get_tasks_for_note, get_task_by_id
 };
 use  tasks::categories_tasks::{
      create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace
@@ -207,7 +207,8 @@ pub fn run() {
              add_element_link, get_perent_elements, get_sub_elements,
               update_element_link, delete_element_link,
               unlink_elements,
-              get_all_sub_elements_by_swoh_type
+              get_all_sub_elements_by_swoh_type,
+              get_task_by_id
             
         ])
         .run(tauri::generate_context!())

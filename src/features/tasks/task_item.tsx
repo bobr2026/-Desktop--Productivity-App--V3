@@ -74,7 +74,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
         {
             label: "Изминить",
             onClick: () => {
-            navigate("/edit_task_page")
+            navigate(`/edit_task_page/${id}`)
             }
         },
         {

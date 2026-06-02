@@ -27,7 +27,7 @@ const routes:RouteObject[] =[
         {path:"/creare_category_page", element:<Creare_category_page/>},
         {path:"/creare_folder_page", element:<Create_folder_page/>},
         {path:"/creare_task_page", element:<Create_task_page/>},
-        {path:"/edit_task_page", element:<Edit_task_page/>}
+        {path:"/edit_task_page/:taskId", element:<Edit_task_page/>}
     ]
 
     }

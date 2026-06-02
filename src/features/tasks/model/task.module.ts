@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { i_ceate_task_data, marksTask, statusTask } from "../../../shared/types";
+import { i_categories_task, i_ceate_task_data, i_task, marksTask, statusTask } from "../../../shared/types";
 // title: String,
 //     status: String,
 //     marks: Option<String>,
@@ -33,4 +33,12 @@ type ty = {
     const ntl_object:ty= await invoke("get_perent_elements", {subId:sub_id},)
         await invoke("delete_element_link", {linkId:ntl_object.link_id})
 
+}
+export async function get_task_data_by_id(task_id:number) {
+  const  task_data:i_task= await invoke("get_task_by_id",{taskId:task_id})
+  return task_data
+}
+export async function get_task_category_by_category_id(task_category_id:number) {
+  const task_category:i_categories_task=  await invoke("get_task_categories_by_id",{taskCategoryId:task_category_id})
+  return task_category
 }

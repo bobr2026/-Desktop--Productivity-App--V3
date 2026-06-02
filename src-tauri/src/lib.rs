@@ -107,7 +107,7 @@ use  tasks::categories_tasks::{
 use tasks::note_task_Link::{
     add_element_link, get_perent_elements, get_sub_elements, update_element_link, 
     delete_element_link, 
-    unlink_elements,
+    unlink_elements,get_all_sub_elements_by_swoh_type
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
@@ -170,7 +170,7 @@ pub fn run() {
           create_app_category,
           create_folder_category,
           create_task_category,
-
+          
 
             create_global_category,
             delete_global_category,
@@ -206,7 +206,8 @@ pub fn run() {
              get_note_Category_name_ById, 
              add_element_link, get_perent_elements, get_sub_elements,
               update_element_link, delete_element_link,
-              unlink_elements
+              unlink_elements,
+              get_all_sub_elements_by_swoh_type
             
         ])
         .run(tauri::generate_context!())

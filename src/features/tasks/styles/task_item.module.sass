@@ -69,7 +69,8 @@
   top: 60%
   left: 50%
   width: 220px
-  height: 100px
+  min-height: 100px
+  max-height: 200px
   background: #3d3d3d
   border-radius: 20px
   box-shadow: 6px 6px 10px #2c2c2c
@@ -89,7 +90,7 @@
 .task_item_wrapper
   display: flex
   flex-direction: column
-  width: 100%
+  width: 98%
   position: relative
 
 .task_item__main_conteiner
@@ -100,6 +101,7 @@
   align-items: center
   min-height: 0
   flex: 1
+  
 
 .task_item__block
   display: flex
@@ -120,11 +122,14 @@
   flex-direction: row
   justify-content: space-between
 
-  // justify-content: space-between
+.base
+      
 
-  // ... твои стили ...
+.active
+       box-shadow: inset 0px 4px 4px 0 #0000005b
+       width: 100%
 
-// ИЗМЕНЕНО: Добавлен margin-left, чтобы скомпенсировать ширину стрелочки
+  
 .task_item__subtasks_container
   display: flex
   flex-direction: column
@@ -137,3 +142,4 @@
     border-radius: 10px
   &::-webkit-scrollbar-thumb:hover
     background: #555
+

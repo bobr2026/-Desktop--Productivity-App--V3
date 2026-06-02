@@ -7,7 +7,8 @@ const initialState:ui_task_list_ctore_type={
     show_elelemts_madal:false,
     select_element_id:-1,
     parent_element_id:-1,
-    rerender_sub_elements:false
+    rerender_sub_elements:false,
+    rerender_task_list:0
      
 }
 const ui_task_list_slise= createSlice({
@@ -46,11 +47,19 @@ state.madal_type="create_link_task_to_task"
             state.rerender_sub_elements=false
         },
         set_rerender_sub_elements(state){
+           
+            
             state.rerender_sub_elements=true
         },
         remove_rerender_sub_elements(state){
             state.rerender_sub_elements=false
-        }
+        },
+        set_rerender_task_list(state){
+            const random_nambor = Math.random()*100
+            console.log(random_nambor)
+             
+             state.rerender_task_list=random_nambor
+         },
     }
 })
 export const {remove_show_elelemts_madal, set_show_elelemts_madal, 
@@ -58,7 +67,8 @@ export const {remove_show_elelemts_madal, set_show_elelemts_madal,
       remove_select_element_id,remove_madal_type, set_madal_type,
      remove_all_task_ui_state,
      set_rerender_sub_elements,
-     remove_rerender_sub_elements
+     remove_rerender_sub_elements,
+     set_rerender_task_list
     } = ui_task_list_slise.actions
 
 export default ui_task_list_slise.reducer

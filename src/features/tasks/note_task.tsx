@@ -5,10 +5,14 @@ import styles from './styles/note_task_item.module.sass'
 import { invoke } from '@tauri-apps/api/core'
 import { AppDispatch } from '../../App/store/store'
 import { useDispatch, useSelector } from 'react-redux'
-import { set_select_element_id } from './store/task_ui_slise_store'
+import { set_rerender_task_list, set_select_element_id } from './store/task_ui_slise_store'
 import { global_store_type } from '../../App/store/global_store.types'
 import note_icon from './task_icon/notes.svg'
+import { unlink_elements } from './model/task.module'
+import Context_menu from '../../shared/ui/context_munu/context_munu'
+import { setOpenedStatusMenu, setOpenedContextMenu } from './store/task_list_ui_store'
 export interface Note_task_item_props {
+    note_id:number
     title:string
     status:statusTask
     mark?:marksTask
@@ -30,14 +34,41 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export default function Note_task_item({ 
-    title, status, render_type,  mark, category_id, creaded, update, element_id, perent_id 
+    title, status, render_type,  mark, category_id, creaded, update, element_id, perent_id , note_id
 }: Note_task_item_props) {
     const dispatch = useDispatch<AppDispatch>()
     const [category_name, set_category_name] = useState<string>("НЕТ")
     const [select, set_select]=useState<boolean>(false)
     const select_element_id = useSelector((stete: global_store_type) => stete.ui_task_list)
+    const [swow_context_munu, set_swow_context_munu] = useState<{open:boolean,x:number, y:number}>({open:false, x:0,y:0})
+    const openedContextMenuId = useSelector(
+        (state: global_store_type) => state.task_list_ui.openedContextMenuId
+    )
+    
+    const openedStatusMenuId = useSelector(
+        (state: global_store_type) => state.task_list_ui.openedStatusMenuId
+    )
     // 2. Вычисляем цвет на лету без useState!
     const color_status = STATUS_COLORS[status] || "transparent";
+    
+   const context_munu_itens=  [
+        {
+            label: "Oтвязать заметку",
+            onClick: () => {
+                dispatch(set_rerender_task_list())
+                                  unlink_elements(perent_id!=undefined?perent_id:0, note_id)
+            }
+        },
+        {
+            label: "Удалить",
+            onClick: () =>{
+                // dispatch(delete_task(id))
+                // delete_task_from_db(id)   
+         
+            }
+        }
+    
+    ]
 
     useEffect(() => {
         async function get_category() {
@@ -52,10 +83,26 @@ export default function Note_task_item({
     return (
         <div style={{ 'borderLeft': `6px solid ${color_status}` }} className={fullClassName} 
         onClick={
-            ()=>{dispatch(set_select_element_id(select_element_id.select_element_id!=element_id?element_id:-1)), console.log(select_element_id),  set_select(!select) }
+            ()=>{dispatch(set_select_element_id(select_element_id.select_element_id!=element_id?element_id:note_id)), console.log(select_element_id),  set_select(!select) }
             
 
-        }>
+        } onContextMenu={(e)=>{
+            e.preventDefault()
+            e.stopPropagation()
+              dispatch(setOpenedStatusMenu(null))
+                        
+                            dispatch(
+                                setOpenedContextMenu(
+                                   openedContextMenuId === note_id? null : note_id
+                                )
+                            )
+                        
+                            set_swow_context_munu({
+                                x: e.clientX,
+                                y: e.clientY,
+                                open: false
+                            })
+        }}>
             <div className={styles.note_task_item_conteiner_main}>
                 <div className={styles.note_task_item_conteiner_main_1}>
 <img style={{display:render_type=='madal_list'?'none':'block'}} className={styles.note_task_item_img} src={note_icon} alt="" />
@@ -76,6 +123,8 @@ export default function Note_task_item({
                     <h3>обновлен: {update}</h3>
                 </div>
             </div>
+            
+          <Context_menu items={context_munu_itens} open={openedContextMenuId==note_id} x={swow_context_munu.x} y={swow_context_munu.y}/>
         </div>
     )
 }

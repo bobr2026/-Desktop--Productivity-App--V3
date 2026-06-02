@@ -119,7 +119,7 @@ useEffect(()=>{
 }, [keys])
 return (
   <div className={styles.shortcut_recorder_module}>
-      <button onClick={() => {
+      <button type='button' onClick={() => {
         if(isRecording){
           setIsRecording(false)
           pressedKeys.current = [];

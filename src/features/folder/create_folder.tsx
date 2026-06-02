@@ -72,16 +72,7 @@ export default function Create_folder(){
         title: title
     }))
     },[fprm_data.path])
-    // icon_id: i64,
-    // title: String,
-    // path: String,
-    // hotkey: String,
-    // folder_category_id: Option<i64>,
-    // globol_category_id: Option<i64>,
-    // workspace_id: i64,
-
-    // const path_name_arr = c3.split("\\")
-    // console.log(path_name_arr[path_name_arr.length-1]); 
+  
     let selected_category_folder = useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.folder)
 let selected_category_global =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.global)
 const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedHotkey)
@@ -94,10 +85,10 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
              [name]:value
         }))
     }
-    const [click_submit, set_click_submit]= useState(0)
+  
      const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
-            set_click_submit(prev=>prev+1)
+           
             setForm_data((prev)=>({
                 ...prev,
                 folder_category_id:selected_category_folder,
@@ -105,7 +96,7 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
                 hotkey:selected_hotkey,
                 icon_id:selet_icon.id
             }))
-            if(click_submit>0){
+    
                 console.log(fprm_data)
                 
                 add_folder(fprm_data.icon_id, fprm_data.title, fprm_data.path, fprm_data.hotkey,
@@ -113,7 +104,7 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
                      active_workspase_local_store.workspace_id
                 )
 
-            }
+            
         
             
         }
@@ -129,7 +120,7 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
 {folders_list}
 </div>
         <div className={form_style.category_form__item}>
-        <button onClick={async()=>{
+        <button  type="button" onClick={async()=>{
         ( await get_folder_path())
           setForm_data((prev)=>({
             ...prev,
@@ -154,25 +145,6 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
             </select>
 
         </div>
-        {/* <div className={form_style.category_form__item}>
-
-            <label className={form_style.category_form__item_lebel} htmlFor="category_color">укажите цвет категории: </label>
-            <input name="category_color" type="color" id="category_color"  />
-
-        </div> */}
-
-            {/* {category_arr.length == 0 ? null : <div className={`${form_style.category_form__item} ${form_style.checkbox_row}`}>
-                <input type="checkbox" id="under_category" name="under_category" checked={form_data.under_category} onChange={handleChange} />
-                <label htmlFor="under_category" className={form_style.category_form__item_lebel}>
-                    создать подкатегорию?
-                </label>
-            </div>
-            }           */}
-        {/* {category_arr.length!=0?<p>выберете подкатегорию (необезательно)</p>:null}
-         <Under_category_list type_category={form_data.type_category} /> */}
-       
-    
-    
 
 
          <div className={form_style.category_form__item}>
@@ -181,8 +153,7 @@ const selected_hotkey =useSelector((state:global_store_type)=>state.hotkey_and_c
 
     </form>
 
-    {/* <Tost_state type_tost="Error" text="категория успешно создана" swoh={show_tost}/>
-    <Tost_state type_tost="Warning" text="категория успешно создана" swoh={show_tost}/> */}
+
         </div >
 
 

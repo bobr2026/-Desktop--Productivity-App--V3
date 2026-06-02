@@ -1,7 +1,7 @@
 use rusqlite::{params, Connection};
 
 use crate::servises::get_db_path;
-use super::entrys::ElementLink;
+use super::entrys::{ElementLink,sub_elements};
 // --- CREATE (Добавление связи) ---
 #[tauri::command]
 pub fn add_element_link(
@@ -48,6 +48,29 @@ pub fn get_sub_elements(perent_id: i64) -> Result<Vec<ElementLink>, String> {
 
     Ok(links)
 }
+#[tauri::command]
+pub fn get_all_sub_elements_by_swoh_type(swoh_type:String) -> Result<Vec<sub_elements>, String> {
+    let db_path = get_db_path().ok_or("Database path not found")?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    let mut stmt = conn
+        .prepare("SELECT  sub_element_id FROM notes_task_links WHERE swoh_type = ?")
+        .map_err(|e| e.to_string())?;
+
+    let rows = stmt.query_map([swoh_type], |row| {
+        Ok(sub_elements {
+        
+            sub_element_id: row.get(0)?
+        })
+    }).map_err(|e| e.to_string())?;
+
+    let mut links = Vec::new();
+    for row in rows {
+        links.push(row.map_err(|e| e.to_string())?);
+    }
+
+    Ok(links)
+}
 
 // --- UPDATE: Изменение типа связи или перепривязка ---
 #[tauri::command]
@@ -84,7 +107,7 @@ pub fn delete_element_link(link_id: i64) -> Result<(), String> {
 
 #[tauri::command]
 pub fn get_perent_elements(sub_id: i64) -> Result<Vec<ElementLink>, String> {
-    let db_path = get_db_path().ok_or("Database path not found")?;
+    let db_path: std::path::PathBuf = get_db_path().ok_or("Database path not found")?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     // Выбираем связи, где текущий ID является sub_element_id

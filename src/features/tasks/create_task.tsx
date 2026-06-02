@@ -8,12 +8,6 @@ import Marks_button from '../../shared/ui/mrks_button/mrks_button';
 import { useSelector } from 'react-redux';
 import { ceate_task_fn } from './model/task.module';
 
-// title: String,
-// status: String,
-// marks: Option<String>,
-// parent_id: Option<i64>,
-// task_category_id: Option<i64>,
-// workspace_id: i64,
 
 
 interface form_data{
@@ -99,14 +93,7 @@ export default function Create_task(){
         </div>
         </div>
        
-        {/* <div className={styles.category_form__item}> */}
-        {/* <div className={styles_create_app.from_item_munu_and_recorder}> */}
-            {/* <select name="type_category" id="" onChange={handleChange} value={form_data.type_category}>
-                <option value="task">задачи</option>
-
-            </select>
-
-        </div> */}
+.
         <div className={styles.category_form__item}>
 
 <select name="type_category" id="" onChange={handleChange} value={form_data.type_category}>

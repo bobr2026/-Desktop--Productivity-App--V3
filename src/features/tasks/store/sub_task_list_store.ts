@@ -5,7 +5,7 @@ import {  sub_task_list_store_type } from "../../../App/store/global_store.types
 
 
 export const get_all_Sub_sub_tasksBy_workspace_id= createAsyncThunk("sub_tasks_list/get_all_Sub_sub_tasksBy_workspace_id", async(grubId:number)=>{
-    const sub_tasks:i_task[]= await invoke("get_all_sub_tasks_by_workspaceID", {workspaceId:grubId})
+    const sub_tasks:i_task[]= await invoke("get_all_tasks_by_workspaceID", {workspaceId:grubId})
     console.log("get_all_taskBy_workspace_id "+sub_tasks)
     return sub_tasks
  
@@ -34,6 +34,13 @@ sub_tasks:[]
             
         })
     },
+    removeManySubTasks(state, action: PayloadAction<number[]>) {
+        const idsToRemove = new Set(action.payload);
+    
+        state.sub_tasks = state.sub_tasks.filter(
+            task => !idsToRemove.has(task.task_id)
+        );
+    }
 
 
  },
@@ -52,6 +59,6 @@ sub_tasks:[]
     }) 
  }
 })
-export const { add_Sub_task, update_Sub_task, delete_Sub_task} = sub_tasks_list_slise.actions
+export const { add_Sub_task, update_Sub_task, delete_Sub_task,removeManySubTasks} = sub_tasks_list_slise.actions
 
 export default sub_tasks_list_slise.reducer

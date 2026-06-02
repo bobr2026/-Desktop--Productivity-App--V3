@@ -110,10 +110,10 @@ export default function Create_app(){
 let selected_category_app = useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.app)
 let selected_category_global =useSelector((state:global_store_type)=>state.hotkey_and_category.selectedCategories.global)
 const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_category.selectedHotkey)
-const [click_submit, set_click_submit]= useState(0)
+
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        set_click_submit(prev =>prev+1)
+       
         dispatch(read_selected_category())
         setForm_data((prev)=>({
             ...prev,
@@ -123,12 +123,11 @@ const [click_submit, set_click_submit]= useState(0)
             global_category_id:selected_category_global
         
         }))
-     if(click_submit>0){
         console.log(form_data)
         await add_app(form_data.app_name as string, form_data.path as string, form_data.icon_path as string, form_data.hotkey,
             form_data.app_category_id, form_data.global_category_id , active_workspase_local_store.workspace_id
         )
-     }
+     
            
         
         console.log(active_wokspase)
@@ -143,7 +142,7 @@ const [click_submit, set_click_submit]= useState(0)
     {form_data.icon_path!=null?<img className={styles_create_app.form__item_app_icon} src={convertFileSrc( form_data.icon_path)} alt="" />:<p> Укажите приложение </p>}  
               <p>{form_data.app_name!=null?form_data.app_name:null}</p>
               <p>{path}</p> 
-        <button onClick={async()=>{
+        <button type='button' onClick={async()=>{
            setPath( await get_app_path())
           }}>укажите приложение</button>
             </div>

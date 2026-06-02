@@ -25,14 +25,23 @@ export interface global_store_type{
     sub_task_list:sub_task_list_store_type
     ui_task_list:ui_task_list_ctore_type
     note_list:note_list_store_type
+    task_list_ui:task_list_ui_store_types
+
 }
 export type task_ui_madal_type="create_link_task_to_note"|"create_link_task_to_task"
+export interface task_list_ui_store_types{
+    openedContextMenuId: number | null
+    openedStatusMenuId: number | null
+    contextMenuX: number,
+    contextMenuY: number
+}
 export interface ui_task_list_ctore_type{
    madal_type:task_ui_madal_type
     select_element_id:number
     parent_element_id:number
     show_elelemts_madal:boolean
     rerender_sub_elements:boolean
+    rerender_task_list:number
 }
 export interface task_list_store_type{
     tasks:i_task[]

@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 
 import { remove_all_task_ui_state } from "./store/task_ui_slise_store"
 import Madal_task from "./ui/modal/madal_task"
+import { get_all_Sub_sub_tasksBy_workspace_id } from "./store/sub_task_list_store"
 // import SelectEnvironmentMessage from "../../shared/ui/SelectEnvironmentMessage/SelectEnvironmentMessage"
 
 
@@ -26,21 +27,22 @@ function Task_list() {
     const select_element_id = useSelector((stete: global_store_type) => stete.ui_task_list.select_element_id)
     const dispatch = useDispatch<AppDispatch>()
     const apps = useSelector((stete: global_store_type) => stete.task_list.tasks)
-    const active_wokspase = useSelector((state: global_store_type) => state.global_category.active_worspase)
+    const active_wokspase = useGet_active_worspase_from_localStore()
+        const rerender_task_list = useSelector((state: global_store_type) => state.ui_task_list.rerender_task_list)
     const [color_category_type, set_color_category_type] = useState<"app_category" | "globol_category">("app_category")
     useEffect(() => {
         console.log(active_wokspase)
         dispatch(get_all_tasksBy_workspace_id(active_wokspase != null ? active_wokspase?.workspace_id : 1))
+       
 
+    }, [active_wokspase, rerender_task_list])
+    // useEffect(() => {
+    //     dispatch(remove_all_task_ui_state())
 
-    }, [active_wokspase])
-    useEffect(() => {
-        dispatch(remove_all_task_ui_state())
-
-    }, [])
+    // }, [])
     console.log(apps)
     const app_list = apps.map(app => {
-        return <Task_item id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} />
+        return <Task_item id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} workspase={app.workspace_id} />
     })
     return <div className={styles.list_base_block}>
         <div className={styles.list_base_header}>

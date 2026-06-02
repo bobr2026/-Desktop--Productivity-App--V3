@@ -26,3 +26,9 @@ pub struct ElementLink {
     pub sub_element_id: i64,
     pub swoh_type: String,
 }
+#[derive(Serialize, Debug)]
+pub struct sub_elements {
+
+    pub sub_element_id: i64,
+
+}

@@ -319,8 +319,8 @@ pub fn get_tasks_for_note(element_id: i64) -> Result<Vec<task>, String> {
             t.task_id, t.marks, t.status, t.parent_id, 
             t.title, t.task_category_id, t.workspace_id 
         FROM task t
-        INNER JOIN notes_task_links ntl ON t.task_id = ntl.perent_element_id
-        WHERE ntl.sub_element_id = ?
+        INNER JOIN notes_task_links ntl ON t.task_id = ntl.sub_element_id
+        WHERE ntl.perent_element_id = ?
     ";
     
     let mut stmt = conn.prepare(query).map_err(|e| e.to_string())?;

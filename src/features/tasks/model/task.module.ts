@@ -42,3 +42,15 @@ export async function get_task_category_by_category_id(task_category_id:number) 
   const task_category:i_categories_task=  await invoke("get_task_categories_by_id",{taskCategoryId:task_category_id})
   return task_category
 }
+export async function update_full_task(task_id:number,title:string , marks:marksTask|null,
+    status:statusTask , parent_id:number|null, task_category_id:number|null, workspace_id:number|null) {
+    await invoke("update_full_task", {
+        taskId: task_id,
+                title: title,
+                marks: marks,
+                status: status, // или откуда вы берете статус
+                parentId: parent_id,    // или реальное значение
+                taskCategoryId: task_category_id,
+                workspaceId: workspace_id  // или ваш текущий workspace_id
+    })
+}

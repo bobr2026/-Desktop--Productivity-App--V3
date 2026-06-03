@@ -5,20 +5,23 @@ import useGet_active_worspase_from_localStore from '../../shared/hooks/useGet_ac
 import { global_store_type, SelectType } from '../../App/store/global_store.types';
 import { i_ceate_task_data, marksTask, statusTask ,form_data, i_active_btn} from '../../shared/types';
 import Marks_button from '../../shared/ui/mrks_button/mrks_button';
-import { useSelector } from 'react-redux';
-import { ceate_task_fn, get_task_category_by_category_id, get_task_data_by_id } from './model/task.module';
+import { useDispatch, useSelector } from 'react-redux';
+import { ceate_task_fn, get_task_category_by_category_id, get_task_data_by_id, update_full_task } from './model/task.module';
 
 import complete from './task_icon/complete.png'
 import not_completed from './task_icon/not complete.png'
 import in_work from './task_icon/in work.png'
 import pase from './task_icon/pase.png'
 import postponed from './task_icon/Group 152.png'
+import { get_all_tasksBy_workspace_id } from './store/task_list_store';
+import { AppDispatch } from '../../App/store/store';
 //  GIT НАДО ОТРЕФАКТОРИТЬ STATE И ФУНКЦИИ  
 export  interface TaskEditProps{
     taskId:string|undefined
 }
 export default function TaskEdit({taskId}:TaskEditProps){
     const [task_category_title,set_task_category_title ]=useState<string>("")
+    const dispatch = useDispatch<AppDispatch>()
     const [active_btn, set_active_btn]= useState<i_active_btn>({
         btn_id:0,
         active:false
@@ -34,6 +37,7 @@ export default function TaskEdit({taskId}:TaskEditProps){
         
 
     })
+
     useEffect(()=>{
         async function get_data() {
             if(taskId!=undefined){
@@ -77,7 +81,10 @@ export default function TaskEdit({taskId}:TaskEditProps){
             workspaceId:form_data.workspace_id
            }
            console.log(task_data)
-           
+           await update_full_task(parseInt(taskId!), form_data.title, form_data.marks, form_data.status, 
+            form_data.parent_id,form_data.task_category_id, form_data.workspace_id)
+            console.log("update_task")
+              dispatch(get_all_tasksBy_workspace_id(form_data.workspace_id))
             }
        const select_marks=(mark_type:marksTask)=>{
         set_form_data((prev)=>({
@@ -85,6 +92,8 @@ export default function TaskEdit({taskId}:TaskEditProps){
             marks:mark_type
         }))
     }
+     
+    
     const set_active_btn_fn=(id:number)=>{
         set_active_btn({active:active_btn.active==false?true:false, btn_id:id})
     }
@@ -106,8 +115,9 @@ export default function TaskEdit({taskId}:TaskEditProps){
         <label className={styles.category_form__item_lebel} htmlFor="title">Что нужно сделать ?: </label>
         <input name="title" id="title" type="text" placeholder="укажите задачу" value={form_data.title}onChange={handleChange} />
     
-                </div>
-              
+
+            </div>
+
                 <div className={styles.category_form__item}>
                     <div className={styles.category_form__item}>
                     <label className={styles.category_form__item_lebel_19} htmlFor="category_name">выбранная метка{form_data.marks!=null?<Marks_button mark_type={form_data.marks} click={()=> null}/>:"Нет" }</label>
@@ -120,6 +130,15 @@ export default function TaskEdit({taskId}:TaskEditProps){
                     </div>
                
                         
+            <div className={styles.category_form__item}>
+    <select name="status" id="" onChange={handleChange} value={form_data.status} >
+                    <option value='not completed'>Не выполнено</option>
+                    <option value="completed">Выполнено</option>
+                    <option value="in work">В работе</option>
+                    <option value="postponed">Отложено</option>
+                </select>
+    
+            </div>
             <div className={styles.category_form__item__marks_btn_list}>
     {/* <Marks_button mark_type='Attention'/> 
      active={active_btn.btn_id==1?true:false}/>

@@ -203,6 +203,46 @@ pub fn delete_task(task_id: i64) -> Result<usize, String> {
 }
 
 #[tauri::command]
+pub fn update_full_task(
+    task_id: i64,
+    title: String,
+    marks: Option<String>,
+    status: String,
+    parent_id: Option<i64>,
+    task_category_id: Option<i64>,
+    workspace_id: Option<i64>,
+) -> Result<usize, String> {
+    // 1. Подключаемся к базе данных
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    // 2. Выполняем запрос на обновление всех полей
+    let rows_affected = conn.execute(
+        "UPDATE task 
+         SET title = ?, 
+             marks = ?, 
+             status = ?, 
+             parent_id = ?, 
+             task_category_id = ?, 
+             workspace_id = ? 
+         WHERE task_id = ?",
+        params![
+            title, 
+            marks, 
+            status, 
+            parent_id, 
+            task_category_id, 
+            workspace_id, 
+            task_id
+        ],
+    )
+    .map_err(|e| e.to_string())?;
+
+    // 3. Возвращаем количество измененных строк (обычно 1, если таска найдена)
+    Ok(rows_affected)
+}
+
+#[tauri::command]
 pub fn update_workspace__task___by_workspace_id(
     workspace_id: i64,
     task_id: i64,

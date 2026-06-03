@@ -11,6 +11,7 @@ import note_icon from './task_icon/notes.svg'
 import { unlink_elements } from './model/task.module'
 import Context_menu from '../../shared/ui/context_munu/context_munu'
 import { setOpenedStatusMenu, setOpenedContextMenu } from './store/task_list_ui_store'
+import { set_context_munu_point } from '../../App/store/context_munu_slise'
 export interface Note_task_item_props {
     note_id:number
     title:string
@@ -40,14 +41,12 @@ export default function Note_task_item({
     const [category_name, set_category_name] = useState<string>("НЕТ")
     const [select, set_select]=useState<boolean>(false)
     const select_element_id = useSelector((stete: global_store_type) => stete.ui_task_list)
-    const [swow_context_munu, set_swow_context_munu] = useState<{open:boolean,x:number, y:number}>({open:false, x:0,y:0})
-    const openedContextMenuId = useSelector(
-        (state: global_store_type) => state.task_list_ui.openedContextMenuId
+    const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
+        (state: global_store_type) => state.context_munu_ui
     )
+   
     
-    const openedStatusMenuId = useSelector(
-        (state: global_store_type) => state.task_list_ui.openedStatusMenuId
-    )
+   
     // 2. Вычисляем цвет на лету без useState!
     const color_status = STATUS_COLORS[status] || "transparent";
     
@@ -96,12 +95,14 @@ export default function Note_task_item({
                                    openedContextMenuId === note_id? null : note_id
                                 )
                             )
-                        
-                            set_swow_context_munu({
-                                x: e.clientX,
-                                y: e.clientY,
-                                open: false
-                            })
+                       
+                        dispatch(set_context_munu_point("reset"))
+                                        dispatch(set_context_munu_point({
+                                            x: e.clientX,
+                                            y: e.clientY,
+                                        
+                                        }))
+                           
         }}>
             <div className={styles.note_task_item_conteiner_main}>
                 <div className={styles.note_task_item_conteiner_main_1}>
@@ -124,7 +125,7 @@ export default function Note_task_item({
                 </div>
             </div>
             
-          <Context_menu items={context_munu_itens} open={openedContextMenuId==note_id} x={swow_context_munu.x} y={swow_context_munu.y}/>
+          <Context_menu items={context_munu_itens} open={openedContextMenuId==note_id} x={contextMenuX} y={contextMenuY}/>
         </div>
     )
 }

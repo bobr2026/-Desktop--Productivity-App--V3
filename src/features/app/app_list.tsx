@@ -30,7 +30,7 @@ function App_list() {
     }, [active_wokspase])
     console.log(apps)
     const app_list = apps.map(app => {
-        return <App_item icon_path={app.icon_path} app_path={app.path} hotkey={app.hotkey}
+        return <App_item id={app.id} icon_path={app.icon_path} app_path={app.path} hotkey={app.hotkey}
             app_category_id={app.app_category_id} globol_category_id={app.globol_category_id}
             title={app.title} swoh_color_grub={color_category_type} />
     })

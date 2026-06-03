@@ -22,6 +22,7 @@ import { delete_task_from_db, unlink_elements } from "./model/task.module";
 import Context_menu from "../../shared/ui/context_munu/context_munu";
 import { setOpenedContextMenu, setOpenedStatusMenu } from "./store/task_list_ui_store";
 import { useNavigate, useNavigation } from "react-router-dom";
+import { set_context_munu_point } from "../../App/store/context_munu_slise";
 
 interface task_item_props {
     perent_id?: number
@@ -45,11 +46,11 @@ export default function Task_item({ id, status, title, mark_type, children, pere
     const [show_subtask, set_show_subtask] = useState<boolean>(false)
     const [task_status, set_task_status] = useState<statusTask>(status)
     const [swow_select_status_munu, set_swow_select_status_munu] = useState<boolean>(false)
-    const [swow_context_munu, set_swow_context_munu] = useState<{ open: boolean, x: number, y: number }>({ open: false, x: 0, y: 0 })
+    // const [swow_context_munu, set_swow_context_munu] = useState<{ open: boolean, x: number, y: number }>({ open: false, x: 0, y: 0 })
     const [sub_notes, set_sub_notes] = useState<i_note[]>([])
     const [sub_task, set_sub_task] = useState<i_task[]>([])
-    const openedContextMenuId = useSelector(
-        (state: global_store_type) => state.task_list_ui.openedContextMenuId
+    const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
+        (state: global_store_type) => state.context_munu_ui
     )
     const navigate = useNavigate()
     const openedStatusMenuId = useSelector(
@@ -259,12 +260,12 @@ export default function Task_item({ id, status, title, mark_type, children, pere
                         openedContextMenuId === id ? null : id
                     )
                 )
-
-                set_swow_context_munu({
+dispatch(set_context_munu_point("reset"))
+                dispatch(set_context_munu_point({
                     x: e.clientX,
                     y: e.clientY,
-                    open: false
-                })
+                
+                }))
             }} >
                 {perent_id == null ? <img className={styles.task_item_togel_subtask} src={show_subtask == false ? strelka1 : strelka2} onClick={() => set_show_subtask(!show_subtask)} alt="" /> : null}
 
@@ -299,7 +300,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
 
                     {/* Контекстное меню */}
 
-                    <Context_menu open={openedContextMenuId === id} x={swow_context_munu.x} y={swow_context_munu.y} items={context_munu_itens} />
+                    <Context_menu open={openedContextMenuId === id} x={contextMenuX} y={contextMenuY} items={context_munu_itens} />
                     {/* <div style={{ 'display': swow_context_munu == true ? "flex" : 'none' }} className={styles.task_context_munu_conteiner}>
                 
                 {context_munu_itens}

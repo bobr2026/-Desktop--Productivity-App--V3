@@ -1,6 +1,7 @@
 
 
 export interface app_item_props{
+    id:number
     icon_path:string 
      app_path:string,
      hotkey:string|null,

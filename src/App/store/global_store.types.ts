@@ -15,7 +15,6 @@ export interface I_hotkey_and_category_slise_type {
 }
 
 export interface global_store_type{
-    map: any
     apps_list:I_apps_store_type
     header:I_header_store_types
     global_category:I_categorys_store
@@ -26,12 +25,18 @@ export interface global_store_type{
     ui_task_list:ui_task_list_ctore_type
     note_list:note_list_store_type
     task_list_ui:task_list_ui_store_types
+    context_munu_ui:context_munu_ui_store_types
 
 }
 export type task_ui_madal_type="create_link_task_to_note"|"create_link_task_to_task"
 export interface task_list_ui_store_types{
     openedContextMenuId: number | null
     openedStatusMenuId: number | null
+    contextMenuX: number,
+    contextMenuY: number
+}
+export interface context_munu_ui_store_types{
+    openedContextMenuId: number | null
     contextMenuX: number,
     contextMenuY: number
 }

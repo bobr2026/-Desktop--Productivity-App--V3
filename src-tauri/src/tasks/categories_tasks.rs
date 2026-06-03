@@ -71,16 +71,16 @@ pub fn delete_task_category(categories_task_id: i64) -> Result<usize, String> {
 #[tauri::command]
 pub fn get_task_categories_by_id(
     task_category_id: i64,
-) -> Result<Vec<categories_task>, String> {
+) -> Result<Option<categories_task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     let mut stmt = conn
-        .prepare("SELECT * ROM categories_tasks WHERE id  = ?")
+        .prepare("SELECT * FROM categories_tasks WHERE id  = ?")
         .map_err(|e| e.to_string())?;
 
     let cat_iter = stmt
-        .query_map([task_category_id], |row| {
+        .query_row([task_category_id], |row| {
             Ok(categories_task {
                 id: row.get(0)?,
                 name: row.get(1)?,
@@ -88,13 +88,13 @@ pub fn get_task_categories_by_id(
                 parent_id: row.get(3)?,
                 workspace_id: row.get(4)?,
             })
-        })
-        .map_err(|e| e.to_string())?;
+        });
 
-    let mut categories = Vec::new();
-    for c in cat_iter {
-        categories.push(c.map_err(|e| e.to_string())?);
-    }
-    Ok(categories)
+  // 4. Обрабатываем результат
+  match cat_iter {
+    Ok(t) => Ok(Some(t)), // Задача успешно найдена
+    Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None), // Задачи с таким ID нет
+    Err(e) => Err(e.to_string()), // Произошла какая-то другая ошибка БД
+}
 }
 

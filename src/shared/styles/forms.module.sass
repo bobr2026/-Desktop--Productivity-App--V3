@@ -45,9 +45,11 @@
 
 /* label */
 .category_form__item_lebel 
-    font-size: 13px
+    font-size: 19px
     color: $text_color_white
-
+    &_19
+     font-size: 18px
+     margin-bottom: 10px
 .category_form__item__marks_btn_list
     display: flex
     flex-direction: row
@@ -126,3 +128,24 @@
 .category_form button:hover 
     background:  #2c2c2c
    
+.select_status_conteiner
+  position: relative
+.select_status_elements
+  z-index: 900
+  flex: 5
+  position: absolute
+  display: flex
+  flex-direction: column
+  margin-bottom: 5px
+  .select_status_element
+    margin-bottom: 5px
+    display: flex
+    flex-direction: row
+    place-items: center
+    background:  #3a3939
+    border-radius: 10px
+    &>h2
+      margin-left: 5px
+      padding-right: 5px
+.task_item__subtasks_container
+  flex-direction: column

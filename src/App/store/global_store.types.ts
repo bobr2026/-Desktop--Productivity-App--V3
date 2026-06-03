@@ -63,6 +63,8 @@ export interface folder_list_ctore_type{
     "create_app"= "create_app", 
     "create_note"="create_note",
     "create_folder"= " create_folder",
+    "create_task"= "create_task",
+    "edit_task"= "edit_task",
     "grubs_list"="grubs_list",
     "dok_list"=   "dok_list",
     "workspase_list"="workspase_list",

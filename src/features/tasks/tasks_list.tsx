@@ -42,7 +42,7 @@ function Task_list() {
     // }, [])
     console.log(apps)
     const app_list = apps.map(app => {
-        return <Task_item id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} workspase={app.workspace_id} />
+        return <Task_item key={app.task_id} id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} workspase={app.workspace_id} />
     })
     return <div className={styles.list_base_block}>
         <div className={styles.list_base_header}>

@@ -100,6 +100,37 @@ pub fn get_all_tasks_by_task_category_id(task_category_id: i64) -> Result<Vec<ta
 }
 
 #[tauri::command]
+pub fn get_task_by_id(task_id: i64) -> Result<Option<task>, String> {
+    // 1. Подключаемся к базе данных
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    // 2. Готовим SQL-запрос для поиска по task_id
+    let mut stmt = conn
+        .prepare("SELECT * FROM task WHERE task_id = ?")
+        .map_err(|e| e.to_string())?;
+
+    // 3. Выполняем запрос. query_row ищет ровно одну запись
+    let task_result = stmt.query_row([task_id], |row| {
+        Ok(task {
+            task_id: row.get(0)?,
+            marks: row.get(1)?,
+            status: row.get(2)?,
+            parent_id: row.get(3)?,
+            title: row.get(4)?,
+            task_category_id: row.get(5)?,
+            workspace_id: row.get(6)?,
+        })
+    });
+
+    // 4. Обрабатываем результат
+    match task_result {
+        Ok(t) => Ok(Some(t)), // Задача успешно найдена
+        Err(rusqlite::Error::QueryReturnedNoRows) => Ok(None), // Задачи с таким ID нет
+        Err(e) => Err(e.to_string()), // Произошла какая-то другая ошибка БД
+    }
+}
+#[tauri::command]
 pub fn get_tasks_by_status(status: String) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
@@ -169,6 +200,46 @@ pub fn delete_task(task_id: i64) -> Result<usize, String> {
     // подзадачи могут остаться "сиротами".
     conn.execute("DELETE FROM task WHERE task_id = ?", params![task_id])
         .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
+pub fn update_full_task(
+    task_id: i64,
+    title: String,
+    marks: Option<String>,
+    status: String,
+    parent_id: Option<i64>,
+    task_category_id: Option<i64>,
+    workspace_id: Option<i64>,
+) -> Result<usize, String> {
+    // 1. Подключаемся к базе данных
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    // 2. Выполняем запрос на обновление всех полей
+    let rows_affected = conn.execute(
+        "UPDATE task 
+         SET title = ?, 
+             marks = ?, 
+             status = ?, 
+             parent_id = ?, 
+             task_category_id = ?, 
+             workspace_id = ? 
+         WHERE task_id = ?",
+        params![
+            title, 
+            marks, 
+            status, 
+            parent_id, 
+            task_category_id, 
+            workspace_id, 
+            task_id
+        ],
+    )
+    .map_err(|e| e.to_string())?;
+
+    // 3. Возвращаем количество измененных строк (обычно 1, если таска найдена)
+    Ok(rows_affected)
 }
 
 #[tauri::command]

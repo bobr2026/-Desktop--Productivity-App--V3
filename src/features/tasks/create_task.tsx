@@ -3,27 +3,15 @@ import styles from '../../shared/styles/forms.module.sass'
 import Under_category_list from '../../shared/ui/under_category_list/Under_category_list'
 import useGet_active_worspase_from_localStore from '../../shared/hooks/useGet_active_worspase_from_localStore';
 import { global_store_type, SelectType } from '../../App/store/global_store.types';
-import { i_ceate_task_data, marksTask, statusTask } from '../../shared/types';
+import { i_ceate_task_data, marksTask, statusTask, form_data, i_active_btn  } from '../../shared/types/index';
 import Marks_button from '../../shared/ui/mrks_button/mrks_button';
 import { useSelector } from 'react-redux';
 import { ceate_task_fn } from './model/task.module';
 
 
 
-interface form_data{
-    title:string,
-    status:statusTask,
-    marks:null|marksTask,
-    parent_id:null|number
-    task_category_id:null|number
-    workspace_id:number
-    type_category:SelectType|"not_selected"
-}
 
-interface i_active_btn{
-btn_id:number
-active:boolean
-}
+//  GIT НАДО ОТРЕФАКТОРИТЬ STATE И ФУНКЦИИ  
 export default function Create_task(){
     const [active_btn, set_active_btn]= useState<i_active_btn>({
         btn_id:0,

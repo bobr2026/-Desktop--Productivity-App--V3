@@ -10,6 +10,7 @@ import { AppDispatch } from "../../App/store/store";
 import { set_context_munu_point, setOpenedContextMenu } from "../../App/store/context_munu_slise";
 import Context_menu from "../../shared/ui/context_munu/context_munu";
 import { delete_app } from "./store/app_slise_store";
+import { delete_app_from_db } from "./model/app.model";
 // get_global_Category_name_and_color_ById,
 // get_app_Category_name_and_color_ById
 
@@ -18,10 +19,10 @@ import { delete_app } from "./store/app_slise_store";
     name:string|null
  }
 export  function App_item({icon_path , app_path, hotkey, title, globol_category_id, app_category_id, swoh_color_grub, id}:app_item_props){
-    // const dispatch = useDispatch<AppDispatch>()
-    // const{contextMenuX, contextMenuY, openedContextMenuId} = useSelector(
-    //     (state: global_store_type) => state.context_munu_ui
-    // )
+    const dispatch = useDispatch<AppDispatch>()
+    const{contextMenuX, contextMenuY, openedContextMenuId} = useSelector(
+        (state: global_store_type) => state.context_munu_ui
+    )
     const [app_category , setApp_category]= useState<categories_data>({
         color:null,
         name:null
@@ -31,21 +32,21 @@ export  function App_item({icon_path , app_path, hotkey, title, globol_category_
         name:null
     })
     const [category_color, set_category_color] = useState<string>("")
-// const context_munu_items= [{
-//             label: "Изминить",
-//             onClick: () => {
-//                console.log("изминить приложение")
-//             }
-//         },
-//         {
-//             label: "Удалить",
-//             onClick: () => {
-//                 dispatch(delete_app(id))
-//                 // delete_task_from_db(id)
+const context_munu_items= [{
+            label: "Изминить",
+            onClick: () => {
+               console.log("изминить приложение")
+            }
+        },
+        {
+            label: "Удалить",
+            onClick: () => {
+                dispatch(delete_app(id))
+                delete_app_from_db(id)
 
-//             }
-//         }
-//     ]
+            }
+        }
+    ]
   
    useEffect(()=>{
     async function get_data() {
@@ -82,19 +83,19 @@ get_data()
    }, [globol_category_id, app_category_id, swoh_color_grub])
 
     return <div  className={styles.list__item_block} onClick={()=>openApp(app_path)} 
-    //  onContextMenu={(e: React.MouseEvent) => {
-    //                 e.preventDefault()
+     onContextMenu={(e: React.MouseEvent) => {
+                    e.preventDefault()
     
-    //                 dispatch(
-    //                     setOpenedContextMenu(
-    //                         openedContextMenuId === id ? null : id
-    //                     )
-    //                 )
-    //                 dispatch(set_context_munu_point("reset"))
-    //                 dispatch(set_context_munu_point({x:e.clientX, y:e.clientY}))
+                    dispatch(
+                        setOpenedContextMenu(
+                            openedContextMenuId === id ? null : id
+                        )
+                    )
+                    dispatch(set_context_munu_point("reset"))
+                    dispatch(set_context_munu_point({x:e.clientX, y:e.clientY}))
     
                    
-    //             }}
+                }}
                 >
     <img className={styles.list__item_block__img} src={convertFileSrc(icon_path)} alt="" />
     <h3>{hotkey}</h3>
@@ -104,6 +105,6 @@ get_data()
     <div style={{
         background:category_color
     }} className={styles.list__item_block__category_color}></div>
-    {/* <Context_menu open={openedContextMenuId==id} x={contextMenuX} y={contextMenuY} items={context_munu_items}/> */}
+    <Context_menu open={openedContextMenuId==id} x={contextMenuX} y={contextMenuY} items={context_munu_items}/> 
 </div>
 }

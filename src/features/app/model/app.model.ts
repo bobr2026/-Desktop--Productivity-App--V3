@@ -28,3 +28,6 @@ export async function add_app(  title:string, path:string,
 
     })
 }
+export async function delete_app_from_db(app_id:number) {
+    await invoke("delete_app", {appId:app_id})
+}

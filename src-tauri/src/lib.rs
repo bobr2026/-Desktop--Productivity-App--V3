@@ -50,7 +50,7 @@ use  globol_categorys::globol_categorys::{
 use apps::app::{
     add_app, extract_icon_and_save, get_all_apps, get_all_appsByGrub_id, get_appsByID, update_app,
     update_grub_app__by_app_id, update_icon_by_app_id, update_workspace__app___by_workspace_id,
-    get_all_appsBy_workspace_id
+    get_all_appsBy_workspace_id,delete_app
 };
 use apps::categories_apps::{
     create_app_category, delete_app_category, get_all_categories_apps, get_app_categories_by_workspace, get_app_categories_by_id,
@@ -209,7 +209,10 @@ pub fn run() {
               unlink_elements,
               get_all_sub_elements_by_swoh_type,
               get_task_by_id,
-              update_full_task
+              update_full_task,
+              delete_app,
+              update_app,
+              get_appsByID
             
         ])
         .run(tauri::generate_context!())

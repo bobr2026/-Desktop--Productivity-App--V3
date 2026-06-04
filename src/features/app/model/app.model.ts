@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { i_app_data } from "../app.types";
 
-
+import { open } from "@tauri-apps/plugin-dialog";
 export async function get_app_icon(path:string, size:number) {
    const app_data:i_app_data = await invoke("extract_icon_and_save", {path:path,size:size})
    return({
@@ -31,3 +31,10 @@ export async function add_app(  title:string, path:string,
 export async function delete_app_from_db(app_id:number) {
     await invoke("delete_app", {appId:app_id})
 }
+ export async function get_app_path(){
+    const path = open({
+        multiple: false,
+        directory: false
+    })
+    return path
+    }

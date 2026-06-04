@@ -11,6 +11,7 @@ import { set_context_munu_point, setOpenedContextMenu } from "../../App/store/co
 import Context_menu from "../../shared/ui/context_munu/context_munu";
 import { delete_app } from "./store/app_slise_store";
 import { delete_app_from_db } from "./model/app.model";
+import { useNavigate } from "react-router-dom";
 // get_global_Category_name_and_color_ById,
 // get_app_Category_name_and_color_ById
 
@@ -18,11 +19,13 @@ import { delete_app_from_db } from "./model/app.model";
     color:string|null
     name:string|null
  }
-export  function App_item({icon_path , app_path, hotkey, title, globol_category_id, app_category_id, swoh_color_grub, id}:app_item_props){
+export  function App_item({  icon_path , app_path, hotkey, title, globol_category_id, app_category_id, swoh_color_grub, id}:app_item_props){
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
     const{contextMenuX, contextMenuY, openedContextMenuId} = useSelector(
         (state: global_store_type) => state.context_munu_ui
     )
+  
     const [app_category , setApp_category]= useState<categories_data>({
         color:null,
         name:null
@@ -35,7 +38,7 @@ export  function App_item({icon_path , app_path, hotkey, title, globol_category_
 const context_munu_items= [{
             label: "Изминить",
             onClick: () => {
-               console.log("изминить приложение")
+              navigate(`/edit_app_page/${id}`)
             }
         },
         {
@@ -82,8 +85,19 @@ get_data()
 
    }, [globol_category_id, app_category_id, swoh_color_grub])
 
-    return <div  className={styles.list__item_block} onClick={()=>openApp(app_path)} 
+    return <div  className={styles.list__item_block} onClick={
+        
+        ()=>{ if(openedContextMenuId==id){
+
+        }else{
+            openApp(app_path)
+        }
+        }
+    
+
+    } 
      onContextMenu={(e: React.MouseEvent) => {
+        e.stopPropagation()
                     e.preventDefault()
     
                     dispatch(

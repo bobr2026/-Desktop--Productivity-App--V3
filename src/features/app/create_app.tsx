@@ -1,5 +1,5 @@
 import { useState, useEffect, ChangeEvent } from "react";
-import { get_app_icon, add_app } from "./model/app.model";
+import { get_app_icon, add_app, get_app_path } from "./model/app.model";
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import styles_create_app from "./styles/create_app.module.sass"
@@ -9,37 +9,22 @@ import { ShortcutRecorder } from "../../shared/ui/ShortcutRecorder/ShortcutRecor
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../App/store/store";
 import { global_store_type, SelectType } from "../../App/store/global_store.types";
-import { shortcutRecorder_item_type_enum } from "../../shared/types";
+import { Appform_data, shortcutRecorder_item_type_enum } from "../../shared/types";
 import styles from '../../shared/styles/forms.module.sass'
 import Under_category_list from "../../shared/ui/under_category_list/Under_category_list";
 import { select_types_category_enum } from "../../pages/creare_category_page/create_category_page_types";
 import useGet_active_worspase_from_localStore from "../../shared/hooks/useGet_active_worspase_from_localStore";
 import { read_selected_category } from "../../App/store/hotkey_and_category_slise";
- async function get_app_path(){
- const path = await open({
-    multiple:false,
-    directory:false
- })
- return path
- }
+
  const log_key=()=>{
     console.log("key press")
  }
 
-interface form_data{
-    path:string|null,
-    app_name:string|null,
-    icon_path:string|null,
-     type_category:SelectType
-     app_category_id:number|null
-     global_category_id:number|null
-     hotkey:string|null
-    
 
-}
+
 export default function Create_app(){
     const active_workspase_local_store = useGet_active_worspase_from_localStore()
-    const [form_data, setForm_data]= useState<form_data>({
+    const [form_data, setForm_data]= useState<Appform_data>({
         path:null,
         app_name:null,
         icon_path:null,
@@ -51,7 +36,7 @@ export default function Create_app(){
 
     })
     const [path, setPath]= useState<string|null>(null)
-    const [app_data, setApp_data ]= useState<i_app_data|null>(null)
+
     const dispatch= useDispatch<AppDispatch>()
     const active_wokspase= useSelector((state:global_store_type)=>state.global_category.active_worspase)
     console.log(active_wokspase)

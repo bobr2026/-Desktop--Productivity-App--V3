@@ -11,13 +11,17 @@ import { Appform_data } from "../../shared/types"
 import { ShortcutRecorder } from "../../shared/ui/ShortcutRecorder/ShortcutRecorder"
 import Under_category_list from "../../shared/ui/under_category_list/Under_category_list"
 import { i_app_data } from "./app.types"
-import { get_app_icon, get_app_path } from "./model/app.model"
-import { add_app } from "./store/app_slise_store"
+import { get_app_category_by_category_id, get_app_icon, get_app_path, get_appsByID, update_app } from "./model/app.model"
+import { add_app, get_all_appsBy_workspace_id } from "./store/app_slise_store"
 interface AppEditProps{
     appId: string|undefined
 }
 export function AppEdit({appId}:AppEditProps){
+    const [category_title,set_category_title ]=useState<string>("")
+    const [hotkey, set_hotkey]= useState<string>("")
+    const [active_app_workspase_id, set_active_app_workspase_id]= useState<number>(0)
     const active_workspase_local_store = useGet_active_worspase_from_localStore()
+   
     const [form_data, setForm_data]= useState<Appform_data>({
         path:null,
         app_name:null,
@@ -30,7 +34,43 @@ export function AppEdit({appId}:AppEditProps){
 
     })
     const [path, setPath]= useState<string|null>(null)
+   useEffect(()=>{
+        async function get_data() {
+            if(appId!=undefined){
+                const task_data= await get_appsByID(parseInt(appId))
+             setForm_data((prev)=>({
+                   ...prev,
+                   app_name:task_data[0].title,
+                   icon_path:task_data[0].icon_path,
+                   hotkey:task_data[0].hotkey,
+                   path:task_data[0].path,
+                   app_category_id:task_data[0].app_category_id,
+                   global_category_id:task_data[0].globol_category_id
+                })) 
+             set_hotkey(task_data[0].hotkey==null?"нет":task_data[0].hotkey)
+setPath(task_data[0].path)
+             console.log("APP_ID: "+appId)
+             console.log(form_data)
+             set_active_app_workspase_id(task_data[0].workspace_id)
 
+    
+            }
+            
+        }
+        get_data()
+    }, [appId])
+    useEffect(()=>{
+        async function get_data() {
+            if(form_data.app_category_id!=undefined){
+                const task_data= await get_app_category_by_category_id(form_data.app_category_id)
+                console.log(task_data[0].name)
+            set_category_title(task_data[0].name)
+    
+            }
+            
+        }
+        get_data()
+    },[form_data.app_category_id])
     const dispatch= useDispatch<AppDispatch>()
     const active_wokspase= useSelector((state:global_store_type)=>state.global_category.active_worspase)
     console.log(active_wokspase)
@@ -63,22 +103,33 @@ const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_c
 
     const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-       
-        dispatch(read_selected_category())
-        setForm_data((prev)=>({
-            ...prev,
-            hotkey:selected_hotkey,
-            path:path,
-            app_category_id:selected_category_app,
-            global_category_id:selected_category_global
+    //    console.log(selected_category_app)
+    //    console.log(selected_hotkey)
+    //     setForm_data((prev)=>({
+    //         ...prev,
+    //         hotkey:selected_hotkey,
+    //         path:path,
+    //         app_category_id:selected_category_app,
+    //         global_category_id:selected_category_global
         
-        }))
-        console.log(form_data)
+    //     }))
+    //     console.log(form_data)
      
            
         
-        console.log(active_wokspase)
-       
+        const updatedForm = {
+            ...form_data,
+            hotkey: selected_hotkey,
+            path,
+            app_category_id: selected_category_app,
+            global_category_id: selected_category_global,
+        };
+        
+        console.log(updatedForm);
+        setForm_data(updatedForm);
+         await update_app(form_data.app_name as string, form_data.path as string, form_data.icon_path as string ,
+             form_data.hotkey, form_data.app_category_id, form_data.global_category_id, active_app_workspase_id, parseInt(appId!))
+    dispatch(get_all_appsBy_workspace_id(active_app_workspase_id))
         
     }
       
@@ -98,7 +149,7 @@ const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_c
           
      
             <div className={styles.category_form__item}>
-            <h4>Выбранный хоткей</h4>       
+            <h4>Выбранный хоткей {hotkey}</h4>       
         <div className={styles_create_app.from_item_munu_and_recorder}>
   
         <ShortcutRecorder />
@@ -110,12 +161,12 @@ const selected_hotkey= useSelector((state:global_store_type)=>state.hotkey_and_c
         </div>
         </div>
         <div className={styles.category_form__item}>
-<h4>Выбранная категория</h4>
+<h4>Выбранная категория {category_title!=null?category_title:"нет"}</h4>
         <Under_category_list type_category={form_data.type_category} />
 
         </div>
 
-        <button type="submit">Создать Приложение</button>
+        <button type="submit">Изминить  Приложение</button>
 
     </form>
 </div >

@@ -139,7 +139,7 @@ pub fn get_app_categories_by_id(
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     let mut stmt = conn
-        .prepare("SELECT * ROM categories_apps WHERE id  = ?")
+        .prepare("SELECT * FROM categories_apps WHERE id  = ?")
         .map_err(|e| e.to_string())?;
 
     let cat_iter = stmt

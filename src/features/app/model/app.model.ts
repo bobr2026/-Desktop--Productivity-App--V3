@@ -41,35 +41,45 @@ export async function delete_app_from_db(app_id:number) {
     }
     
     export async function get_appsByID(app_id:number) {
-      const data:Iapp = await invoke("get_appsByID", {appId:app_id})
+      const data:Iapp[] = await invoke("get_appsByID", {appId:app_id})
+      console.log("++++++++++++")
+console.log(data)
+      console.log("++++++++++++")
       return data
     }
     export async function get_app_category_by_category_id(category_id:number) {
-       const data:i_categories_task  = await invoke("get_app_categories_by_id", {appCategoryId:category_id})
+       const data:i_categories_task[]  = await invoke("get_app_categories_by_id", {appCategoryId:category_id})
        return data
     }
-export interface UpdateAppParams {
-    title: string;
-    path: string;
-    iconPath: string;
-    hotkey: string;
-    appCategoryId: number | null;
-    globolCategoryId: number | null;
-    workspaceId: number;
-    appId: number;
-  }
+// export interface UpdateApp {
+//     title: string;
+//     path: string;
+//     iconPath: string;
+//     hotkey: string;
+//     appCategoryId: number | null;
+//     globolCategoryId: number | null;
+//     workspaceId: number;
+//     appId: number;
+//   }
   
   export const update_app = async (
-    params: UpdateAppParams
+    title: string,
+    path: string,
+    iconPath: string,
+    hotkey: string|null,
+    appCategoryId: number | null,
+    globolCategoryId: number | null,
+    workspaceId: number,
+    appId: number,
   ): Promise<number> => {
     return await invoke<number>("update_app", {
-      title: params.title,
-      path: params.path,
-      iconPath: params.iconPath,
-      hotkey: params.hotkey,
-      appCategoryId: params.appCategoryId ,
-      globolCategoryId: params.globolCategoryId,  
-      workspaceId: params.workspaceId,
-      appId: params.appId,
+      title: title,
+      path: path,
+      iconPath: iconPath,
+      hotkey: hotkey,
+      appCategoryId: appCategoryId ,
+      globolCategoryId: globolCategoryId,  
+      workspaceId: workspaceId,
+      appId: appId,
     });
 }

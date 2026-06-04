@@ -105,7 +105,13 @@ export default function Task_item({ id, status, title, mark_type, children, pere
                 delete_task_from_db(id)
 
             }
-        }
+        },
+        {
+            label: "Изминить",
+            onClick: () => {
+                navigate(`/edit_task_page/${id}`)
+            }
+        },
     ]
 
     useEffect(() => {

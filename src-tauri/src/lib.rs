@@ -210,7 +210,9 @@ pub fn run() {
               get_all_sub_elements_by_swoh_type,
               get_task_by_id,
               update_full_task,
-              delete_app
+              delete_app,
+              update_app,
+              get_appsByID
             
         ])
         .run(tauri::generate_context!())

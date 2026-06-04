@@ -73,7 +73,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
             }
         },
         {
-            label: "Изминить",
+            label: "Изменить",
             onClick: () => {
                 navigate(`/edit_task_page/${id}`)
             }
@@ -88,7 +88,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
         }
     ] : [
         {
-            label: "отвезать задачу", onClick: () => {
+            label: "Отвязать задачу", onClick: () => {
                 console.log("открепить задачу")
                 delete_sub_task(id)
                 console.log("spase: " + workspase)
@@ -107,7 +107,7 @@ export default function Task_item({ id, status, title, mark_type, children, pere
             }
         },
         {
-            label: "Изминить",
+            label: "Изменить",
             onClick: () => {
                 navigate(`/edit_task_page/${id}`)
             }

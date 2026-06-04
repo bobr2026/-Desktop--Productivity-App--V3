@@ -36,7 +36,7 @@ export  function App_item({  icon_path , app_path, hotkey, title, globol_categor
     })
     const [category_color, set_category_color] = useState<string>("")
 const context_munu_items= [{
-            label: "Изминить",
+            label: "Изменить",
             onClick: () => {
               navigate(`/edit_app_page/${id}`)
             }

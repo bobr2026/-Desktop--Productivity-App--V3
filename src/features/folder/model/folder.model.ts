@@ -27,7 +27,7 @@ export async function get_foldersByID(folder_id:number) {
 export const update_folder = async (
     iconId: number,
     path: string,
-    hotkey: string,
+    hotkey: string|null,
     title: string,
     folderCategoryId: number | null,
     globolCategoryId: number | null,

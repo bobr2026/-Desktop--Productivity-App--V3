@@ -13,14 +13,8 @@ import { global_store_type, SelectType } from '../../App/store/global_store.type
 import { useSelector } from 'react-redux';
 import { add_folder } from './model/folder.model';
 import useGet_active_worspase_from_localStore from '../../shared/hooks/useGet_active_worspase_from_localStore';
-interface Ifolder_icons{
-    id:number,
-    icon_path:string
-}
-interface Iselect_folder{
-    id:number
-selet:boolean
-}
+import { folder_form_data, Ifolder_icons, Iselect_folder } from '../../shared/types';
+
 const folder_icons:Ifolder_icons[]=[
     {id:-1,icon_path:folder_dark1_icon},
     {id:-2,icon_path:folder_blue_icon},
@@ -28,20 +22,10 @@ const folder_icons:Ifolder_icons[]=[
     
 ]
 
-interface form_data{
-    icon_id:number,
-    title:string,
-    path:string,
-    hotkey:string|null,
-    folder_category_id:number|null,
-    globol_category_id:number|null,
-       type_category:SelectType
-
-}
 export default function Create_folder(){
         const active_workspase_local_store = useGet_active_worspase_from_localStore()
     const [selet_icon, set_select_icon] = useState<Iselect_folder>({ id: -3, selet: false })
-    const [fprm_data, setForm_data]=useState<form_data>({
+    const [fprm_data, setForm_data]=useState<folder_form_data>({
         icon_id:-3, 
         title:"",
         path:"",

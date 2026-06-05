@@ -21,7 +21,7 @@ function Folder_list() {
     }, [active_wokspase])
     console.log(folders)
     const app_list = folders.map(app => {
-        return <Folder_item  key={app.id} icon_id={app.icon_id} path={app.path} hotkey={app.hotkey}
+        return <Folder_item id={app.id}  key={app.id} icon_id={app.icon_id} path={app.path} hotkey={app.hotkey}
             folder_category_id={app.folder_category_id} globol_category_id={app.globol_category_id}
             title={app.title}  swoh_color_grub={color_category_type}/>
     })

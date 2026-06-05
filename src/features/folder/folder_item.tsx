@@ -6,6 +6,15 @@ import { useEffect, useState } from "react";
 import folder_dark1_icon from './folder_icons/ficon-folder-dark1.png'
 import folder_blue_icon from './folder_icons/icon-folder-blue.png'
 import icon_folder_black from './folder_icons/icon-folder-black.png'
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { global_store_type } from "../../App/store/global_store.types";
+import { AppDispatch } from "../../App/store/store";
+import Context_menu from "../../shared/ui/context_munu/context_munu";
+import { set_context_munu_point } from "../../App/store/context_munu_slise";
+import { setOpenedContextMenu } from "../tasks/store/task_list_ui_store";
+import { delete_folder_from_db } from "./model/folder.model";
+import { delete_folder } from "./store/folder_slise_store";
 // get_global_Category_name_and_color_ById,
 // get_app_Category_name_and_color_ById
 
@@ -21,7 +30,13 @@ import icon_folder_black from './folder_icons/icon-folder-black.png'
     
 // ]
 type folder_item_delect_color_category_types = "folder_category"|"globol_category"
-export  function Folder_item({icon_id , path, hotkey, title, globol_category_id, folder_category_id , swoh_color_grub}:folder_item_props){
+export  function Folder_item({id, icon_id , path, hotkey, title, globol_category_id, folder_category_id , swoh_color_grub}:folder_item_props){
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>()
+    const{contextMenuX, contextMenuY, openedContextMenuId} = useSelector(
+        (state: global_store_type) => state.context_munu_ui
+    )
+  
     let icon= <img className={styles.list__item_block__img} src={folder_dark1_icon} alt="" />
     const [app_category , setApp_category]= useState<categories_data>({
         color:null,
@@ -32,7 +47,22 @@ export  function Folder_item({icon_id , path, hotkey, title, globol_category_id,
         name:null
     })
     const [category_color, set_category_color] = useState<folder_item_delect_color_category_types>("folder_category")
+const context_munu_items= [{
+            label: "Изменить",
+            onClick: () => {
+              navigate(`/edit_folder_page/${id}`)
+            }
+        },
+        {
+            label: "Удалить",
+            onClick: () => {
+                dispatch(delete_folder(id))
+            delete_folder_from_db(id)
 
+            }
+        }
+    ]
+  
   
    useEffect(()=>{
     async function get_data() {
@@ -80,7 +110,31 @@ get_data()
                break;
     }
  console.log(category_color)
-    return <div  className={styles.list__item_block} onClick={()=>openFolder(path)} >
+    return <div  className={styles.list__item_block}   onClick={
+            
+            ()=>{ if(openedContextMenuId==id){
+    
+            }else{
+                openFolder(path)
+            }
+            }
+        
+    
+        } 
+         onContextMenu={(e: React.MouseEvent) => {
+            e.stopPropagation()
+                        e.preventDefault()
+        
+                        dispatch(
+                            setOpenedContextMenu(
+                                openedContextMenuId === id ? null : id
+                            )
+                        )
+                        dispatch(set_context_munu_point("reset"))
+                        dispatch(set_context_munu_point({x:e.clientX, y:e.clientY}))
+        
+                       
+                    }} >
     {icon}
     <h3>{hotkey}</h3>
     <h3>{title}</h3>
@@ -89,5 +143,6 @@ get_data()
     <div style={{
         background:category_color
     }} className={styles.list__item_block__category_color}></div>
+    <Context_menu open={openedContextMenuId==id} x={contextMenuX} y={contextMenuY} items={context_munu_items}/>
 </div>
 }

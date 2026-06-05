@@ -1,4 +1,5 @@
 export interface folder_item_props{
+    id:number,
     icon_id:number,
     path:string
     hotkey:string|null

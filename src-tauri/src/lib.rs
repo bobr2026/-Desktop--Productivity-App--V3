@@ -63,7 +63,7 @@ use folders::categories_folders::{
 use folders::folder::{
  add_folder,   get_all_folders, get_all_foldersByGrub_id, get_foldersByID, update__icon__by_folder_id,
     update__workspace__by_folder_id, update_folder, update_global_category___by_folder_id,
-    update_grub_folder___by_folder_id,
+    update_grub_folder___by_folder_id,delete_folder
 };
 use notes::categories_notes::{
     add_Category_note, deleteCategory_note_ByID, get_all_categories_notes,
@@ -212,7 +212,8 @@ pub fn run() {
               update_full_task,
               delete_app,
               update_app,
-              get_appsByID
+              get_appsByID,
+              delete_folder
             
         ])
         .run(tauri::generate_context!())

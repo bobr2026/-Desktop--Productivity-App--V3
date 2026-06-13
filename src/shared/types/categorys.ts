@@ -7,3 +7,4 @@ workspace_id:number
 
 
 }
+export type Category_list_data_types ="app"|"note"|"folder"|"workspase"

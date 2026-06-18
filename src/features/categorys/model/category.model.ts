@@ -1,8 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
-import { I_folder, I_ginerik_category, i_note, i_task, Iapp } from "../../../shared/types";
+import { I_folder, I_ginerik_category, i_note, i_task, I_workspace_types, Iapp } from "../../../shared/types";
 //TODO ВСЕХ ПОЛУЧЕНИЕ СУЩНОСТЕЙ ПО ID ГРУППЫ
 // //TODO ->
-export async function getAllAppsByGrubId(grubId: number): Promise<Iapp[]> {
+export async function getAllAppsByCategoryId(grubId: number): Promise<Iapp[]> {
     try {
       // В invoke передаем имя Rust-функции и объект с аргументами.
       // Названия ключей в объекте должны строго совпадать с аргументами в Rust (grub_id)
@@ -37,7 +37,7 @@ export async function getAllAppsByGrubId(grubId: number): Promise<Iapp[]> {
     }
   }
 
-  export async function getAllFoldersByGrubId(grubId: number): Promise<I_folder[]> {
+  export async function getAllFoldersByCategoryId(grubId: number): Promise<I_folder[]> {
     try {
       return await invoke<I_folder[]>('get_all_foldersByGrub_id', { grubId });
     } catch (error) {
@@ -219,4 +219,15 @@ export async function deleteAppCategory(id: number): Promise<number> {
     console.error(`Ошибка при удалении категории приложений с ID ${id}:`, error);
     throw error;
   }
+}
+
+
+
+export async function get_all_workspaces() {
+  try{
+return await invoke<I_workspace_types[]>('get_all_workspaces')
+  }catch(error){
+    
+  }
+
 }

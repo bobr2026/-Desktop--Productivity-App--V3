@@ -7,4 +7,5 @@ workspace_id:number
 
 
 }
-export type Category_list_data_types ="app"|"note"|"folder"|"workspase"
+export type Category_list_data_types ="app"|"note"|"folder"|"task"|"workspase"
+export type filtered_categorys="app"|"note"|"folder"|"task"

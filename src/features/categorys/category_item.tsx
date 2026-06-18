@@ -2,19 +2,85 @@ import styles from './styles/Category_item.module.sass'
 import strelka1 from './icons/strelka.svg'
 import strelka2 from './icons/strelka2.svg'
 import { JSX, useEffect, useState } from 'react'
-import { Category_list_data_types } from '../../shared/types'
+import { Category_list_data_types, filtered_categorys, I_folder, i_note, i_task, Iapp } from '../../shared/types'
 import { invoke } from '@tauri-apps/api/core'
+import { useGet_Items_by_categoryId } from './hooks/useGet_Items_by_categoryId'
+import Folder_list from '../folder/folder_list'
+import { Folder_item } from '../folder/folder_item'
+import { App_item } from '../app/app_item'
+import Task_item from '../tasks/task_item'
+import Note_task_item from '../tasks/note_task'
+
 interface Category_itemProps {
     id: number
     title: string
-   
+
     color: string
-    type:Category_list_data_types
+    type: filtered_categorys
 
 }
 export function Category_item({ id, title, color, type }: Category_itemProps) {
-    const [children_elements , set_children_elements]= useState<JSX.Element[]>([])
+    const [children_elements, set_children_elements] = useState<JSX.Element[]>([])
     const [open_cildrren_item, set_open_cildrren_item] = useState(false)
+    const data = useGet_Items_by_categoryId(type, id)
+
+    console.log(data)
+    useEffect(()=>{
+        let children: JSX.Element[] = [];
+        switch (type) {
+            case 'folder':
+          
+                const folder_data = data as I_folder[]
+                children = folder_data.map((app) => {
+                    return <Folder_item id={app.id} key={app.id} icon_id={app.icon_id} path={app.path} hotkey={app.hotkey}
+                        folder_category_id={app.folder_category_id} globol_category_id={app.globol_category_id}
+                        title={app.title} swoh_color_grub='folder_category' />  
+                })
+            
+    
+                break;
+            case 'app':
+             
+                const folder_data1 = data as Iapp[]
+                children = folder_data1.map((app) => {
+                    return <App_item id={app.id} icon_path={app.icon_path} app_path={app.path} hotkey={app.hotkey}
+                    app_category_id={app.app_category_id} globol_category_id={app.globol_category_id}
+                    title={app.title} swoh_color_grub='app_category' />
+                })
+               
+    
+                break;
+            case 'note':
+                const folder_data3 = data as i_note[]
+                children = folder_data3.map((note) => {
+                return   <Note_task_item
+                                key={note.note_id} // Обязательный ключ для React
+                                title={note.title}
+                                category_id={note.note_category_id}
+                                creaded={note.created_at}
+                                update={note.updated_at}
+                                element_id={note.note_id}
+                                mark={note.marks != null ? note.marks : undefined}
+                                status={note.status}
+                                render_type='sub_list'
+                                note_id={note.note_id}
+                            />
+                })
+                break
+            case 'task':
+                const folder_data2 = data as i_task[]
+                children = folder_data2.map((app) => {
+                   return <Task_item key={app.task_id} id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} workspase={app.workspace_id} />
+                })
+                break
+            default:
+                break;
+        }
+    
+
+set_children_elements(children)
+
+    }, [data, type])    
 
 
 
@@ -26,14 +92,14 @@ export function Category_item({ id, title, color, type }: Category_itemProps) {
                 <div className={styles.conteiner__color_div} style={{ background: color }}></div>
                 <div className={styles.conteiner__data} >
                     <h1>{title}</h1>
-                    <h2>КОЛИЧЕСТВО ЭЛЕМЕНТОВ: {2}</h2>
+                    <h2>КОЛИЧЕСТВО ЭЛЕМЕНТОВ: {data.length}</h2>
                 </div>
 
             </div>
 
         </div>
- <div className={styles.coldren_elements_list} style={{display:open_cildrren_item==true?"flex":"none"}}>
-{children}
- </div>
+        <div className={styles.coldren_elements_list} style={{ display: open_cildrren_item == true ? "flex" : "none" }}>
+            {children_elements}
+        </div>
     </div>
 }

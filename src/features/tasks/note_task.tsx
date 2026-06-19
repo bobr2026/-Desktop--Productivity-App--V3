@@ -70,12 +70,16 @@ export default function Note_task_item({
     ]
 
     useEffect(() => {
+        
         async function get_category() {
             if (category_id === null) return; // Защита от пустых ID
             const fetched_category_name: string = await invoke("get_note_Category_name_ById", { categoryId: category_id })
             set_category_name(fetched_category_name)
         }
-        get_category()
+        if(category_id!=null){
+
+            get_category()
+        }
     }, [category_id]) // 3. Хорошей практикой считается указывать переменные в массиве зависимостей
     const fullClassName = `${styles.note_task_item_conteiner}  ${select==false?styles.base:styles.active}`;
 

@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { I_folder, I_ginerik_category, i_note, i_task, I_workspace_types, Iapp } from "../../../shared/types";
+import { I_folder, I_ginerik_category, i_note, i_task, I_workspace_types, Iapp, WorkspaceCounters } from "../../../shared/types";
 //TODO ВСЕХ ПОЛУЧЕНИЕ СУЩНОСТЕЙ ПО ID ГРУППЫ
 // //TODO ->
 export async function getAllAppsByCategoryId(grubId: number): Promise<Iapp[]> {
@@ -230,4 +230,13 @@ return await invoke<I_workspace_types[]>('get_all_workspaces')
     
   }
 
+}
+export async function  getCounters(workspaceId: number): Promise<WorkspaceCounters> {
+  try {
+    // Важно: в Rust аргумент "workspace_id", но Tauri ждет "workspaceId"
+    return await invoke<WorkspaceCounters>('get_workspace_counters', { workspaceId });
+  } catch (error) {
+    console.error('Ошибка при получении счетчиков воркспейса:', error);
+    throw error;
+  }
 }

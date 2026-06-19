@@ -214,3 +214,35 @@ pub fn get_all_foldersBy_workspaceId(workspace_id: i64) -> Result<Vec<Folder>, S
     }
     Ok(notes)
 }
+
+#[derive(serde::Serialize)]
+pub struct WorkspaceCounters {
+    pub apps: i64,
+    pub tasks: i64,
+    pub notes: i64,
+    pub folders: i64,
+}
+
+#[tauri::command]
+pub fn get_workspace_counters(workspace_id: i64) -> Result<WorkspaceCounters, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    let apps: i64 = conn
+        .query_row("SELECT COUNT(*) FROM apps WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let tasks: i64 = conn
+        .query_row("SELECT COUNT(*) FROM task WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let notes: i64 = conn
+        .query_row("SELECT COUNT(*) FROM notes WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let folders: i64 = conn
+        .query_row("SELECT COUNT(*) FROM folders WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    Ok(WorkspaceCounters { apps, tasks, notes, folders })
+}

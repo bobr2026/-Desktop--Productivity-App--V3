@@ -81,7 +81,7 @@ use notes::note::{
     add_note, delete_note, get_all_notes, get_all_notesByCategory_id, get_noteByID,
     update_category_note___by_note_id, update_grub_notes___by_grub_id,
     update_marks_note___by_note_id, update_status_note___by_note_id,
-    update_workspace__note___by_workspace_id,
+    update_workspace__note___by_workspace_id
 };
 use notes::posts_notes::{
     all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
@@ -111,7 +111,7 @@ use tasks::note_task_Link::{
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
-    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,
+    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters
 };
 
 use rusqlite::{params, Connection, Result};
@@ -216,7 +216,9 @@ pub fn run() {
               delete_folder, update_category_note___by_note_id, 
               update_grub_folder___by_folder_id,
               get_all_foldersByGrub_id,update_category_task___by_task_id,
-              get_all_appsByGrub_id
+              get_all_appsByGrub_id,
+              get_workspace_counters,
+              get_all_notesByCategory_id
             
         ])
         .run(tauri::generate_context!())

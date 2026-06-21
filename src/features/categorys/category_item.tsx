@@ -10,6 +10,14 @@ import { Folder_item } from '../folder/folder_item'
 import { App_item } from '../app/app_item'
 import Task_item from '../tasks/task_item'
 import Note_task_item from '../tasks/note_task'
+import { useDispatch, useSelector } from 'react-redux'
+import { set_context_munu_point } from '../../App/store/context_munu_slise'
+import { global_store_type } from '../../App/store/global_store.types'
+import Context_menu from '../../shared/ui/context_munu/context_munu'
+import { setOpenedStatusMenu, setOpenedContextMenu } from '../tasks/store/task_list_ui_store'
+import { AppDispatch } from '../../App/store/store'
+import { useDeleteCategory } from './hooks/useDelete_categorys'
+import { set_rerender_category_list } from './store/categoryUiSlise'
 
 interface Category_itemProps {
     id: number
@@ -20,9 +28,48 @@ interface Category_itemProps {
 
 }
 export function Category_item({ id, title, color, type }: Category_itemProps) {
+    const [isDeletedLocally, setIsDeletedLocally] = useState(false);
+    const deleteCategory=useDeleteCategory()
+    const dispatch = useDispatch<AppDispatch>()
+
+        const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
+            (state: global_store_type) => state.context_munu_ui
+        )
+        const {rerender_category_list} = useSelector(
+            (state: global_store_type) => state.categoryUI
+        )
+        
     const [children_elements, set_children_elements] = useState<JSX.Element[]>([])
     const [open_cildrren_item, set_open_cildrren_item] = useState(false)
     const data = useGet_Items_by_categoryId(type, id)
+
+    const context_munu_itens =[
+         {
+                    label: "Удалить",
+                    onClick: async () => {
+                        try {
+                            // 1. Ждем, пока бэкенд реально удалит категорию
+                            setIsDeletedLocally(true);
+                            await deleteCategory(type, id);
+                            
+                            // 2. Закрываем подсписок, чтобы он не пытался рендерить старье
+                            set_open_cildrren_item(false);
+                            set_children_elements([]);
+                    
+                            // 3. Триггерим ререндер списка (чтобы заново запросить категории с бэкенда)
+                            dispatch(set_rerender_category_list(!rerender_category_list));
+                        } catch (error) {
+                            console.error("Ошибка при удалении:", error);
+                        }
+                    }
+                },
+                {
+                    label: "Изменить",
+                    onClick: () => {
+                        // navigate(`/edit_task_page/${id}`)
+                    }
+                },
+    ]
 
     console.log(data)
     useEffect(()=>{
@@ -83,12 +130,27 @@ set_children_elements(children)
     }, [data, type])    
 
 
-
-    return <div className={styles.main_wraper}>
+if(isDeletedLocally) return null
+else  return <div className={styles.main_wraper}>
 
         <div className={styles.wraper}>
             <img src={open_cildrren_item == false ? strelka1 : strelka2} alt="" onClick={() => set_open_cildrren_item(!open_cildrren_item)} />
-            <div className={styles.conteiner}>
+            <div className={styles.conteiner} onContextMenu={(e: React.MouseEvent) => {
+                            e.preventDefault()
+                            dispatch(setOpenedStatusMenu(null))
+            
+                            dispatch(
+                                setOpenedContextMenu(
+                                    openedContextMenuId === id ? null : id
+                                )
+                            )
+            dispatch(set_context_munu_point("reset"))
+                            dispatch(set_context_munu_point({
+                                x: e.clientX,
+                                y: e.clientY,
+                            
+                            }))
+                        }} >
                 <div className={styles.conteiner__color_div} style={{ background: color }}></div>
                 <div className={styles.conteiner__data} >
                     <h1>{title}</h1>
@@ -101,5 +163,6 @@ set_children_elements(children)
         <div className={styles.coldren_elements_list} style={{ display: open_cildrren_item == true ? "flex" : "none" }}>
             {children_elements}
         </div>
+          <Context_menu open={openedContextMenuId === id} x={contextMenuX} y={contextMenuY} items={context_munu_itens} />
     </div>
 }

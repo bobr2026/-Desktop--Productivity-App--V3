@@ -23,7 +23,7 @@ type Category_list_data_types ="app"|"note"|"folder"|"task"|"workspase"
 export function Category_list(){
     const active_workspase= useGet_active_worspase_from_localStore()
     const [category_list_data_types, set_ategory_list_data_types]=useState<Category_list_data_types>("app")
-    const [category_items, set_category_items]= useState<JSX.Element[]>([])
+    // const [category_items, set_category_items]= useState<JSX.Element[]>([])
     const [open_cildrren_item, set_open_cildrren_item] = useState(false)
     const dispatch = useDispatch<AppDispatch>()
 const data:I_ginerik_category[]|I_workspace_types[] = useGet_all_itemCategoryByWorkspase(category_list_data_types, active_workspase.workspace_id)
@@ -33,6 +33,11 @@ const apps = useSelector((stete: global_store_type) => stete.apps_list.apps)
 const tasks = useSelector((stete: global_store_type) => stete.task_list.tasks)
 const folders = useSelector((stete: global_store_type) => stete.folder_list.folders)
 const notes = useSelector((stete: global_store_type) => stete.note_list.notes)
+
+const rerender_category_list = useSelector(
+    (state: global_store_type) => state.categoryUI.rerender_category_list
+)
+console.log(rerender_category_list)
 
 useEffect(() => {
     if (!active_workspase.workspace_id) return;
@@ -53,7 +58,7 @@ useEffect(() => {
         default:
             break;
     }
-}, [category_list_data_types, active_workspase.workspace_id, dispatch])
+}, [category_list_data_types, active_workspase.workspace_id, rerender_category_list, dispatch])
 
 // 2. Динамический расчет элементов без категории (вычисляется автоматически при обновлении стора)
 const not_category_elements = useMemo(() => {
@@ -125,73 +130,7 @@ const not_category_elements = useMemo(() => {
         default:
             return [];
     }
-}, [category_list_data_types, show_not_category_elements, apps, notes, folders, tasks]);
-
-// useEffect(()=>{
-//    switch (category_list_data_types) {
-//     case 'app':
-//             dispatch(get_all_appsBy_workspace_id(active_workspase.workspace_id))
-//             const app_list = apps.map(app => {
-//                 if(app.app_category_id==null){
-
-//                     return <App_item id={app.id} icon_path={app.icon_path} app_path={app.path} hotkey={app.hotkey}
-//                         app_category_id={app.app_category_id} globol_category_id={app.globol_category_id}
-//                         title={app.title} swoh_color_grub={'app_category'} />
-//                 }
-//                })
-//                set_not_category_elements(app_list as JSX.Element[])
-//         break;
-//         case 'note':
-//             dispatch(get_all_notesBy_workspace_id(active_workspase.workspace_id))
-//              const note_list= notes.map((note) => {
-//                 if(note.note_category_id==null){
-
-//                     return   <Note_task_item
-//                                     key={note.note_id} // Обязательный ключ для React
-//                                     title={note.title}
-//                                     category_id={note.note_category_id}
-//                                     creaded={note.created_at}
-//                                     update={note.updated_at}
-//                                     element_id={note.note_id}
-//                                     mark={note.marks != null ? note.marks : undefined}
-//                                     status={note.status}
-//                                     render_type='sub_list'
-//                                     note_id={note.note_id}
-//                                 />
-//                 }
-//                             })
-//                             set_not_category_elements(note_list as JSX.Element[])
-//         case 'folder':
-//             dispatch(get_all_foldersBy_workspace_id(active_workspase.workspace_id))
-
-//                const folder_list = folders.map(app => {
-//                 if(app.folder_category_id==null){
-
-//                     return <Folder_item id={app.id}  key={app.id} icon_id={app.icon_id} path={app.path} hotkey={app.hotkey}
-//                         folder_category_id={app.folder_category_id} globol_category_id={app.globol_category_id}
-//                         title={app.title}  swoh_color_grub={"folder_category"}/>
-//                 }
-//                 })
-      
-//                 set_not_category_elements(folder_list as JSX.Element[])
-//         case 'task':
-//             dispatch(get_all_tasksBy_workspace_id(active_workspase.workspace_id))
-//                const task_list = tasks.map(app => {
-//                 if(app.task_category_id==null){
-//                     return <Task_item key={app.task_id} id={app.task_id} title={app.title} status={app.status} mark_type={app.marks} workspase={app.workspace_id} />
-
-//                 }
-
-//                 })
-//                 set_not_category_elements(task_list as JSX.Element[])
-//         case 'workspase':
-//             break
-   
-//     default:
-//         break;
-//    }
-  
-// }, [category_list_data_types, active_workspase.workspace_id])
+}, [category_list_data_types, show_not_category_elements, rerender_category_list]);
 
 
 
@@ -206,24 +145,49 @@ const not_category_elements = useMemo(() => {
 //     }))
 
 }
-useEffect(()=>{
-    if(category_list_data_types=='workspase'){
-        const workspase_data  = data as I_workspace_types[]
+// useEffect(()=>{
+//     if(category_list_data_types=='workspase'){
+//         const workspase_data  = data as I_workspace_types[]
     
-        let items= workspase_data.map((data)=>{
-            return <Workspase_item  workspase_id={data.workspace_id} name={data.name}  color={data.color}/>
-        })
+//         let items= workspase_data.map((data)=>{
+//             return <Workspase_item  workspase_id={data.workspace_id} name={data.name}  color={data.color}/>
+//         })
   
-        set_category_items(items)
+//         set_category_items(items)
 
-       }else{
-       const category_data= data as I_ginerik_category[]
-       const items= category_data.map((data)=>{
-           return <Category_item id={data.id} title={data.name} type={category_list_data_types} color={data.color==null?"":data.color}/>
-       })
-       set_category_items(items)
-       }
-}, [category_list_data_types, data])
+//        }else{
+//        const category_data= data as I_ginerik_category[]
+//        const items= category_data.map((data)=>{
+//            return <Category_item id={data.id} title={data.name} type={category_list_data_types} color={data.color==null?"":data.color}/>
+//        })
+//        set_category_items(items)
+//        }
+// }, [category_list_data_types, data, rerender_category_list])
+const category_items = useMemo(() => {
+    if (category_list_data_types === 'workspase') {
+        const workspase_data = data as I_workspace_types[];
+        return workspase_data.map((item) => (
+            <Workspase_item 
+                key={item.workspace_id} // обязательно key!
+                workspase_id={item.workspace_id} 
+                name={item.name} 
+                color={item.color}
+            />
+        ));
+    } else {
+        const category_data = data as I_ginerik_category[];
+        return category_data.map((item) => (
+            <Category_item 
+                key={item.id} // обязательно key!
+                id={item.id} 
+                title={item.name} 
+                type={category_list_data_types} 
+                color={item.color == null ? "" : item.color}
+            />
+        ));
+    }
+}, [category_list_data_types, data]);
+
 
     return <div className={styles.conteiner}>
 <div className={styles.conteiner__header}>
@@ -246,6 +210,7 @@ useEffect(()=>{
     </div>
 
 </div>
+
 <div className={styles.conteiner__categoy_itenms}>
 
     {show_not_category_elements==false?null:

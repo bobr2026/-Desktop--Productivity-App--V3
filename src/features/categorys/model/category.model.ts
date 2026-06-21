@@ -240,3 +240,12 @@ export async function  getCounters(workspaceId: number): Promise<WorkspaceCounte
     throw error;
   }
 }
+export async function deleteWorkspace(id: number): Promise<number> {
+  try {
+    return await invoke<number>('delete_workspace', {workspaceId:id });
+  } catch (error) {
+    console.error(`Ошибка при удалении категории приложений с ID ${id}:`, error);
+    throw error;
+  }
+}
+

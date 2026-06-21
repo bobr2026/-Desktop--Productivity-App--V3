@@ -102,7 +102,7 @@ use tasks::task::{
     update_task_status,get_notes_for_task, get_tasks_for_note, get_task_by_id, update_full_task,update_category_task___by_task_id
 };
 use  tasks::categories_tasks::{
-     create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace
+     create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace, delete_task_category
 };
 use tasks::note_task_Link::{
     add_element_link, get_perent_elements, get_sub_elements, update_element_link, 
@@ -111,7 +111,7 @@ use tasks::note_task_Link::{
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
-    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters
+    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters, delete_workspace
 };
 
 use rusqlite::{params, Connection, Result};
@@ -170,8 +170,8 @@ pub fn run() {
           create_app_category,
           create_folder_category,
           create_task_category,
-          
-
+          delete_folder_category,
+          deleteCategory_note_ByID,
             create_global_category,
             delete_global_category,
             update_global_category, 
@@ -194,6 +194,7 @@ pub fn run() {
             update_folder,
             get_foldersByID,
             get_all_foldersBy_workspaceId,
+            delete_app_category,
             get_all_notesByWorkspace_id,
             get_folder_Category_name_and_color_ById,
             open_folder,
@@ -218,7 +219,10 @@ pub fn run() {
               get_all_foldersByGrub_id,update_category_task___by_task_id,
               get_all_appsByGrub_id,
               get_workspace_counters,
-              get_all_notesByCategory_id
+              get_all_notesByCategory_id,
+              delete_task_category,
+              update_task_category,
+              delete_workspace,
             
         ])
         .run(tauri::generate_context!())

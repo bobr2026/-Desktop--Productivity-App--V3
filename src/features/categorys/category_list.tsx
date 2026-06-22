@@ -18,6 +18,7 @@ import { Folder_item } from '../folder/folder_item'
 import Task_item from '../tasks/task_item'
 import strelka1 from './icons/strelka.svg'
 import strelka2 from './icons/strelka2.svg'
+import { get_all_workspaces } from '../../App/store/global_category_slise'
 type Category_list_data_types ="app"|"note"|"folder"|"task"|"workspase"
 
 export function Category_list(){
@@ -33,12 +34,14 @@ const apps = useSelector((stete: global_store_type) => stete.apps_list.apps)
 const tasks = useSelector((stete: global_store_type) => stete.task_list.tasks)
 const folders = useSelector((stete: global_store_type) => stete.folder_list.folders)
 const notes = useSelector((stete: global_store_type) => stete.note_list.notes)
-
+const worspases = useSelector((stete: global_store_type) => stete.global_category.worspases)
 const rerender_category_list = useSelector(
     (state: global_store_type) => state.categoryUI.rerender_category_list
 )
 console.log(rerender_category_list)
-
+useEffect(()=>{
+                        dispatch(get_all_workspaces())
+}, [])
 useEffect(() => {
     if (!active_workspase.workspace_id) return;
 

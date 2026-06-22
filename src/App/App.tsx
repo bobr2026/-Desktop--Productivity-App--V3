@@ -15,6 +15,8 @@ import Create_task_page from "../pages/create_task_page/create_task_page";
 import Edit_task_page from "../pages/edit_task_page/edit_task_page";
 import { Edit_app_page } from "../pages/edit_app_page/edit_app_page";
 import { Edit_folder_page } from "../pages/edit_folder_page/edit_folder_page";
+import Create_workspace_page from "../pages/Create_workspace_page/Create_workspace_page";
+import Edit_workspace_page from "../pages/Edit_workspace_page/Edit_workspace_page";
 
 const routes:RouteObject[] =[
     {path:"/",  element:<RootLayot/>, children:[
@@ -31,7 +33,9 @@ const routes:RouteObject[] =[
         {path:"/creare_task_page", element:<Create_task_page/>},
         {path:"/edit_task_page/:taskId", element:<Edit_task_page/>},
         {path:"/edit_app_page/:appId", element:<Edit_app_page/>},
-        {path:"/edit_folder_page/:folderId", element:<Edit_folder_page/>}
+        {path:"/edit_folder_page/:folderId", element:<Edit_folder_page/>},
+        { path: "/create_workspace", element: <Create_workspace_page /> },
+{ path: "/edit_workspace/:workspaceId", element: <Edit_workspace_page /> },
     ]
 
     }

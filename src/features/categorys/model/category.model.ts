@@ -249,3 +249,38 @@ export async function deleteWorkspace(id: number): Promise<number> {
   }
 }
 
+
+export interface I_workspace_types1 {
+  workspace_id?: number; // Опционально, так как при создании id еще нет
+  name: string;
+  color: string | null;
+}
+
+// Создание нового окружения
+export async function create_workspace_fn(name: string, color: string | null): Promise<void> {
+  try {
+      await invoke('add_workspace', { name, color: color || null });
+  } catch (error) {
+      console.error('Failed to create workspace:', error);
+      throw error;
+  }
+}
+
+// Обновление существующего окружения
+export async function update_workspace_fn(workspace_id: number, name: string, color: string | null): Promise<void> {
+  try {
+      // Передаем workspace_id как i64 (в JS/TS это просто number, Tauri сам сматчит)
+      await invoke('all_update_workspace', { workspaceId:workspace_id, name, color: color || null });
+  } catch (error) {
+      console.error('Failed to update workspace:', error);
+      throw error;
+  }
+}
+export async function get_workspace_by_id_fn(workspace_id: number): Promise<I_workspace_types> {
+  try {
+      return await invoke<I_workspace_types>('get_workspace_by_id', { workspaceId: workspace_id });
+  } catch (error) {
+      console.error(`Failed to fetch workspace with id ${workspace_id}:`, error);
+      throw error;
+  }
+}

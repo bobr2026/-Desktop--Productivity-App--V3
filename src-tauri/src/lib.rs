@@ -111,7 +111,7 @@ use tasks::note_task_Link::{
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
-    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters, delete_workspace
+    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters, delete_workspace,get_workspace_by_id
 };
 
 use rusqlite::{params, Connection, Result};
@@ -223,6 +223,8 @@ pub fn run() {
               delete_task_category,
               update_task_category,
               delete_workspace,
+              get_workspace_by_id,
+              all_update_workspace
             
         ])
         .run(tauri::generate_context!())

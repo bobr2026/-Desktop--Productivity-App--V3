@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { I_workspace_types, WorkspaceCounters } from '../../shared/types'
 import styles from './styles/workspase_item.module.sass'
-import { getCounters } from './model/category.model'
+import {  getCounters } from './model/category.model'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch } from '../../App/store/store'
 import { useDeleteCategory } from './hooks/useDelete_categorys'
@@ -10,6 +10,8 @@ import { set_rerender_category_list } from './store/categoryUiSlise'
 import { set_context_munu_point } from '../../App/store/context_munu_slise'
 import Context_menu from '../../shared/ui/context_munu/context_munu'
 import { setOpenedStatusMenu, setOpenedContextMenu } from '../tasks/store/task_list_ui_store'
+import { get_all_workspaces } from '../../App/store/global_category_slise'
+import { useNavigate } from 'react-router-dom'
 interface Workspase_item_props{
     workspase_id:number
     color:string|null
@@ -18,6 +20,7 @@ interface Workspase_item_props{
 }
 export function Workspase_item({workspase_id, color, name, }:Workspase_item_props){
     const [isDeletedLocally, setIsDeletedLocally] = useState(false);
+    const navigate = useNavigate()
     const deleteCategory=useDeleteCategory()
     const dispatch = useDispatch<AppDispatch>()
     const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
@@ -57,7 +60,7 @@ export function Workspase_item({workspase_id, color, name, }:Workspase_item_prop
                     {
                         label: "Изменить",
                         onClick: () => {
-                            // navigate(`/edit_task_page/${id}`)
+                            navigate(`/edit_workspace/${workspase_id}`)
                         }
                     },
         ]:[
@@ -67,7 +70,9 @@ export function Workspase_item({workspase_id, color, name, }:Workspase_item_prop
                     try {
                         // 1. Ждем, пока бэкенд реально удалит категорию
                         setIsDeletedLocally(true);
+                             
                         await deleteCategory('workspase', workspase_id);
+                        dispatch(get_all_workspaces())
                         
                         // 2. Закрываем подсписок, чтобы он не пытался рендерить старье
                         // set_open_cildrren_item(false);
@@ -83,7 +88,8 @@ export function Workspase_item({workspase_id, color, name, }:Workspase_item_prop
             {
                 label: "Изменить",
                 onClick: () => {
-                    // navigate(`/edit_task_page/${id}`)
+                    navigate(`/edit_workspace/${workspase_id}`)
+                    dispatch(get_all_workspaces())
                 }
             },
         ]

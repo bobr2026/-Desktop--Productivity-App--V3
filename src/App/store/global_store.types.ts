@@ -80,7 +80,9 @@ export interface folder_list_ctore_type{
     "grubs_list"="grubs_list",
     "dok_list"=   "dok_list",
     "workspase_list"="workspase_list",
-    "create_category"="create_category"
+    "create_category"="create_category",
+    "edit_workspace" = "edit_workspace",
+    "create_workspace" = "create_workspace"
    }
     
 

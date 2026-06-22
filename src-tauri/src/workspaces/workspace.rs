@@ -70,6 +70,33 @@ pub fn delete_workspace(workspace_id: i64) -> Result<usize, String> {
     .map_err(|e| e.to_string())
 }
 #[tauri::command]
+pub fn get_workspace_by_id(workspace_id: i64) -> Result<workspace, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    
+    let mut stmt = conn
+        .prepare("SELECT workspace_id, name, color FROM workspace WHERE workspace_id = ?")
+        .map_err(|e| e.to_string())?;
+        
+    let mut workspace_iter = stmt
+        .query_map(params![workspace_id], |row| {
+            Ok(workspace {
+                workspace_id: row.get(0)?,
+                name: row.get(1)?,
+                color: row.get(2)?,
+            })
+        })
+        .map_err(|e| e.to_string())?;
+
+    // Извлекаем первую найденную запись
+    if let Some(result) = workspace_iter.next() {
+        let workspace_data = result.map_err(|e| e.to_string())?;
+        Ok(workspace_data)
+    } else {
+        Err("Workspace not found".to_string())
+    }
+}
+#[tauri::command]
 pub fn get_all_tasks_by_workspaceID(workspace_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;

@@ -18,6 +18,8 @@ import { setOpenedStatusMenu, setOpenedContextMenu } from '../tasks/store/task_l
 import { AppDispatch } from '../../App/store/store'
 import { useDeleteCategory } from './hooks/useDelete_categorys'
 import { set_rerender_category_list } from './store/categoryUiSlise'
+import { useNavigate } from 'react-router-dom'
+import { confirm } from '@tauri-apps/plugin-dialog';
 
 interface Category_itemProps {
     id: number
@@ -30,6 +32,7 @@ interface Category_itemProps {
 export function Category_item({ id, title, color, type }: Category_itemProps) {
     const [isDeletedLocally, setIsDeletedLocally] = useState(false);
     const deleteCategory=useDeleteCategory()
+    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>()
 
         const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
@@ -47,26 +50,35 @@ export function Category_item({ id, title, color, type }: Category_itemProps) {
          {
                     label: "Удалить",
                     onClick: async () => {
-                        try {
-                            // 1. Ждем, пока бэкенд реально удалит категорию
-                            setIsDeletedLocally(true);
-                            await deleteCategory(type, id);
-                            
-                            // 2. Закрываем подсписок, чтобы он не пытался рендерить старье
-                            set_open_cildrren_item(false);
-                            set_children_elements([]);
-                    
-                            // 3. Триггерим ререндер списка (чтобы заново запросить категории с бэкенда)
-                            dispatch(set_rerender_category_list(!rerender_category_list));
-                        } catch (error) {
-                            console.error("Ошибка при удалении:", error);
-                        }
+                        const confirmation = await confirm(
+                            'Если вы удаляйте категорию с привязанными элементами то  всё эти элементы будут так же удалены безверетено ',
+                            { title: 'Внимание!', kind: 'warning' }
+                          );
+                          if(confirmation){
+                              try {
+                                    
+                                    
+                                  // 1. Ждем, пока бэкенд реально удалит категорию
+                               
+                                  setIsDeletedLocally(true);
+                                  await deleteCategory(type, id);
+                                  
+                                  // 2. Закрываем подсписок, чтобы он не пытался рендерить старье
+                                  set_open_cildrren_item(false);
+                                  set_children_elements([]);
+                          
+                                  // 3. Триггерим ререндер списка (чтобы заново запросить категории с бэкенда)
+                                  dispatch(set_rerender_category_list(!rerender_category_list));
+                              } catch (error) {
+                                  console.error("Ошибка при удалении:", error);
+                              }
+                          }              
                     }
                 },
                 {
                     label: "Изменить",
                     onClick: () => {
-                        // navigate(`/edit_task_page/${id}`)
+                         navigate(`/edit_category_page/${type}/${id}`)
                     }
                 },
     ]

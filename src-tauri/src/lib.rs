@@ -224,7 +224,9 @@ pub fn run() {
               update_task_category,
               delete_workspace,
               get_workspace_by_id,
-              all_update_workspace
+              all_update_workspace,
+              update_folder_category,
+              update_app_category ,
             
         ])
         .run(tauri::generate_context!())

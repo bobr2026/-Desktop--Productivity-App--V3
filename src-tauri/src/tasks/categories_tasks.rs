@@ -45,12 +45,12 @@ pub fn get_task_categories_by_workspace(workspace_id: i64) -> Result<Vec<categor
 }
 
 #[tauri::command]
-pub fn update_task_category(id: i64, name: String, color: Option<String>) -> Result<usize, String> {
+pub fn update_task_category(id: i64, name: String, color: Option<String>,parent_id:Option<i64> ) -> Result<usize, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
-        "UPDATE categories_tasks SET name = ?, color = ? WHERE id = ?",
-        params![name, color, id],
+        "UPDATE categories_tasks SET name = ?, color = ?, parent_id=? WHERE id = ?",
+        params![name, color,parent_id, id],
     )
     .map_err(|e| e.to_string())
 }

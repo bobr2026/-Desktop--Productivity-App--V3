@@ -66,7 +66,7 @@ use folders::folder::{
     update_grub_folder___by_folder_id,delete_folder
 };
 use notes::categories_notes::{
-    add_Category_note, deleteCategory_note_ByID, get_all_categories_notes,
+    add_Category_note, deleteCategory_note_ByID, get_all_categories_notes,update_category_info,
     get_categories_by_workspace, get_note_Category_name_ById,get_note_categories_by_id
 };
 use notes::external_post_elements::{
@@ -227,6 +227,7 @@ pub fn run() {
               all_update_workspace,
               update_folder_category,
               update_app_category ,
+              update_category_info,
             
         ])
         .run(tauri::generate_context!())

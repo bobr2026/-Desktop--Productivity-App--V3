@@ -72,14 +72,14 @@ export const CategoryNode = ({ category, allCategories, category_type }: Categor
                 className={`${styles.under_category_list_item__under_list} ${isOpen ? styles.open : ""
                     }`}
             >
-                {children.map((child) => (
+                {/* {children.map((child) => (
                     <CategoryNode
                     category_type={category_type}
                         key={child.id}
                         category={child}
                         allCategories={allCategories}
                     />
-                ))}
+                ))} */}
             </div>
         </div>
     )

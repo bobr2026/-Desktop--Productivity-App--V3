@@ -14,6 +14,10 @@ export interface I_hotkey_and_category_slise_type {
   selectedHotkey: string | null
 }
 
+
+export interface categoryUi_types{
+    rerender_category_list:boolean
+}
 export interface global_store_type{
     apps_list:I_apps_store_type
     header:I_header_store_types
@@ -26,6 +30,7 @@ export interface global_store_type{
     note_list:note_list_store_type
     task_list_ui:task_list_ui_store_types
     context_munu_ui:context_munu_ui_store_types
+    categoryUI:categoryUi_types
 
 }
 export type task_ui_madal_type="create_link_task_to_note"|"create_link_task_to_task"
@@ -75,7 +80,10 @@ export interface folder_list_ctore_type{
     "grubs_list"="grubs_list",
     "dok_list"=   "dok_list",
     "workspase_list"="workspase_list",
-    "create_category"="create_category"
+    "create_category"="create_category",
+    "edit_category"="edit_category",
+    "edit_workspace" = "edit_workspace",
+    "create_workspace" = "create_workspace"
    }
     
 

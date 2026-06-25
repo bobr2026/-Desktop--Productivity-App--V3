@@ -201,6 +201,22 @@ pub fn delete_task(task_id: i64) -> Result<usize, String> {
     conn.execute("DELETE FROM task WHERE task_id = ?", params![task_id])
         .map_err(|e| e.to_string())
 }
+#[tauri::command]
+pub fn update_category_task___by_task_id(
+    task_category_id: i64,
+    task_id: i64,
+) -> Result<usize, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    let changes = conn
+        .execute(
+            "UPDATE task SET task_category_id =?  WHERE task_id = ?",
+            params![task_category_id, task_id],
+        )
+        .map_err(|e| e.to_string())?;
+    Ok(changes)
+}
+
 
 #[tauri::command]
 pub fn update_full_task(

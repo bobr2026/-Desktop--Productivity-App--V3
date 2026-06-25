@@ -10,4 +10,6 @@ export enum select_types_category_enum{
  |"globol_category"|"categories"
 export type types_create_category_table_db="create_global_category"|"add_Category_note"|"create_app_category"
 |"create_folder_category"|"create_task_category"
-    
+
+export type types_update_category_table_db='update_category_info'|'update_task_category'|"update_folder_category"
+|"update_global_category"|"update_app_category"

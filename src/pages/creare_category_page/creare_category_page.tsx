@@ -146,8 +146,6 @@ export default function Creare_category_page() {
     };
 
 
-  
-
     
     return <div className={styles.main_conteiner}>
 
@@ -185,8 +183,8 @@ export default function Creare_category_page() {
                     </label>
                 </div>
                 }           */}
-            {category_arr.length!=0?<p>выберете подкатегорию (необезательно)</p>:null}
-             <Under_category_list type_category={form_data.type_category} />
+            {/* {category_arr.length!=0?<p>выберете подкатегорию (необезательно)</p>:null} */}
+             {/* <Under_category_list type_category={form_data.type_category} /> */}
            
         
         

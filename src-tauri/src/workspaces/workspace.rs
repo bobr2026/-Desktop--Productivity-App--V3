@@ -70,6 +70,33 @@ pub fn delete_workspace(workspace_id: i64) -> Result<usize, String> {
     .map_err(|e| e.to_string())
 }
 #[tauri::command]
+pub fn get_workspace_by_id(workspace_id: i64) -> Result<workspace, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    
+    let mut stmt = conn
+        .prepare("SELECT workspace_id, name, color FROM workspace WHERE workspace_id = ?")
+        .map_err(|e| e.to_string())?;
+        
+    let mut workspace_iter = stmt
+        .query_map(params![workspace_id], |row| {
+            Ok(workspace {
+                workspace_id: row.get(0)?,
+                name: row.get(1)?,
+                color: row.get(2)?,
+            })
+        })
+        .map_err(|e| e.to_string())?;
+
+    // Извлекаем первую найденную запись
+    if let Some(result) = workspace_iter.next() {
+        let workspace_data = result.map_err(|e| e.to_string())?;
+        Ok(workspace_data)
+    } else {
+        Err("Workspace not found".to_string())
+    }
+}
+#[tauri::command]
 pub fn get_all_tasks_by_workspaceID(workspace_id: i64) -> Result<Vec<task>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
@@ -213,4 +240,36 @@ pub fn get_all_foldersBy_workspaceId(workspace_id: i64) -> Result<Vec<Folder>, S
         }
     }
     Ok(notes)
+}
+
+#[derive(serde::Serialize)]
+pub struct WorkspaceCounters {
+    pub apps: i64,
+    pub tasks: i64,
+    pub notes: i64,
+    pub folders: i64,
+}
+
+#[tauri::command]
+pub fn get_workspace_counters(workspace_id: i64) -> Result<WorkspaceCounters, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+
+    let apps: i64 = conn
+        .query_row("SELECT COUNT(*) FROM apps WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let tasks: i64 = conn
+        .query_row("SELECT COUNT(*) FROM task WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let notes: i64 = conn
+        .query_row("SELECT COUNT(*) FROM notes WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    let folders: i64 = conn
+        .query_row("SELECT COUNT(*) FROM folders WHERE workspace_id = ?", [workspace_id], |r| r.get(0))
+        .unwrap_or(0);
+
+    Ok(WorkspaceCounters { apps, tasks, notes, folders })
 }

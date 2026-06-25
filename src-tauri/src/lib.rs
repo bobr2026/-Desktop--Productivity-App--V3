@@ -66,7 +66,7 @@ use folders::folder::{
     update_grub_folder___by_folder_id,delete_folder
 };
 use notes::categories_notes::{
-    add_Category_note, deleteCategory_note_ByID, get_all_categories_notes,
+    add_Category_note, deleteCategory_note_ByID, get_all_categories_notes,update_category_info,
     get_categories_by_workspace, get_note_Category_name_ById,get_note_categories_by_id
 };
 use notes::external_post_elements::{
@@ -81,7 +81,7 @@ use notes::note::{
     add_note, delete_note, get_all_notes, get_all_notesByCategory_id, get_noteByID,
     update_category_note___by_note_id, update_grub_notes___by_grub_id,
     update_marks_note___by_note_id, update_status_note___by_note_id,
-    update_workspace__note___by_workspace_id,
+    update_workspace__note___by_workspace_id
 };
 use notes::posts_notes::{
     all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
@@ -99,10 +99,10 @@ use notes::Paragraph_styles_notes::{
 use tasks::task::{
     create_task, delete_task, get_all_tasks_by_task_category_id, get_subtasks,
     get_tasks_by_markType, get_tasks_by_status, update_task_content, update_task_marks,
-    update_task_status,get_notes_for_task, get_tasks_for_note, get_task_by_id, update_full_task
+    update_task_status,get_notes_for_task, get_tasks_for_note, get_task_by_id, update_full_task,update_category_task___by_task_id
 };
 use  tasks::categories_tasks::{
-     create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace
+     create_task_category, update_task_category, get_task_categories_by_id, get_task_categories_by_workspace, delete_task_category
 };
 use tasks::note_task_Link::{
     add_element_link, get_perent_elements, get_sub_elements, update_element_link, 
@@ -111,7 +111,7 @@ use tasks::note_task_Link::{
 };
 use workspaces::workspace::{
     add_workspace, all_update_workspace, get_all_appsByWorkspace_id, get_all_foldersBy_workspaceId,
-    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,
+    get_all_notesByWorkspace_id, get_all_tasks_by_workspaceID, get_all_workspaces,get_workspace_counters, delete_workspace,get_workspace_by_id
 };
 
 use rusqlite::{params, Connection, Result};
@@ -170,8 +170,8 @@ pub fn run() {
           create_app_category,
           create_folder_category,
           create_task_category,
-          
-
+          delete_folder_category,
+          deleteCategory_note_ByID,
             create_global_category,
             delete_global_category,
             update_global_category, 
@@ -194,6 +194,7 @@ pub fn run() {
             update_folder,
             get_foldersByID,
             get_all_foldersBy_workspaceId,
+            delete_app_category,
             get_all_notesByWorkspace_id,
             get_folder_Category_name_and_color_ById,
             open_folder,
@@ -213,7 +214,20 @@ pub fn run() {
               delete_app,
               update_app,
               get_appsByID,
-              delete_folder
+              delete_folder, update_category_note___by_note_id, 
+              update_grub_folder___by_folder_id,
+              get_all_foldersByGrub_id,update_category_task___by_task_id,
+              get_all_appsByGrub_id,
+              get_workspace_counters,
+              get_all_notesByCategory_id,
+              delete_task_category,
+              update_task_category,
+              delete_workspace,
+              get_workspace_by_id,
+              all_update_workspace,
+              update_folder_category,
+              update_app_category ,
+              update_category_info,
             
         ])
         .run(tauri::generate_context!())

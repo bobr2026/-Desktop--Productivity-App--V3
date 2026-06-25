@@ -137,13 +137,13 @@ pub fn get_categories_by_workspace(workspace_id: i64) -> Result<Vec<categories_n
 
 // Update 1: Основная информация (имя, цвет)
 #[tauri::command]
-pub fn update_category_info(id: i64, name: String, color: Option<i64>) -> Result<usize, String> {
+pub fn update_category_info(id: i64, name: String, color: Option<String>,parent_id:Option<i64>) -> Result<usize, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     let changes = conn
         .execute(
-            "UPDATE categories_notes SET name = ?, color = ? WHERE id = ?",
-            params![name, color, id],
+            "UPDATE categories_notes SET name = ?, color = ?, parent_id=? WHERE id = ?",
+            params![name, color,parent_id, id],
         )
         .map_err(|e| e.to_string())?;
     Ok(changes)

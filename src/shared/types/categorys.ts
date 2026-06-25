@@ -7,3 +7,11 @@ workspace_id:number
 
 
 }
+export type Category_list_data_types ="app"|"note"|"folder"|"task"|"workspase"
+export type filtered_categorys="app"|"note"|"folder"|"task"
+export interface WorkspaceCounters {
+    apps: number;
+    tasks: number;
+    notes: number;
+    folders: number;
+  }

@@ -1,6 +1,6 @@
 import { invoke } from "@tauri-apps/api/core"
 import { I_ginerik_category, I_workspace_types } from "../../../shared/types"
-import { select_types_category_enum, types_categorys_table_db, types_create_category_table_db } from "../create_category_page_types"
+import { select_types_category_enum, types_categorys_table_db, types_create_category_table_db, types_update_category_table_db } from "../create_category_page_types"
 import { useEffect, useState } from "react"
 import { global_store_type } from "../../../App/store/global_store.types"
 import { useSelector, useDispatch } from "react-redux"
@@ -37,4 +37,10 @@ export async function create_category(type_category:types_create_category_table_
    name:string,color:string|null,parent_id:number|null,  workspace_id:number
  ) {
   await invoke(`${type_category}`, {name, color, parentId:parent_id, workspaceId:workspace_id})
+}
+
+export async function update_category(type_category:types_update_category_table_db,
+  name:string,color:string|null,parent_id:number|null,  id:number
+) {
+ await invoke(`${type_category}`, {name, color, parentId:parent_id,id:id })
 }

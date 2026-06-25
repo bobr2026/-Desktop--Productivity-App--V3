@@ -81,6 +81,7 @@ export interface folder_list_ctore_type{
     "dok_list"=   "dok_list",
     "workspase_list"="workspase_list",
     "create_category"="create_category",
+    "edit_category"="edit_category",
     "edit_workspace" = "edit_workspace",
     "create_workspace" = "create_workspace"
    }

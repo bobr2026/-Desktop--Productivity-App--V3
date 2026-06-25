@@ -17,6 +17,7 @@ import { Edit_app_page } from "../pages/edit_app_page/edit_app_page";
 import { Edit_folder_page } from "../pages/edit_folder_page/edit_folder_page";
 import Create_workspace_page from "../pages/Create_workspace_page/Create_workspace_page";
 import Edit_workspace_page from "../pages/Edit_workspace_page/Edit_workspace_page";
+import { Edit_category_page } from "../pages/edit category_page/edit category_page";
 
 const routes:RouteObject[] =[
     {path:"/",  element:<RootLayot/>, children:[
@@ -29,6 +30,7 @@ const routes:RouteObject[] =[
         { path:"/create_item", element:<Create_item_page/>},
         { path:"/create_app", element:<Create_app_page/>},
         {path:"/creare_category_page", element:<Creare_category_page/>},
+        {path:"/edit_category_page/:type_category/:categoryId", element:<Edit_category_page/>},
         {path:"/creare_folder_page", element:<Create_folder_page/>},
         {path:"/creare_task_page", element:<Create_task_page/>},
         {path:"/edit_task_page/:taskId", element:<Edit_task_page/>},

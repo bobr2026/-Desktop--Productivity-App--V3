@@ -16,6 +16,16 @@
           FOREIGN KEY (globol_category_id) REFERENCES globol_categorys(id)  ON DELETE CASCADE
 
   );
+CREATE TABLE IF NOT EXISTS post_files (
+    file_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER NOT NULL,
+    file_type TEXT NOT NULL,        -- image / audio / video / file
+    file_path TEXT NOT NULL,        -- путь к файлу или URL
+     row   INTEGER,
+      col INTEGER,
+    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
+);
+
 
 
      CREATE TABLE IF NOT EXISTS posts(
@@ -130,16 +140,6 @@ CREATE TABLE Links (
 );
 CREATE INDEX idx_links_source ON Links(source_type, source_id);
 CREATE INDEX idx_links_target ON Links(target_type, target_id);
-
-CREATE TABLE IF NOT EXISTS post_files (
-    file_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    post_id INTEGER NOT NULL,
-    file_type TEXT NOT NULL,        -- image / audio / video / file
-    file_path TEXT NOT NULL,        -- путь к файлу или URL
-     row   INTEGER,
-      col INTEGER,
-    FOREIGN KEY (post_id) REFERENCES posts(post_id) ON DELETE CASCADE
-);
 
 
 

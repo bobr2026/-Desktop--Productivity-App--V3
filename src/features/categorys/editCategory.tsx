@@ -112,11 +112,12 @@ async function get_data() {
                 break
             case "task":
                 const id3 = parseInt(category_id)
-                const data3:I_ginerik_category[] =     await invoke('get_task_categories_by_id', {taskCategoryId:id3})
+                const data3:I_ginerik_category =     await invoke('get_task_categories_by_id', {taskCategoryId:id3})
+                console.log(data3)
                 setForm_data((prev)=>(
                  {...prev,
-                     category_name:data3[0].name,
-                     category_color: data3[0].color!=null?data3[0].color:"#000000",
+                     category_name:data3.name,
+                     category_color: data3.color!=null?data3.color:"#000000",
                       type_category:'task'
                       
                  }

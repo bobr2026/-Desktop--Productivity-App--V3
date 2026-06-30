@@ -21,7 +21,7 @@ export function Note_list(){
        return <Note_item key={note.note_id} note_id={note.note_id} 
        created_at={note.created_at} 
        title={note.title} note_category_id={note.note_category_id} 
-       status={'not completed'} marks={note.marks}
+       status={note.status} marks={note.marks}
         updated_at={note.updated_at}
         globol_category_id={note.globol_category_id} 
         workspace_id={note.workspace_id}/>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { marksTask, statusTask } from '../../shared/types'
+import { marksTask, STATUS_COLORS, statusTask } from '../../shared/types'
 import Marks_button from '../../shared/ui/mrks_button/mrks_button'
 import styles from './styles/note_task_item.module.sass'
 import { invoke } from '@tauri-apps/api/core'
@@ -28,11 +28,6 @@ export interface Note_task_item_props {
 }
 
 // 1. Выносим маппинг цветов за пределы компонента
-const STATUS_COLORS: Record<string, string> = {
-    'not completed': 'red',
-    'completed': 'green', // Исправил опечатку: 'gren' -> 'green'
-    'in work': '#FF6200',
-}
 
 export default function Note_task_item({ 
     title, status, render_type,  mark, category_id, creaded, update, element_id, perent_id , note_id

@@ -10,11 +10,13 @@ import { delete_note_from_db, get_note_categories_by_id } from "./model/note.mod
 import { delete_note } from "../../App/store/note_list_slise_store";
 import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
+import { useNavigate } from "react-router-dom";
 // import { delete_task_from_db } from "../tasks/model/task.module";
 // import { delete_task } from "../tasks/store/task_list_store";
 export function Note_item({note_id, workspace_id, title, marks,
      status, created_at, updated_at, note_category_id, globol_category_id}:i_note){
       const dispatch = useDispatch<AppDispatch>()
+      const navigate = useNavigate()
       const [category_name, set_category_name]=useState<string>("Нет")
       const {openedContextMenuId, contextMenuX, contextMenuY} = useSelector(
         (state: global_store_type) => state.context_munu_ui
@@ -43,7 +45,7 @@ export function Note_item({note_id, workspace_id, title, marks,
                   }
               }
     ]
-    return <div className={styles.note_item_main_block} style={{"borderLeft":`10px solid ${color_status}`}} onContextMenu={(e: React.MouseEvent) => {
+    return <div className={styles.note_item_main_block} style={{"borderLeft":`10px solid ${color_status}`}} onClick={()=>navigate(`/edit_note_page/${note_id}`)} onContextMenu={(e: React.MouseEvent) => {
                     e.preventDefault()
     
                     dispatch(

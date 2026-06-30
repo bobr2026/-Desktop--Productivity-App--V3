@@ -72,6 +72,7 @@ export interface folder_list_ctore_type{
     "home"="home", 
     "create_app"= "create_app", 
     "create_note"="create_note",
+    "edit_note"="edit_note",
     "create_folder"= " create_folder",
     "create_task"= "create_task",
     "edit_task"= "edit_task",

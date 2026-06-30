@@ -18,6 +18,8 @@ import { Edit_folder_page } from "../pages/edit_folder_page/edit_folder_page";
 import Create_workspace_page from "../pages/Create_workspace_page/Create_workspace_page";
 import Edit_workspace_page from "../pages/Edit_workspace_page/Edit_workspace_page";
 import { Edit_category_page } from "../pages/edit category_page/edit category_page";
+import { Create_note_page } from "../pages/create_note_page/create_note_page";
+import { Edit_note_page } from "../pages/edit_note_page/edit_note_page";
 
 const routes:RouteObject[] =[
     {path:"/",  element:<RootLayot/>, children:[
@@ -38,6 +40,8 @@ const routes:RouteObject[] =[
         {path:"/edit_folder_page/:folderId", element:<Edit_folder_page/>},
         { path: "/create_workspace", element: <Create_workspace_page /> },
 { path: "/edit_workspace/:workspaceId", element: <Edit_workspace_page /> },
+{path: "/create_note_page", element:<Create_note_page/>},
+{path: "/edit_note_page/:noteId", element:<Edit_note_page/>},
     ]
 
     }

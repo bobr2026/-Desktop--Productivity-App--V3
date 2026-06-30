@@ -41,7 +41,7 @@ pub fn get_note_categories_by_id(
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
 
     let mut stmt = conn
-        .prepare("SELECT * ROM categories_notes WHERE id  = ?")
+        .prepare("SELECT * FROM categories_notes WHERE id  = ?")
         .map_err(|e| e.to_string())?;
 
     let cat_iter = stmt

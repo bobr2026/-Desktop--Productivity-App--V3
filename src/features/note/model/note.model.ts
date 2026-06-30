@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { i_note, marksTask, statusTask } from "../../../shared/types";
+import { I_ginerik_category, i_note, marksTask, statusTask } from "../../../shared/types";
 
 export async function delete_note_from_db (npte_id:number){
     await invoke("delete_note", {noteId:npte_id})
@@ -34,4 +34,8 @@ export async function update_workspace__note___by_workspace_id(workspace_id:numb
         workspaceId:workspace_id,
         noteId:note_id
         })
+}
+export async function get_note_categories_by_id (note_category_id:number) {
+ const data:I_ginerik_category[] =  await invoke("get_note_categories_by_id", {noteCategoryId:note_category_id}) 
+ return data[0]
 }

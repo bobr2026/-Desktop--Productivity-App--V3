@@ -13,3 +13,9 @@ export interface i_note{
     workspace_id:number
 
 }
+export  const STATUS_COLORS: Record<string, string> = {
+    'not completed': 'red',
+    'completed': 'green', // Исправил опечатку: 'gren' -> 'green'
+    'in work': '#FF6200',
+    "postponed": "#EAB308",  
+}

@@ -15,7 +15,7 @@ export function Create_item_page(){
     <Link className={style.main_conteiner__link} to={"/create_app"}> New app </Link>
     <Link className={style.main_conteiner__link} to={"/creare_folder_page"}> New folder </Link>
     <Link className={style.main_conteiner__link} to={""}> New dok </Link>
-    <Link className={style.main_conteiner__link} to={""}> New note </Link>
+    <Link className={style.main_conteiner__link} to={"/create_note_page"}> New note </Link>
     <Link className={style.main_conteiner__link} to={"/creare_task_page"}> New task </Link>
     <Link className={style.main_conteiner__link} to={"/creare_category_page"}> New category </Link>
     <Link className={style.main_conteiner__link} to={"/create_workspace"}> New workspase</Link>

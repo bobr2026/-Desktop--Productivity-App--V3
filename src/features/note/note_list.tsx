@@ -28,7 +28,7 @@ export function Note_list(){
           })
     return <div className={styles.list_base_block }>
   <div className={styles.list_base}>
-        {note_list.length==0?<h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/create_note"}>  Добавите Заметку   </Link> </h2>:note_list}
+        {note_list.length==0?<h2>Список пуст, <Link className={styles.main_conteiner__link} to={"/create_note_page"}>  Добавите Заметку   </Link> </h2>:note_list}
         </div>
     </div>
 }

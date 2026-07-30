@@ -7,10 +7,11 @@ interface mrks_button_props{
 }
  function Marks_button1({click, mark_type, active}:mrks_button_props){
     // type marksTask = "Important"|"Urgently"|"Attention" //Важно /Срочно/Внимание
+    //styles.mrks_button_Attention
 const className= mark_type=="Important"?styles.mrks_button_Important:
-mark_type=="Urgently"?styles.mrks_button_Urgently:styles.mrks_button_Attention
+mark_type=="Urgently"?styles.mrks_button_Urgently:mark_type=='Attention'? styles.mrks_button_Attention: styles.mrks_button_No
 const btn_title= mark_type=="Important"?"Важно!":
-mark_type=="Urgently"?"Срочно!":"Внимание!"
+mark_type=="Urgently"?"Срочно!":mark_type=='NO'?'Нет':'Внимание'
 
 return <button className={className} onClick={()=>click}>{btn_title}</button>
 }
@@ -28,7 +29,8 @@ export default function Marks_button({ click, mark_type, active }: mrks_button_p
   const titles: Record<marksTask, string> = {
     Important: "Важно!",
     Urgently: "Срочно!",
-    Attention: "Внимание!"
+    Attention: "Внимание!",
+    NO:"Нет"
   }
 
   // 2. Правильно склеиваем классы. 

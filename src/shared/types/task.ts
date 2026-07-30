@@ -1,6 +1,6 @@
 import { SelectType } from "../../App/store/global_store.types"
 
-export type marksTask = "Important"|"Urgently"|"Attention" 
+export type marksTask = "Important"|"Urgently"|"Attention" |"NO"
 export type statusTask = "not completed"|"completed"|"in work"|"postponed"
 
 export type i_ceate_task_data={

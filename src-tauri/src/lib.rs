@@ -86,11 +86,11 @@ use notes::note::{
 use notes::posts_notes::{
     all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
     delite_post_in_note, get_files_by_post_id, title_update_post_in_note,
-    update_post_file_position,
+    update_post_file_position,get_all_posts_by_note_id,position_update_post_in_note
 };
 use notes::Paragraph_notes::{
     add_Paragraph, delete_paragraph_by_post_id, get_all_paragraph_by_post_id,
-    update_content_paragraph, update_position_paragraph,
+    update_content_paragraph, update_position_paragraph,set_styleId_paragraph
 };
 use notes::Paragraph_styles_notes::{
     add_Paragraph_styles, delete_paragraph_style, get_paragraph_style_by_id, update_style_colors,
@@ -228,7 +228,21 @@ pub fn run() {
               update_folder_category,
               update_app_category ,
               update_category_info,
-            
+              add_note,
+              get_noteByID,
+              update_marks_note___by_note_id,
+              update_status_note___by_note_id,
+              delete_note,
+
+              all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
+    delite_post_in_note, get_files_by_post_id, title_update_post_in_note,
+    update_post_file_position,get_all_posts_by_note_id,position_update_post_in_note,
+
+    add_Paragraph, delete_paragraph_by_post_id, get_all_paragraph_by_post_id,
+    update_content_paragraph, update_position_paragraph,set_styleId_paragraph,
+
+    add_Paragraph_styles, delete_paragraph_style, get_paragraph_style_by_id, update_style_colors,
+    update_style_extra, update_style_font, update_style_formatting,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

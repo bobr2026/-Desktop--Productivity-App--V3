@@ -3,7 +3,7 @@ use super::entrys::post_files;
 use crate::servises::get_db_path;
 use rusqlite::{params, Connection, Result};
 use std::path::PathBuf;
-
+#[tauri::command]
 pub fn create_post_in_note(
     note_id: i64,
     title: String,
@@ -19,6 +19,29 @@ pub fn create_post_in_note(
     println!("Note added");
     Ok(())
 }
+#[tauri::command]
+pub fn get_all_posts_by_note_id(note_id: i64) ->Result<Vec<post>, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    let mut stmt = conn.prepare("SELECT * FROM posts WHERE note_id= ?").map_err(|e| e.to_string())?;
+    let files_iter = stmt
+        .query_map([note_id], |row| {
+            Ok(post {
+                post_id: row.get(0)?,
+                note_id: row.get(1)?,
+                title: row.get(2)?,
+                position_in_the_note: row.get(3)?
+            })
+        })
+        .map_err(|e| e.to_string())?;
+
+    let mut files = Vec::new();
+    for f in files_iter {
+        files.push(f.map_err(|e| e.to_string())?);
+    }
+    Ok(files)
+}
+#[tauri::command]
 pub fn delite_post_in_note(post_id: i64, note_id: i64) -> Result<(usize), String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
@@ -32,6 +55,7 @@ WHERE post_id = ?
         .map_err(|e| e.to_string())?;
     Ok(changes)
 }
+#[tauri::command]
 pub fn all_update_post_in_note(
     title: String,
     position_in_the_note: i64,
@@ -52,7 +76,7 @@ WHERE post_id = ?
         .map_err(|e| e.to_string())?;
     Ok(changes)
 }
-
+#[tauri::command]
 pub fn title_update_post_in_note(
     title: String,
     post_id: i64,
@@ -71,6 +95,7 @@ WHERE post_id = ?
         .map_err(|e| e.to_string())?;
     Ok(changes)
 }
+#[tauri::command]
 pub fn position_update_post_in_note(
     position: i64,
     post_id: i64,

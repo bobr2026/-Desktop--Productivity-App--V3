@@ -81,7 +81,7 @@ use notes::note::{
     add_note, delete_note, get_all_notes, get_all_notesByCategory_id, get_noteByID,
     update_category_note___by_note_id, update_grub_notes___by_grub_id,
     update_marks_note___by_note_id, update_status_note___by_note_id,
-    update_workspace__note___by_workspace_id
+    update_workspace__note___by_workspace_id, get_notes_count
 };
 use notes::posts_notes::{
     all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
@@ -90,11 +90,12 @@ use notes::posts_notes::{
 };
 use notes::Paragraph_notes::{
     add_Paragraph, delete_paragraph_by_post_id, get_all_paragraph_by_post_id,
-    update_content_paragraph, update_position_paragraph,set_styleId_paragraph
+    update_content_paragraph, update_position_paragraph,set_styleId_paragraph,set_post_id_paragraph
 };
 use notes::Paragraph_styles_notes::{
     add_Paragraph_styles, delete_paragraph_style, get_paragraph_style_by_id, update_style_colors,
     update_style_extra, update_style_font, update_style_formatting,
+    get_count_paragraph_style
 };
 use tasks::task::{
     create_task, delete_task, get_all_tasks_by_task_category_id, get_subtasks,
@@ -233,13 +234,14 @@ pub fn run() {
               update_marks_note___by_note_id,
               update_status_note___by_note_id,
               delete_note,
-
+              get_notes_count,
+              get_count_paragraph_style,
               all_update_post_in_note, create_post_file, create_post_in_note, delete_post_file,
     delite_post_in_note, get_files_by_post_id, title_update_post_in_note,
     update_post_file_position,get_all_posts_by_note_id,position_update_post_in_note,
 
     add_Paragraph, delete_paragraph_by_post_id, get_all_paragraph_by_post_id,
-    update_content_paragraph, update_position_paragraph,set_styleId_paragraph,
+    update_content_paragraph, update_position_paragraph,set_styleId_paragraph,set_post_id_paragraph,
 
     add_Paragraph_styles, delete_paragraph_style, get_paragraph_style_by_id, update_style_colors,
     update_style_extra, update_style_font, update_style_formatting,

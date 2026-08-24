@@ -12,6 +12,7 @@ import task_list_ui_slise from '../../features/tasks/store/task_list_ui_store.ts
 import categoryUI_slise from '../../features/categorys/store/categoryUiSlise.ts'
 import context_munu_ui_slise from '../store/context_munu_slise.ts'
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux"
+import noteFormSlice from '../../features/note/store/noteFormSlice.ts'
 
 
 const store = configureStore({
@@ -27,7 +28,8 @@ const store = configureStore({
         note_list:note_list_slise,
         task_list_ui:task_list_ui_slise,
         context_munu_ui:context_munu_ui_slise,
-        categoryUI:categoryUI_slise
+        categoryUI:categoryUI_slise, 
+        noteForm:noteFormSlice
 
     }
 })

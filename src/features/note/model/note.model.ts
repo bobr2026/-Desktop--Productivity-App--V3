@@ -39,3 +39,7 @@ export async function get_note_categories_by_id (note_category_id:number) {
  const data:I_ginerik_category[] =  await invoke("get_note_categories_by_id", {noteCategoryId:note_category_id}) 
  return data[0]
 }
+export async function get_notes_count() {
+    const notes_caunt=await invoke<number>('get_notes_count')
+    return notes_caunt
+}

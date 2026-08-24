@@ -8,7 +8,7 @@ pub fn create_post_in_note(
     note_id: i64,
     title: String,
     position_in_the_note: i64,
-) -> Result<(), String> {
+) -> Result<post, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
@@ -17,7 +17,14 @@ pub fn create_post_in_note(
     )
     .map_err(|e| e.to_string())?;
     println!("Note added");
-    Ok(())
+    let id = conn.last_insert_rowid();
+    Ok(post {
+        post_id: id,
+        note_id,
+        title,
+        position_in_the_note,
+    })
+
 }
 #[tauri::command]
 pub fn get_all_posts_by_note_id(note_id: i64) ->Result<Vec<post>, String> {
@@ -71,7 +78,7 @@ SET title = ?,
     position_in_the_note = ?
 WHERE post_id = ?
   AND note_id = ?;",
-            params![position_in_the_note, title, post_id, note_id],
+            params![ title,position_in_the_note,  post_id, note_id],
         )
         .map_err(|e| e.to_string())?;
     Ok(changes)

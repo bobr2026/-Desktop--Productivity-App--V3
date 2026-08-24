@@ -31,6 +31,7 @@ export interface global_store_type{
     task_list_ui:task_list_ui_store_types
     context_munu_ui:context_munu_ui_store_types
     categoryUI:categoryUi_types
+    noteForm:NoteFormState
 
 }
 export type task_ui_madal_type="create_link_task_to_note"|"create_link_task_to_task"
@@ -114,3 +115,39 @@ export interface i_globol_categorys{
     parent_id:number|null,
     workspace_id:number
 }
+import { Paragraph, ParagraphStyle, Post } from '../../shared/types';
+import { createEntityAdapter } from "@reduxjs/toolkit"
+
+// ── Типы (ваши, без изменений) ──────────────────────────────────
+
+
+
+// ── Entity adapters ──────────────────────────────────────────────
+// selectId говорит адаптеру, какое поле в объекте считать ключом —
+// у вас это не "id", а "paragraphId" / "postId" и т.д.
+
+
+export const postsAdapter = createEntityAdapter({
+  selectId: (post: Post) => post.post_id,
+  sortComparer: (a: Post, b: Post) =>
+    a.position_in_the_note - b.position_in_the_note,
+});
+export const paragraphsAdapter = createEntityAdapter({
+  selectId: (paragraph:Paragraph) => paragraph.paragraph_id,
+});
+
+export const paragraphStylesAdapter = createEntityAdapter({
+  selectId: (style:ParagraphStyle) => style.Paragraph_styles_id,
+});
+
+// ── Состояние слайса ─────────────────────────────────────────────
+
+export interface NoteFormState {
+  noteId: number | null;
+  activePostId: number | null;
+  activeParagraphId: number | null;
+  posts: ReturnType<typeof postsAdapter.getInitialState>;
+  paragraphs: ReturnType<typeof paragraphsAdapter.getInitialState>;
+  paragraphStyles: ReturnType<typeof paragraphStylesAdapter.getInitialState>;
+}
+

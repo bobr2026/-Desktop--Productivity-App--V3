@@ -4,6 +4,7 @@ import { TextSetingsBar } from '../textSetingsBar/textSetingsBar'
 import styles from './toolbar.module.sass'
 export default function Toolbar(){
     return<div className={styles.Toolbar}>
+  
      <TextSetingsBar/>
       <ColorBar/>
     </div>

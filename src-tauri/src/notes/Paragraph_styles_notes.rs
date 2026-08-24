@@ -17,7 +17,7 @@ pub fn add_Paragraph_styles(
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
         "INSERT INTO Paragraph (font_size, color, background, font_weight,
-         text_decoration, text_align, extra_styles) VALUES (?, ?, ?, ?, ?, ?)",
+         text_decoration, text_align, extra_styles) VALUES (?, ?, ?, ?, ?, ?, ?)",
         params![
             font_size,
             color,
@@ -144,4 +144,19 @@ pub fn delete_paragraph_style(style_id: i64) -> Result<usize, String> {
         .map_err(|e| e.to_string())?;
 
     Ok(changes)
+}
+
+#[tauri::command]
+pub fn get_count_paragraph_style() -> Result<i64, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    let count: i64 = conn
+        .query_row(
+            "SELECT COUNT(*) FROM Paragraph_styles",
+            [],
+            |row| row.get(0),
+        )
+        .map_err(|e| e.to_string())?;
+
+    Ok(count)
 }

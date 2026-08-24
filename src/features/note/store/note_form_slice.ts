@@ -29,3 +29,12 @@ interface note_form_slice_store{
     }
 }
 
+interface note_form_slice_store2{
+    active_paragrah_id:number
+    active_paragrah_styles_id:number
+    active_post_id:number
+    note_id:number
+    posts:Post[]
+    paragraph:Paragraph[]
+    paragraphStyles:ParagraphStyle[]
+}

@@ -15,7 +15,7 @@ pub fn add_note(
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
-        "INSERT INTO notes (title, category_id, status, marks, globol_category_id,workspace_id ) VALUES (?, ?, ?, ?,  ?, ?)",
+        "INSERT INTO notes (title, note_category_id, status, marks, globol_category_id,workspace_id ) VALUES (?, ?, ?, ?,  ?, ?)",
         params![title, note_category_id, status, marks, globol_category_id, workspace_id],
     )
     .map_err(|e| e.to_string())?;
@@ -206,4 +206,18 @@ pub fn update_workspace__note___by_workspace_id(
         )
         .map_err(|e| e.to_string())?;
     Ok(changes)
+}
+#[tauri::command]
+pub fn get_notes_count() -> Result<i64, String> {
+    let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
+    let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
+    let count: i64 = conn
+        .query_row(
+            "SELECT COUNT(*) FROM notes",
+            [],
+            |row| row.get(0),
+        )
+        .map_err(|e| e.to_string())?;
+
+    Ok(count)
 }

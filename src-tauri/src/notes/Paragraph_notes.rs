@@ -10,7 +10,7 @@ pub fn add_Paragraph(
     culomm: i64,
     row: i64,
     style_id: Option<i64>,
-) -> Result<(), String> {
+) -> Result<Paragraph, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     conn.execute(
@@ -19,18 +19,19 @@ pub fn add_Paragraph(
     )
     .map_err(|e| e.to_string())?;
     println!("paragraph added");
-    Ok(())
+    let id = conn.last_insert_rowid();
+    Ok(Paragraph { paragraph_id: id, post_id, content, culomm, row, style_id })
 }
 
 #[tauri::command]
-pub fn get_all_paragraph_by_post_id() -> Result<Vec<Paragraph>, String> {
+pub fn get_all_paragraph_by_post_id(post_id: i64) -> Result<Vec<Paragraph>, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     let mut stmt = conn
-        .prepare("SELECT paragraph_id,  post_id, content, culomm, row, style_id FROM Paragraph WHERE post_id = ?")
+        .prepare("SELECT * FROM Paragraph WHERE post_id = ?")
         .map_err(|e| e.to_string())?;
     let notes_iter = stmt
-        .query_map([], |row| {
+        .query_map([post_id], |row| {
             Ok(Paragraph {
                 paragraph_id: row.get(0)?,
                 post_id: row.get(1)?,
@@ -81,7 +82,7 @@ pub fn update_position_paragraph(
 }
 
 #[tauri::command]
-pub fn update_content_paragraph(content: Option<i64>, paragraph_id: i64) -> Result<usize, String> {
+pub fn update_content_paragraph(content: Option<String>, paragraph_id: i64) -> Result<usize, String> {
     let db_path = get_db_path().ok_or("Home directory not found".to_string())?;
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     let changes = conn
@@ -90,6 +91,7 @@ pub fn update_content_paragraph(content: Option<i64>, paragraph_id: i64) -> Resu
             params![content, paragraph_id],
         )
         .map_err(|e| e.to_string())?;
+    println!("update_content_paragraph called");
     Ok(changes)
 }
 
@@ -99,7 +101,7 @@ pub fn set_styleId_paragraph(style_id: Option<i64>, paragraph_id: i64) -> Result
     let conn = Connection::open(db_path).map_err(|e| e.to_string())?;
     let changes = conn
         .execute(
-            "UPDATE Paragraph SET style_id WHERE paragraph_id = ?",
+            "UPDATE Paragraph SET style_id = ? WHERE paragraph_id = ?",
             params![style_id, paragraph_id],
         )
         .map_err(|e| e.to_string())?;

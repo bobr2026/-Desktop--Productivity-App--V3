@@ -3,7 +3,7 @@ import { TextIcon } from "../icons/TextIcon";
 import style from  './textSetingsBar.module.sass'
 
 export function TextSetingsBar(){
-  const colorBgArr=["red", "#555"]
+//   const colorBgArr=["red", "#555"]
   const colorTextArr=["red", "#445" , "#666", '#888', '#999', '#111']
     const [open_color_list, set_open_color_list]= useState(false)
    return( 
@@ -11,9 +11,10 @@ export function TextSetingsBar(){
 
    <div className={style.textSetingsBar_munu} style={{display:open_color_list==false?'none':'flex'}}>
       <div className={style.textSetingsBar_munu_colors_block}>
-      {colorBgArr.map((color)=>{
+      <button className={style.TextSetingsBar_reset_style_btn}>сброс</button>
+      {/* {colorBgArr.map((color)=>{
    return  <div className={style.color_item} style={{background:color}}></div>
-})}
+})} */}
       </div>
 
       <input type='number' max={24} min={0}/>

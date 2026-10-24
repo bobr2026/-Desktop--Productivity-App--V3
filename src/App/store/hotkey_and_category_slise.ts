@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { I_hotkey_and_category_slise_type } from "./global_store.types"
+
 
 type SelectType = "app" | "folder" | "note" | "task" | "global"
 

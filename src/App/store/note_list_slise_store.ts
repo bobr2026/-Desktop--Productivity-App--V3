@@ -58,9 +58,7 @@ notes:[]
  extraReducers(builder) {
 
     //get_all_notesBy_workspace_id
-    builder.addCase(get_all_notesBy_workspace_id.pending, state=>{
-
-    }),
+    
     builder.addCase(get_all_notesBy_workspace_id.fulfilled, (state, action:PayloadAction<i_note[]>)=>{
         state.notes=action.payload
        

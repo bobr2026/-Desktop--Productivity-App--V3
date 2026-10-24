@@ -67,9 +67,9 @@ delete_global_category(state, action:PayloadAction<number>){
     }
     },
     extraReducers(builder) {
-         builder.addCase(get_all_workspaces.pending, state=>{
+        //  builder.addCase(get_all_workspaces.pending, state=>{
         
-            }),
+        //     }),
             builder.addCase(get_all_workspaces.fulfilled, (state, action:PayloadAction<I_workspace_types[]>)=>{
                 state.worspases=action.payload
             
